@@ -1,0 +1,33 @@
+# Items de la barre de menus qui ouvrent une fenêtre ou un mode avec des champs de saisie, et les tests qui
+# vérifient ce que ces champs produisent (pas seulement l'ouverture). Lu par test/saisies/catalogue_test.tcl :
+# un item à saisie absent d'ici, ou dont un test n'existe pas, fait échouer le contrôle.
+# Format : chemin du menu | tests (chemins relatifs à test/), ou « - raison » si les champs ne sont pas des saisies.
+Edit > Preferences | saisies/preferences_test.tcl
+Sequences > Identity tool | saisies/identite_test.tcl
+Sequences > Search motif | saisies/motif_test.tcl
+Sequences > Edit Seq. information | infoseq_test.tcl
+Sequences > Retrieve Sequences information | saisies/retrieve_info_test.tcl
+Sequences > Add feature from file... | groupes_instance_test.tcl saisies/export_features_test.tcl
+Sequences > Export Feature to file | saisies/export_features_test.tcl
+Sequences > Features Editor | saisies/feateditor_test.tcl
+Sequences > Features Summary | saisies/featsummary_test.tcl
+Sequences > Add sequences in instance > from file | phase4_corrections_test.tcl cif_noms_test.tcl
+Sequences > Add sequences in instance > from database | addseq_uniprot_test.sh cif_noms_test.tcl
+Sequences > Add structure in instance > from file | cif_noms_test.tcl phase4_corrections_test.tcl
+Sequences > Add structure in instance > from ID | groupes_instance_test.tcl
+Alignment > Editor | saisies/editeur_test.tcl
+Alignment > Clustering | saisies/clustering_test.tcl phase4_corrections_test.tcl
+Alignment > Overview | saisies/overview_test.tcl saisies/overview_instance_test.tcl
+Alignment > Conservation | saisies/conservation_test.tcl groupsim_test.tcl
+Alignment > Tree building | saisies/arbre_test.tcl saisies/arbre_instance_test.tcl
+Alignment > Annotate instance | saisies/annotation_test.tcl
+Alignment > Barcode | saisies/barcode_test.tcl
+Structures > Display Structures | viewer3d_cpk_refresh_test.tcl phase3/rendu3d_test.tcl objets3d_ord_test.tcl printogl_fond_test.tcl
+Structures > Superpose Structures | superposition_af_test.tcl
+Structures > Color Sec. Str by identity | saisies/colorie_ss_test.tcl
+Structures > Save PDB | saisies/sauvepdb_test.tcl
+File > Save window as > a TFA file | saisies/fenetre_test.tcl
+File > Save window as > a MSF file | saisies/fenetre_test.tcl
+File > Save window as > a ALN Clustal file | saisies/fenetre_test.tcl
+File > Print | saisies/print_test.tcl
+File > Close | - la liste des instances de la barre principale, pas une saisie de la commande

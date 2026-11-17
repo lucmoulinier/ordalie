@@ -1,0 +1,58 @@
+---------------------------------------------------
+Thursday, 11 March 2021 16:51:11
+Program : /home/moumou/ordali/bin/ordali
+options : exe tunistra
+---------------------------------------------------
+
+IMAP4 tcllib1.20 ordali/lib
+
+Connected to server !
+
+imap sock39a0170
+login 1
+
+Send OK folders -inline:
+failed >0<
+out>{{"Annonces"} hasnochildren} {{"Drafts"} {hasnochildren drafts}} {{"INBOX"} hasnochildren} {{"Junk"} {noinferiors junk}} {{"R&AOk-seaux sociaux"} hasnochildren} {{"Sent"} {hasnochildren sent}} {{"testIMAP"} hasnochildren} {{"tralala"} hasnochildren} {{"Trash"} {hasnochildren trash}}<
+{"Annonces"} hasnochildren
+{"Drafts"} {hasnochildren drafts}
+{"INBOX"} hasnochildren
+{"Junk"} {noinferiors junk}
+{"R&AOk-seaux sociaux"} hasnochildren
+{"Sent"} {hasnochildren sent}
+{"testIMAP"} hasnochildren
+{"tralala"} hasnochildren
+{"Trash"} {hasnochildren trash}
+iFold 6
+mailbox folder "testIMAP"
+select folder : 0
+
+msginfo :
+to: flags from: bodystructure date: uid subject:
+
+Lrfc
+{{}} {{}}
+
+msginfo rfc:
+to: flags from: bodystructure date: uid subject: body
+content text/plain
+charset iso-8859-1
+
+Can't convert to iso-8859-1
+
+content application/octetstream
+
+txt= tralala tsoin tsoin
+
+
+----------------------------------------------------------------
+Dr. Luc Moulinier,
+Laboratoire de Biologie et Génomique Intégratives
+IGBMC
+1, rue Laurent Fries
+67 404 ILLKIRCH Cedex
+Phone : +33 (0)3 88 65 32 79
+----------------------------------------------------------------
+cnt >tralala tsoin tsoin
+
+

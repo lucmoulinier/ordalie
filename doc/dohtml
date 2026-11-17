@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+latex2html -html_version 4.0,latin1,unicode -split 4 -show_section_numbers ordalie_documentation.tex
+
+cp ordalie_documentation/* html/.
+
+exit 0
+

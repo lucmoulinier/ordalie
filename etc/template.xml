@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE macsim SYSTEM "http://www-bio3d-igbmc.u-strasbg.fr/macsim.dtd">
+<macsim>
+<alignment>
+<aln-name></aln-name>
+<aln-score></aln-score>
+<sequence seq-type="">
+<seq-name></seq-name>
+<seq-info>
+<accession></accession>
+<nid></nid>
+<definition></definition>
+<organism></organism>
+<lifedomain></lifedomain>
+<lineage>
+<taxon></taxon>
+</lineage>
+<taxid></taxid>
+<ec></ec>
+<hydrophobicity></hydrophobicity>
+<ftable>
+<fitem><ftype></ftype><fstart></fstart><fstop></fstop><fcolor></fcolor><fscore></fscore><fnote></fnote></fitem>
+</ftable>
+<goxreflist>
+<goxref><goid></goid><goclass></goclass><godesc></godesc><goevidence></goevidence></goxref>
+</goxreflist>
+<length></length>
+<weight></weight>
+<group></group>
+</seq-info>
+<seq-data></seq-data>
+</sequence>
+<column-score>
+<colsco-name></colsco-name>
+<colsco-owner></colsco-owner>
+<colsco-type></colsco-type>
+<colsco-data></colsco-data>
+</column-score>
+</alignment>
+</macsim>

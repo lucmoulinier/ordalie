@@ -1,0 +1,1863 @@
+!stereochemistry amino acids and nucleic acids, Date: 020625
+.bonds_angles t 1859 72
+residue PEP
+centre CA
+main-chain CA C O N* CA*
+--------------------------------------------------------------------------
+residue ALA 
+centre CA
+main-chain N CA C O CB
+side-chain CB
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+torsion PHI  C- N CA C CB C O
+torsion PSI*  N CA C O O
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.521 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.400 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue ARG 
+centre CA
+side-chain CB CG CD NE   CZ   NH1 NH2
+main-chain N CA C O CB
+phi   C-   N    CA   C
+psi   N    CA   C    N+
+omega CA   C    N+   CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+chi1  N    CA   CB   CG
+chi2  CA   CB   CG   CD
+chi3  CB   CG   CD   NE
+chi4  CG   CD   NE   CZ
+chi5  CD   NE   CZ   NH1
+rotamer R44% chi1  -60. chi2 -170. chi3  180. chi4  180. chi5   0.
+rotamer R27% chi1 -170. chi2 -170. chi3  180. chi4  180. chi5   0.
+rotamer R11% chi1  -60. chi2  -70. chi3  180. chi4  180. chi5   0.
+rotamer R8%  chi1   70. chi2 -170. chi3  180. chi4  180. chi5   0.
+rotamer R5%  chi1 -170. chi2   70. chi3  180. chi4  180. chi5   0.
+torsion PHI  C- N CA C CB C O CG CD NE CZ NH1 NH2
+torsion PSI*  N CA C O O
+torsion CHI1 N CA CB CG CG CD NE CZ NH1 NH2
+torsion CHI2 CA CB CG CD CD NE CZ NH1 NH2
+torsion CHI3 CB CG CD NE NE CZ NH1 NH2
+torsion CHI4 CG CD NE CZ CZ NH1 NH2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.520 0.02
+bond_distance CD   CG      1.520 0.02
+bond_distance NE   CD      1.460 0.02
+bond_distance CZ   NE      1.329 0.02
+bond_distance NH2  CZ      1.326 0.02
+bond_distance NH1  CZ      1.326 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    114.100 2.0
+bond_angle CD   CG   CB    111.300 2.0
+bond_angle NE   CD   CG    112.000 2.0
+bond_angle CZ   NE   CD    124.200 2.0
+bond_angle NH2  CZ   NE    120.000 2.0
+bond_angle NH1  CZ   NE    120.000 2.0
+bond_angle NH1  CZ   NH2   120.000 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     180.000 20.
+torsion_flexible CD   CG   CB   CA    180.000 20.
+torsion_flexible NE   CD   CG   CB    180.000 20.
+torsion_flexible CZ   NE   CD   CG    180.000 20.
+torsion_fixed    NE   CZ   NH1  NH2   180.000 2.0
+torsion_fixed    NH1  CZ   NE   CD      0.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue ASN 
+centre CA
+side-chain CB CG OD1 ND2
+main-chain N CA C O CB
+chi1 N CA CB CG
+chi2 CA CB CG OD1
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer N33% chi1  -60. chi2  -40.
+rotamer N17% chi1  -60. chi2  140.
+rotamer N21% chi1 -170. chi2    0.
+rotamer N12% chi1   70. chi2    0.
+rotamer N7%  chi1 -170. chi2 -150.
+torsion PHI  C- N CA C CB C O CG OD1 ND2
+torsion PSI* N CA C O O
+torsion CHI1 N CA CB CG CG OD1 ND2
+torsion CHI2 CA CB CG OD1 OD1 ND2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.516 0.02
+bond_distance OD1  CG      1.231 0.02
+bond_distance ND2  CG      1.328 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    112.600 2.0
+bond_angle OD1  CG   CB    120.800 2.0
+bond_angle ND2  CG   CB    116.400 2.0
+bond_angle ND2  CG   OD1   122.800 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_fixed    CB   CG   OD1  ND2   180.000 2.0
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible OD1  CG   CB   CA    -40.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue ASP 
+centre CA
+side-chain CB CG OD1 OD2
+main-chain N CA C O CB
+chi1 N CA CB CG
+chi2 CA CB CG OD1
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer D39% chi1  -60. chi2  -20.
+rotamer D14% chi1 -170. chi2  -20.
+rotamer D11% chi1   70. chi2  -20.
+torsion PHI C- N CA C CB C O CG OD1 OD2
+torsion PSI* N CA C N+ O
+torsion CHI1 N CA CB CG CG OD1 OD2
+torsion CHI2 CA CB CG OD1 OD1 OD2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.516 0.02
+bond_distance OD1  CG      1.249 0.02
+bond_distance OD2  CG      1.249 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    112.600 2.0
+bond_angle OD1  CG   CB    118.400 2.0
+bond_angle OD2  CG   CB    118.400 2.0
+bond_angle OD2  CG   OD1   123.200 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     -600.000 20.
+torsion_fixed    CB   CG   OD1  OD2   180.000 2.0
+torsion_flexible OD1  CG   CB   CA    -20.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue CYH 
+centre CA
+side-chain CB SG
+main-chain N CA C O CB
+chi1 N CA CB SG
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer C1% chi1  -60. 
+rotamer C2% chi1  180. 
+rotamer C3% chi1   60. 
+TORSION PHI C- N CA C CB C O SG
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB SG SG
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance SG   CB      1.808 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle SG   CB   CA    114.400 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsion
+torsion_flexible SG   CB   CA   N     -60.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue CYS 
+centre CA
+side-chain CB SG
+main-chain N CA C O CB
+chi1 N CA CB SG
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer C55% chi1  -65. 
+rotamer C28% chi1 -178. 
+rotamer C16% chi1   63. 
+TORSION PHI C- N CA C CB C O SG
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB SG SG
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance SG   CB      1.822 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle SG   CB   CA    114.400 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsion
+torsion_flexible SG   CB   CA   N     -65.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue GLN 
+centre CA
+side-chain CB CG CD OE1 NE2
+main-chain N CA C O CB
+chi1  N   CA  CB  CG
+chi2  CA  CB  CG  CD
+chi3  CB  CG  CD  OE1
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer Q38% chi1  -60. chi2  180. chi3   0.
+rotamer Q20% chi1 -170. chi2  180. chi3   0.
+rotamer Q18% chi1  -60. chi2  -60. chi3   0.
+rotamer Q10% chi1 -170. chi2   70. chi3   0.
+rotamer Q5%  chi1   70. chi2 -170. chi3   0.
+TORSION PHI C- N CA C CB C O CG CD OE1 NE2
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG CD OE1 NE2
+TORSION CHI2 CA CB CG CD CD OE1 NE2
+TORSION CHI3 CB CG CD OE1 OE1 NE2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.520 0.02
+bond_distance CD   CG      1.516 0.02
+bond_distance OE1  CD      1.231 0.02
+bond_distance NE2  CD      1.328 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    114.100 2.0
+bond_angle CD   CG   CB    112.600 2.0
+bond_angle OE1  CD   CG    120.800 2.0
+bond_angle NE2  CD   CG    126.400 2.0
+bond_angle NE2  CD   OE1   112.800 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible CD   CG   CB   CA    180.000 20.
+torsion_flexible OE1  CD   CG   CB      0.000 20.
+torsion_fixed    CG   CD   OE1  NE2   180.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue GLU 
+centre CA
+side-chain CB CG CD OE1 OE2
+main-chain N CA C O CB
+chi1  N   CA  CB  CG
+chi2  CA  CB  CG  CD
+chi3  CB  CG  CD  OE1
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer E34% chi1  -60. chi2  180. chi3   0.
+rotamer E23% chi1 -170. chi2  180. chi3   0.
+rotamer E15% chi1  -60. chi2  -60. chi3   0.
+rotamer E8%  chi1  -60. chi2   90. chi3   0.
+rotamer E7%  chi1 -170. chi2   70. chi3   0.
+rotamer E6%  chi1   70. chi2 -170. chi3   0.
+TORSION PHI C- N CA C CB C O CG CD OE1 OE2
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG CD OE1 OE2
+TORSION CHI2 CA CB CG CD CD OE1 OE2
+TORSION CHI3 CB CG CD OE1 OE1 OE2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.520 0.02
+bond_distance CD   CG      1.516 0.02
+bond_distance OE1  CD      1.249 0.02
+bond_distance OE2  CD      1.249 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    114.100 2.0
+bond_angle CD   CG   CB    112.600 2.0
+bond_angle OE1  CD   CG    118.400 2.0
+bond_angle OE2  CD   CG    118.400 2.0
+bond_angle OE2  CD   OE1   123.200 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible CD   CG   CB   CA    180.000 20.
+torsion_flexible OE1  CD   CG   CB      0.000 20.
+torsion_fixed    CG   CD   OE1  OE2   180.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue GLY 
+centre CA
+main-chain N CA C O
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+conformer aleft phi 50. psi 38.
+TORSION PHI C- N CA C C O O
+TORSION PSI* N CA C O O
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.451 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    N+    123.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue HIS 
+centre CA
+side-chain CB CG CD2 ND1 CE1 NE2
+main-chain N CA C O CB
+chi1  N   CA  CB  CG
+chi2  CA  CB  CG  ND1
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer H30% chi1  -60. chi2  -70. 
+rotamer H19% chi1  -60. chi2  100. 
+rotamer H16% chi1 -170. chi2   80. 
+rotamer H12% chi1 -170. chi2  -90. 
+rotamer H8%  chi1  -60. chi2  170. 
+rotamer H7%  chi1   70. chi2  -80. 
+TORSION PHI C- N CA C CB CG ND1 CD2 CE1 NE2 C O
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG ND1 CD2 CE1 NE2
+TORSION CHI2 CA CB CG ND1 ND1 CD2 CE1 NE2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.549 0.02
+bond_distance CD2  CG      1.354 0.02
+bond_distance ND1  CG      1.378 0.02
+bond_distance CE1  ND1     1.321 0.02
+bond_distance NE2  CE1     1.321 0.02
+bond_distance CD2  NE2     1.374 0.02
+bond_distance CG   CD2     1.354 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    113.800 2.0
+bond_angle CD2  CG   CB    131.200 2.0
+bond_angle ND1  CG   CB    122.700 2.0
+bond_angle ND1  CG   CD2   106.100 2.0
+bond_angle CE1  ND1  CG    109.300 2.0
+bond_angle NE2  CE1  ND1   108.400 2.0
+bond_angle CD2  NE2  CE1   109.000 2.0
+bond_angle CG   CD2  NE2   107.200 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible ND1  CG   CB   CA    -70.000 20.
+torsion_fixed    CB   CG   ND1  CD2   180.000 2.0
+torsion_fixed    CE1  ND1  CG   CB    180.000 2.0
+torsion_fixed    NE2  CE1  ND1  CG      0.000 2.0
+torsion_fixed    CD2  NE2  CE1  ND1     0.000 2.0
+torsion_fixed    CG   CD2  NE2  CE1     0.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue ILE 
+centre CA
+side-chain CB CG1 CD1 CG2
+main-chain N CA C O CB
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+chi1  N   CA  CB  CG1
+chi2  CA  CB  CG1 CD1
+rotamer I58% chi1  -60. chi2  170. 
+rotamer I14% chi1  -60. chi2  -60. 
+rotamer I13% chi1   70. chi2  170. 
+rotamer I7%  chi1 -170. chi2  170. 
+TORSION PHI C- N CA C CB CG1 CD1 CG2 C O
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG1 CG1 CD1 CG2
+TORSION CHI2 CA CB CG1 CD1 CD1
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.540 0.02
+bond_distance CG2  CB      1.521 0.02
+bond_distance CG1  CB      1.530 0.02
+bond_distance CD1  CG1     1.513 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     111.500 2.0
+bond_angle CG2  CB   CA    110.500 2.0
+bond_angle CG1  CB   CA    110.400 2.0
+bond_angle CG1  CB   CG2   110.400 2.0
+bond_angle CD1  CG1  CB    113.800 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_fixed    CA   CB   CG1  CG2  -123.000 2.0
+torsion_flexible CG1  CB   CA   N     -60.000 20.
+torsion_flexible CD1  CG1  CB   CA    170.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue LEU 
+centre CA
+side-chain CB CG CD1 CD2
+main-chain N CA C O CB
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+chi1  N   CA  CB  CG
+chi2  CA  CB  CG  CD1
+rotamer L54% chi1  -60. chi2  180. 
+rotamer L27% chi1 -170. chi2   70. 
+TORSION PHI C- N CA C CB CG CD1 CD2 C O
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG CD1 CD2
+TORSION CHI2 CA CB CG CD1 CD1 CD2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.530 0.02
+bond_distance CD1  CG      1.521 0.02
+bond_distance CD2  CG      1.521 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    116.300 2.0
+bond_angle CD1  CG   CB    110.700 2.0
+bond_angle CD2  CG   CB    110.700 2.0
+bond_angle CD2  CG   CD1   110.700 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     180.000 20.
+torsion_flexible CD1  CG   CB   CA    180.000 20.
+torsion_fixed    CB   CG   CD1  CD2   123.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue LYS 
+centre CA
+side-chain CB CG  CD  CE  NZ
+main-chain N CA C O CB
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+chi1  N   CA  CB  CG
+chi2  CA  CB  CG  CD
+chi3  CB  CG  CD  CE
+chi4  CG  CD  CE  NZ
+rotamer K42% chi1  -60. chi2 -170. chi3  180. chi4  180.
+rotamer K25% chi1  180. chi2  180. chi3  180. chi4  180.
+rotamer K14% chi1  -60. chi2  -70. chi3  180. chi4  180.
+rotamer K7%  chi1   70. chi2  180. chi3  180. chi4  180.
+rotamer K6%  chi1  170. chi2   70. chi3  180. chi4  180.
+TORSION PHI C- N CA C CB C O CG CD CE NZ
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG CD CE NZ
+TORSION CHI2 CA CB CG CD CD CE NZ
+TORSION CHI3 CB CG CD CE CE NZ
+TORSION CHI4 CG CD CE NZ NZ
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.520 0.02
+bond_distance CD   CG      1.520 0.02
+bond_distance CE   CD      1.520 0.02
+bond_distance NZ   CE      1.489 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    114.100 2.0
+bond_angle CD   CG   CB    111.300 2.0
+bond_angle CE   CD   CG    111.300 2.0
+bond_angle NZ   CE   CD    111.900 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible CD   CG   CB   CA   -170.000 20.
+torsion_flexible CE   CD   CG   CB    180.000 20.
+torsion_flexible NZ   CE   CD   CG    180.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue MET 
+centre CA
+side-chain CB CG  SD  CE
+main-chain N CA C O CB
+phi   C-  N   CA  C
+psi   N   CA  C   N+
+omega CA  C   N+  CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+chi1  N   CA  CB  CG
+chi2  CA  CB  CG  SD
+chi3  CB  CG  SD  CE
+rotamer M36% chi1  -60. chi2 -170. chi3   70. 
+rotamer M26% chi1  -60. chi2  -60. chi3   70. 
+rotamer M17% chi1 -170. chi2  180. chi3   70. 
+rotamer M9%  chi1 -170. chi2   70. chi3   70. 
+rotamer M7%  chi1   70. chi2 -170. chi3   70. 
+TORSION PHI C- N CA C CB C O CG SD CE
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG SD CE 
+TORSION CHI2 CA CB CG SD SD CE
+TORSION CHI3 CB CG SD CE CE
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.520 0.02
+bond_distance SD   CG      1.803 0.02
+bond_distance CE   SD      1.791 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    114.100 2.0
+bond_angle SD   CG   CB    112.700 2.0
+bond_angle CE   SD   CG    100.900 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    N+    123.000 2.0
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible SD   CG   CB   CA   -170.000 20.
+torsion_flexible CE   SD   CG   CB    -70.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue PHE 
+centre CA
+side-chain CB CG  CD1 CD2 CE1 CE2 CZ
+main-chain N CA C O CB
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+chi1 N CA CB CG
+chi2 CA CB CG CD1
+rotamer F49% chi1  -60. chi2 90.
+rotamer F32% chi1 -170. chi2 90.
+rotamer F13% chi1   70. chi2 90.
+TORSION PHI C- N CA C CB CG CD1 CD2 CE1 CE2 CZ C O
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG CD1 CD2 CE1 CE2 CZ
+TORSION CHI2 CA CB CG CD1 CD1 CD2 CE1 CE2 CZ
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.502 0.02
+bond_distance CD2  CG      1.384 0.02
+bond_distance CD1  CG      1.384 0.02
+bond_distance CE1  CD1     1.382 0.02
+bond_distance CZ   CE1     1.382 0.02
+bond_distance CE2  CZ      1.382 0.02
+bond_distance CD2  CE2     1.382 0.02
+bond_distance CG   CD2     1.382 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    113.800 2.0
+bond_angle CD2  CG   CB    120.700 2.0
+bond_angle CD1  CG   CB    120.700 2.0
+bond_angle CD1  CG   CD2   118.600 2.0
+bond_angle CE1  CD1  CG    120.700 2.0
+bond_angle CZ   CE1  CD1   120.000 2.0
+bond_angle CE2  CZ   CE1   120.000 2.0
+bond_angle CD2  CE2  CZ    120.000 2.0
+bond_angle CG   CD2  CE2   120.700 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible CD1  CG   CB   CA     90.000 20.
+torsion_fixed    CB   CG   CD1  CD2   180.000 2.0
+torsion_fixed    CE1  CD1  CG   CB    180.000 2.0
+torsion_fixed    CZ   CE1  CD1  CG      0.000 2.0
+torsion_fixed    CE2  CZ   CE1  CD1     0.000 2.0
+torsion_fixed    CD2  CE2  CZ   CE1     0.000 2.0
+torsion_fixed    CG   CD2  CE2  CZ      0.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue PRO 
+centre CA
+side-chain CB CG CD
+main-chain N CA C O CB
+chi1 N CA CB CG
+chi2 CA CB CG CD
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer P40% chi1   29. chi2 -29.
+rotamer P37% chi1  -19. chi2 39.
+rotamer P20% chi1    0. chi2  0.
+TORSION PSI* N CA C O O 
+TORSION CHI1 N CA CB CG CG CD
+TORSION CHI2 CA CB CG CD CD
+bond_distance N    C-      1.341 0.02
+bond_distance CG   CD      1.503 0.02
+bond_distance CA   N       1.466 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.492 0.02
+bond_distance CD   CG      1.503 0.02
+bond_distance CD   N       1.473 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.900 2.0
+bond_angle CD   N    C-    125.000 2.0
+bond_angle CG   CD   N     103.200 2.0
+bond_angle CA   N    C-    122.600 2.0
+bond_angle CB   CA   N     103.000 2.0
+bond_angle CG   CB   CA    104.500 2.0
+bond_angle CD   CG   CB    106.100 2.0
+bond_angle C    CA   N     111.800 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_fixed    C    N    CA   CD    180.000 2.0
+torsion_fixed    CG   CD   N    C-   -160.000 2.0
+torsion_fixed    N    CA   C    CB   -117.000 2.0
+torsion_flexible CG   CB   CA   N      29.000 2.0
+torsion_flexible CD   CG   CB   CA    -29.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -65.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue SER 
+centre CA
+side-chain CB OG
+main-chain N CA C O CB
+chi1 N CA CB OG
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer S45% chi1   63. 
+rotamer S30% chi1  -63. 
+rotamer S21% chi1  180. 
+TORSION PHI C- N CA C CB C O OG 
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB OG OG 
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance OG   CB      1.417 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.700 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle OG   CB   CA    111.100 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+torsion_flexible OG   CB   CA   N      63.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue THR 
+centre CA
+side-chain CB OG1  CG2
+main-chain N CA C O CB
+chi1 N CA CB OG1
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer T46% chi1  -60. 
+rotamer T43% chi1   61. 
+rotamer T7%  chi1 -173. 
+TORSION PHI C- N CA C CB C O OG1 CG2 
+TORSION PSI* N CA C O O 
+TORSION CHI1 N CA CB OG1 OG1 CG2 
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG2  CB      1.521 0.02
+bond_distance OG1  CB      1.433 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     111.500 2.0
+bond_angle CG2  CB   CA    110.500 2.0
+bond_angle OG1  CB   CA    109.600 2.0
+bond_angle OG1  CB   CG2   110.000 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+torsion_fixed    CA   CB   OG1  CG2  -121.000 2.0
+torsion_flexible OG1  CB   CA   N     -60.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue TRP 
+centre CA
+side-chain CB CG  CD1 CD2 NE1 CE2 CE3 CZ2 CZ3 CH2
+main-chain N CA C O CB
+chi1 N CA CB CG
+chi2 CA CB CG CD1
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer W38% chi1  -60. chi2  100.
+rotamer W15% chi1  180. chi2   80.
+rotamer W14% chi1 -170. chi2 -120.
+rotamer W10% chi1  -60. chi2  -10.
+rotamer W9%  chi1   70. chi2  -80.
+rotamer W6%  chi1   70. chi2   90.
+rotamer W5%  chi1  -60. chi2  -80.
+torsion PHI   C- N CA C CB CG CD1 CD2 NE1 CE2 CE3 CZ2 CZ3 CH2 C O
+torsion PSI*  N CA C O O 
+torsion CHI1  N CA CB CG CG CD1 CD2 NE1 CE2 CE3 CZ2 CZ3 CH2
+torsion CHI2  CA CB CG CD1 CD1 CD2 NE1 CE2 CE3 CZ2 CZ3 CH2
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.498 0.02
+bond_distance CD2  CG      1.433 0.02
+bond_distance CD1  CG      1.365 0.02
+bond_distance NE1  CD1     1.374 0.02
+bond_distance CE2  NE1     1.370 0.02
+bond_distance CZ2  CE2     1.394 0.02
+bond_distance CD2  CE2     1.409 0.02
+bond_distance CG   CD2     1.433 0.02
+bond_distance CE3  CD2     1.398 0.02
+bond_distance CZ3  CE3     1.382 0.02
+bond_distance CH2  CZ3     1.400 0.02
+bond_distance CZ2  CH2     1.368 0.02
+bond_distance CE2  CZ2     1.394 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    113.600 2.0
+bond_angle CD2  CG   CB    126.800 2.0
+bond_angle CD1  CG   CB    126.900 2.0
+bond_angle CD1  CG   CD2   106.300 2.0
+bond_angle NE1  CD1  CG    110.200 2.0
+bond_angle CE2  NE1  CD1   108.900 2.0
+bond_angle CZ2  CE2  NE1   130.100 2.0
+bond_angle CD2  CE2  NE1   107.400 2.0
+bond_angle CG   CD2  CE2   107.200 2.0
+bond_angle CE3  CD2  CE2   118.800 2.0
+bond_angle CZ3  CE3  CD2   118.600 2.0
+bond_angle CH2  CZ3  CE3   121.100 2.0
+bond_angle CZ2  CH2  CZ3   121.500 2.0
+bond_angle CE2  CZ2  CH2   117.500 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible CD1  CG   CB   CA    100.000 20.
+torsion_fixed    CB   CG   CD1  CD2   180.000 2.0
+torsion_fixed    NE1  CD1  CG   CB    180.000 2.0
+torsion_fixed    CE2  NE1  CD1  CG      0.000 2.0
+torsion_fixed    NE1  CE2  CD2  CZ2   180.000 2.0
+torsion_fixed    CD2  CE2  NE1  CD1     0.000 2.0
+torsion_fixed    CE2  CD2  CE3  CG    180.000 2.0
+torsion_fixed    CE3  CD2  CE2  NE1   180.000 2.0
+torsion_fixed    CZ3  CE3  CD2  CE2     0.000 2.0
+torsion_fixed    CH2  CZ3  CE3  CD2     0.000 2.0
+torsion_fixed    CZ2  CH2  CZ3  CE3     0.000 2.0
+torsion_fixed    CE2  CZ2  CH2  CZ3     0.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue TYR 
+centre CA
+side-chain CB CG  CD1 CD2 CE1 CE2 CZ OH
+main-chain N CA C O CB
+chi1 N CA CB CG
+chi2 CA CB CG CD1
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer Y48% chi1  -60. chi2   90.
+rotamer Y32% chi1 -170. chi2   90.
+rotamer Y14% chi1   70. chi2   90.
+TORSION PHI C- N CA C CB CG CD1 CD2 CE1 CE2 CZ OH C O
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG CG CD1 CD2 CE1 CE2 CZ OH
+TORSION CHI2 CA CB CG CD1 CD1 CD2 CE1 CE2 CZ OH
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.530 0.02
+bond_distance CG   CB      1.512 0.02
+bond_distance CD2  CG      1.389 0.02
+bond_distance CD1  CG      1.389 0.02
+bond_distance CE1  CD1     1.382 0.02
+bond_distance CZ   CE1     1.378 0.02
+bond_distance OH   CZ      1.376 0.02
+bond_distance CE2  CZ      1.378 0.02
+bond_distance CD2  CE2     1.382 0.02
+bond_distance CG   CD2     1.389 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     110.500 2.0
+bond_angle CG   CB   CA    113.900 2.0
+bond_angle CD2  CG   CB    120.800 2.0
+bond_angle CD1  CG   CB    120.800 2.0
+bond_angle CD1  CG   CD2   118.400 2.0
+bond_angle CE1  CD1  CG    121.200 2.0
+bond_angle CZ   CE1  CD1   119.600 2.0
+bond_angle OH   CZ   CE1   119.900 2.0
+bond_angle CE2  CZ   CE1   120.300 2.0
+bond_angle CE2  CZ   OH    119.800 2.0
+bond_angle CD2  CE2  CZ    119.600 2.0
+bond_angle CG   CD2  CE2   121.200 2.0
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+side-chain torsions
+torsion_flexible CG   CB   CA   N     -60.000 20.
+torsion_flexible CD1  CG   CB   CA     90.000 20.
+torsion_fixed    CB   CG   CD1  CD2   180.000 2.0
+torsion_fixed    CE1  CD1  CG   CB    180.000 2.0
+torsion_fixed    CZ   CE1  CD1  CG      0.000 2.0
+torsion_fixed    CE1  CZ   CE2  OH    180.000 2.0
+torsion_fixed    CE2  CZ   CE1  CD1     0.000 2.0
+torsion_fixed    CD2  CE2  CZ   CE1     0.000 2.0
+torsion_fixed    CG   CD2  CE2  CZ      0.000 2.0
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue VAL 
+centre CA
+side-chain CB CG1 CG2
+main-chain N CA C O CB
+chi1 N CA CB CG1
+phi C- N CA C
+psi N CA C N+
+omega CA C N+ CA+
+conformer alpha phi -55. psi -50.
+conformer beta phi -120. psi 120.
+rotamer V69% chi1  175. 
+rotamer V19% chi1  -63. 
+rotamer V7%  chi1   66. 
+TORSION PHI C- N CA C CB C O CG1 CG2
+TORSION PSI* N CA C O O
+TORSION CHI1 N CA CB CG1 CG1 CG2 
+bond_distance N    C-      1.329 0.02
+bond_distance CA   N       1.458 0.02
+bond_distance CB   CA      1.540 0.02
+bond_distance CG1  CB      1.521 0.02
+bond_distance CG2  CB      1.521 0.02
+bond_distance C    CA      1.525 0.02
+bond_distance O    C       1.231 0.02
+bond_angle N    C-   CA-   116.200 2.0
+bond_angle CA   N    C-    121.200 2.0
+bond_angle CB   CA   N     111.500 2.0
+bond_angle CG1  CB   CA    110.500 2.0
+bond_angle CG2  CB   CA    110.500 2.0
+bond_angle CG1  CB   CG2   110.5   2.
+bond_angle C    CA   N     111.200 2.0
+bond_angle C    CA   CB    110.200 2.0
+bond_angle O    C    CA    120.800 2.0
+bond_angle O    C    N+    123.000 2.0
+!side-chain torsions
+torsion_fixed    CA   CB   CG1  CG2   123.000 2.0
+torsion_flexible CG1  CB   CA   N     175.000 20.
+!main-chain torsions
+torsion_fixed    CA   C    N+   CA+   180.000 2.0
+torsion_fixed    N    CA   C    CB   -123.000 2.0
+torsion_fixed    CA   C    N+   O     180.000 2.0
+torsion_flexible C-   N    CA   C     -55.000 20.
+torsion_flexible N    CA   C    N+    -50.000 20.
+---------------------------------------------------------------
+residue NAD
+bond_distance N9A  C8A     1.360 0.02
+bond_distance C4A  N9A     1.380 0.02
+bond_distance C5A  C4A     1.380 0.02
+bond_distance N7A  C5A     1.380 0.02
+bond_distance C8A  N7A     1.330 0.02
+bond_distance N9A  C8A     1.360 0.02
+bond_distance N3A  C4A     1.350 0.02
+bond_distance C2A  N3A     1.300 0.02
+bond_distance N1A  C2A     1.370 0.02
+bond_distance C6A  N1A     1.360 0.02
+bond_distance N10A C6A     1.330 0.02
+bond_distance C5A  C6A     1.410 0.02
+bond_distance C6A  C5A     1.410 0.02
+bond_distance N1A  C6A     1.360 0.02
+bond_distance C2A  N1A     1.370 0.02
+bond_distance C1R  N9A     1.460 0.02
+bond_distance O5R  C1R     1.400 0.02
+bond_distance C4R  O5R     1.450 0.02
+bond_distance C2R  C1R     1.520 0.02
+bond_distance O2R  C2R     1.440 0.02
+bond_distance C3R  C2R     1.530 0.02
+bond_distance O3R  C3R     1.440 0.02
+bond_distance C4R  C3R     1.520 0.02
+bond_distance O5R  C4R     1.450 0.02
+bond_distance C1R  O5R     1.400 0.02
+bond_distance C5R  C4R     1.510 0.02
+bond_distance O6R  C5R     1.440 0.02
+bond_distance PA   O6R     1.600 0.02
+bond_distance OP1A PA      1.480 0.02
+bond_distance OP2A PA      1.480 0.02
+bond_distance OP3  PA      1.560 0.02
+bond_distance PN   OP3     1.650 0.02
+bond_distance OP1N PN      1.480 0.02
+bond_distance OP2N PN      1.480 0.02
+bond_distance O6Q  PN      1.600 0.02
+bond_distance C5Q  O6Q     1.440 0.02
+bond_distance C4Q  C5Q     1.510 0.02
+bond_distance O5Q  C4Q     1.450 0.02
+bond_distance C1Q  O5Q     1.400 0.02
+bond_distance C3Q  C4Q     1.520 0.02
+bond_distance O3Q  C3Q     1.440 0.02
+bond_distance C2Q  C3Q     1.530 0.02
+bond_distance O2Q  C2Q     1.440 0.02
+bond_distance C1Q  C2Q     1.520 0.02
+bond_distance O5Q  C1Q     1.400 0.02
+bond_distance C4Q  O5Q     1.450 0.02
+bond_distance N1N  C1Q     1.470 0.02
+bond_distance C6N  N1N     1.390 0.02
+bond_distance C5N  C6N     1.360 0.02
+bond_distance C4N  C5N     1.400 0.02
+bond_distance C3N  C4N     1.420 0.02
+bond_distance C2N  C3N     1.370 0.02
+bond_distance C2N  N1N     1.350 0.02
+bond_distance C3N  C2N     1.370 0.02
+bond_distance C4N  C3N     1.420 0.02
+bond_distance C5N  C4N     1.400 0.02
+bond_distance C7N  C3N     1.580 0.02
+bond_distance O1N  C7N     1.220 0.02
+bond_distance N2N  C7N     1.350 0.02
+bond_angle C4A  N9A  C8A   106.000 2.0
+bond_angle C5A  C4A  N9A   106.000 2.0
+bond_angle N7A  C5A  C4A   111.000 2.0
+bond_angle C8A  N7A  C5A   104.000 2.0
+bond_angle N9A  C8A  N7A   113.000 2.0
+bond_angle N3A  C4A  N9A   127.000 2.0
+bond_angle C2A  N3A  C4A   111.000 2.0
+bond_angle N1A  C2A  N3A   129.000 2.0
+bond_angle C6A  N1A  C2A   119.000 2.0
+bond_angle N10A C6A  N1A   119.000 2.0
+bond_angle C5A  C6A  N1A   117.000 2.0
+bond_angle C6A  C5A  C4A   117.000 2.0
+bond_angle N1A  C6A  C5A   117.000 2.0
+bond_angle C2A  N1A  C6A   119.000 2.0
+bond_angle C1R  N9A  C8A   129.000 2.0
+bond_angle O5R  C1R  N9A   111.000 2.0
+bond_angle C4R  O5R  C1R   110.000 2.0
+bond_angle C2R  C1R  N9A   113.000 2.0
+bond_angle O2R  C2R  C1R   111.000 2.0
+bond_angle C3R  C2R  C1R   103.000 2.0
+bond_angle O3R  C3R  C2R   116.000 2.0
+bond_angle C4R  C3R  C2R   100.000 2.0
+bond_angle O5R  C4R  C3R   105.000 2.0
+bond_angle C1R  O5R  C4R   110.000 2.0
+bond_angle C5R  C4R  C3R   116.000 2.0
+bond_angle O6R  C5R  C4R   110.000 2.0
+bond_angle PA   O6R  C5R   119.000 2.0
+bond_angle OP1A PA   O6R   110.000 2.0
+bond_angle OP2A PA   O6R   110.000 2.0
+bond_angle OP3  PA   O6R   101.000 2.0
+bond_angle PN   OP3  PA    133.000 2.0
+bond_angle OP1N PN   OP3   110.000 2.0
+bond_angle OP2N PN   OP3   110.000 2.0
+bond_angle O6Q  PN   OP3   101.000 2.0
+bond_angle C5Q  O6Q  PN    119.000 2.0
+bond_angle C4Q  C5Q  O6Q   110.000 2.0
+bond_angle O5Q  C4Q  C5Q   109.000 2.0
+bond_angle C1Q  O5Q  C4Q   110.000 2.0
+bond_angle C3Q  C4Q  C5Q   116.000 2.0
+bond_angle O3Q  C3Q  C4Q   115.000 2.0
+bond_angle C2Q  C3Q  C4Q   100.000 2.0
+bond_angle O2Q  C2Q  C3Q   108.000 2.0
+bond_angle C1Q  C2Q  C3Q   103.000 2.0
+bond_angle O5Q  C1Q  C2Q   106.000 2.0
+bond_angle C4Q  O5Q  C1Q   110.000 2.0
+bond_angle N1N  C1Q  C2Q   113.000 2.0
+bond_angle C6N  N1N  C1Q   120.000 2.0
+bond_angle C5N  C6N  N1N   113.000 2.0
+bond_angle C4N  C5N  C6N   128.000 2.0
+bond_angle C3N  C4N  C5N   113.000 2.0
+bond_angle C2N  C3N  C4N   123.000 2.0
+bond_angle C2N  N1N  C1Q   120.000 2.0
+bond_angle C3N  C2N  N1N   120.000 2.0
+bond_angle C4N  C3N  C2N   123.000 2.0
+bond_angle C5N  C4N  C3N   113.000 2.0
+bond_angle C7N  C3N  C2N   122.000 2.0
+bond_angle O1N  C7N  C3N   120.000 2.0
+bond_angle N2N  C7N  C3N   116.000 2.0
+torsion_fixed C8A  N9A  C1R  C4A   180.000 2.0
+torsion_fixed N9A  C4A  N3A  C5A   180.000 2.0
+torsion_fixed C4A  C5A  C6A  N7A   180.000 2.0
+torsion_fixed C8A  N7A  C5A  C4A     0.000 2.0
+torsion_fixed N9A  C8A  N7A  C5A     0.000 2.0
+torsion_fixed N3A  C4A  N9A  C8A   180.000 2.0
+torsion_fixed C2A  N3A  C4A  N9A   180.000 2.0
+torsion_fixed N1A  C2A  N3A  C4A     0.000 2.0
+torsion_fixed C6A  N1A  C2A  N3A     0.000 2.0
+torsion_fixed N1A  C6A  C5A  N10A  180.000 2.0
+torsion_fixed C5A  C6A  N1A  C2A     0.000 2.0
+torsion_fixed C6A  C5A  C4A  N9A   180.000 2.0
+torsion_fixed N1A  C6A  C5A  C4A     0.000 2.0
+torsion_fixed C2A  N1A  C6A  C5A     0.000 2.0
+torsion_fixed N9A  C1R  C2R  O5R   120.000 2.0
+torsion_fixed C4R  O5R  C1R  N9A  -144.000 2.0
+torsion_flexible C2R  C1R  N9A  C8A     0.000 20.
+torsion_fixed C1R  C2R  C3R  O2R   120.000 2.0
+torsion_fixed C3R  C2R  C1R  N9A   157.000 2.0
+torsion_fixed C2R  C3R  C4R  O3R   120.000 2.0
+torsion_fixed C4R  C3R  C2R  C1R   -35.000 2.0
+torsion_fixed C3R  C4R  C5R  O5R   120.000 2.0
+torsion_fixed C1R  O5R  C4R  C3R     0.000 2.0
+torsion_fixed C5R  C4R  C3R  C2R   -98.000 2.0
+torsion_flexible O6R  C5R  C4R  C3R   180.000 20.
+torsion_flexible PA   O6R  C5R  C4R   180.000 20.
+torsion_fixed O6R  PA   OP3  OP1A -120.000 2.0
+torsion_flexible OP2A PA   O6R  C5R   120.000 20.
+torsion_flexible OP3  PA   O6R  C5R   180.000 20.
+torsion_flexible PN   OP3  PA   O6R   180.000 20.
+torsion_fixed OP3  PN   O6Q  OP1N -120.000 2.0
+torsion_flexible OP2N PN   OP3  PA    120.000 20.
+torsion_flexible O6Q  PN   OP3  PA    180.000 20.
+torsion_flexible C5Q  O6Q  PN   OP3   180.000 20.
+torsion_flexible C4Q  C5Q  O6Q  PN    180.000 20.
+torsion_fixed C5Q  C4Q  C3Q  O5Q  -120.000 2.0
+torsion_fixed C1Q  O5Q  C4Q  C5Q   120.000 2.0
+torsion_flexible C3Q  C4Q  C5Q  O6Q   180.000 20.
+torsion_fixed C4Q  C3Q  C2Q  O3Q  -120.000 2.0
+torsion_fixed C2Q  C3Q  C4Q  C5Q   -98.000 2.0
+torsion_fixed C3Q  C2Q  C1Q  O2Q  -120.000 2.0
+torsion_fixed C1Q  C2Q  C3Q  C4Q   -36.000 2.0
+torsion_fixed C2Q  C1Q  N1N  O5Q  -120.000 2.0
+torsion_fixed C4Q  O5Q  C1Q  C2Q   -24.000 2.0
+torsion_fixed N1N  C1Q  C2Q  C3Q   157.000 2.0
+torsion_fixed C1Q  N1N  C2N  C6N   180.000 2.0
+torsion_fixed C5N  C6N  N1N  C1Q   180.000 2.0
+torsion_fixed C4N  C5N  C6N  N1N     0.000 2.0
+torsion_fixed C3N  C4N  C5N  C6N     0.000 2.0
+torsion_fixed C2N  C3N  C4N  C5N     0.000 2.0
+torsion_flexible C2N  N1N  C1Q  C2Q     0.000 20.
+torsion_fixed C3N  C2N  N1N  C1Q   180.000 2.0
+torsion_fixed C2N  C3N  C7N  C4N   180.000 2.0
+torsion_fixed C5N  C4N  C3N  C2N     0.000 2.0
+torsion_fixed C7N  C3N  C2N  N1N   180.000 2.0
+torsion_fixed C3N  C7N  N2N  O1N   180.000 2.0
+torsion_flexible N2N  C7N  C3N  C2N     0.000 20.
+residue SO4 
+bond_distance O1   S       1.450 0.02
+bond_distance O2   S       1.450 0.02
+bond_distance O3   S       1.450 0.02
+bond_distance O4   S       1.450 0.02
+bond_angle    O1   S   O2  110. 2.
+bond_angle    O1   S   O3  110. 2.
+bond_angle    O1   S   O4  110. 2.
+bond_angle    O2   S   O3  110. 2.
+bond_angle    O2   S   O4  110. 2.
+bond_angle    O3   S   O4  110. 2.
+------------------------------------------------------------
+---- here come my standard nucleic acids
+------------------------------------------------------------
+residue A
+centre P
+side-chain N1 C2 N3 C4 C5 C6 N6 N7 C8 N9
+main-chain P O1P O2P O5* C5* C4* C3* O3* C1* O2* 
+alpha   O3*- P    O5*  C5*
+beta    P    O5*  C5*  C4*
+gamma   O5*  C5*  C4*  C3*
+delta   C5*  C4*  C3*  O3*
+epsilon C4*  C3*  O3*  P+
+zeta    C3*  O3*  P+   O5*+
+chi     O4*  C1*  N9   C4
+nu0     C4*  O4*  C1*  C2*
+nu1     O4*  C1*  C2*  C3*
+nu2     C1*  C2*  C3*  C4*
+nu3     C2*  C3*  C4*  O4*
+nu4     C3*  C4*  O4*  C1*
+rotamer 1 chi -152.
+rotamer 2 chi 28.
+torsion CHI  O4* C1* N9 C8 C8 C4 C5 N7 N3 C2 N1 C6 N6
+torsion GAMMA*  O4* C4* C5* O5* O5* P O1P O2P
+torsion BETA C4* C5* O5* P P O1P O2P
+torsion ALPHA* C5* O5* P O1P O1P O2P
+torsion CHI* C8 N9 C1* O4* O4* C4* C3* O3* C2* O2* C5* O5* \
+             P O1P O2P
+torsion GAMMA O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N9 C8 \
+              C4 C5 N7 N3 C2 N1 C6 N6
+! sugar-phosphate bonds
+bond_distance P    O3*-    1.590 0.02
+bond_distance O1P  P       1.480 0.02
+bond_distance O2P  P       1.480 0.02
+bond_distance O5*  P       1.600 0.02
+bond_distance C5*  O5*     1.440 0.02
+bond_distance C4*  C5*     1.510 0.02
+bond_distance O4*  C4*     1.450 0.02
+bond_distance C1*  O4*     1.410 0.02
+bond_distance C2*  C1*     1.530 0.02
+bond_distance C3*  C4*     1.520 0.02
+bond_distance C2*  C3*     1.530 0.02
+bond_distance O2*  C2*     1.420 0.02
+bond_distance O3*  C3*     1.420 0.02
+! base bonds
+bond_distance N9   C1*     1.480 0.02
+bond_distance C4   N9      1.370 0.02
+bond_distance C8   N9      1.360 0.02
+bond_distance N7   C8      1.300 0.02
+bond_distance C5   N7      1.380 0.02
+bond_distance C4   C5      1.370 0.02
+bond_distance C6   C5      1.410 0.02
+bond_distance N6   C6      1.350 0.02
+bond_distance N1   C6      1.340 0.02
+bond_distance C2   N1      1.340 0.02
+bond_distance N3   C2      1.320 0.02
+bond_distance C4   N3      1.340 0.02
+bond_distance C5   C4      1.370 0.02
+bond_distance N9   C4      1.370 0.02
+!sugar-phosphatre angles
+bond_angle P    O3*- C3*-  119.000 2.0
+bond_angle O1P  P    O3*-  110.000 2.0
+bond_angle O2P  P    O3*-  110.000 2.0
+bond_angle O1P  P    O5*   110.000 2.0
+bond_angle O2P  P    O5*   110.000 2.0
+bond_angle O1P  P    O2P   110.000 2.0
+bond_angle O5*  P    O3*-  102.000 2.0
+bond_angle C5*  O5*  P     118.000 2.0
+bond_angle C4*  C5*  O5*   110.000 2.0
+bond_angle O4*  C4*  C5*   110.000 2.0
+bond_angle C1*  O4*  C4*   110.000 2.0
+bond_angle C2*  C1*  O4*   107.000 2.0
+bond_angle C3*  C4*  C5*   116.000 2.0
+bond_angle C2*  C3*  C4*   102.000 2.0
+bond_angle O2*  C2*  C3*   114.000 2.0
+bond_angle C1*  C2*  C3*   101.000 2.0
+bond_angle O3*  C3*  C4*   112.000 2.0
+bond_angle C2*  C3*  O3*   114.000 2.0
+! base angles
+bond_angle N9   C1*  O4*   109.000 2.0
+bond_angle C4   N9   C1*   126.000 2.0
+bond_angle C8   N9   C1*   128.000 2.0
+bond_angle N7   C8   N9    114.000 2.0
+bond_angle C5   N7   C8    104.000 2.0
+bond_angle C4   C5   N7    111.000 2.0
+bond_angle C6   C5   N7    133.000 2.0
+bond_angle N6   C6   C5    123.000 2.0
+bond_angle N1   C6   C5    118.000 2.0
+bond_angle C2   N1   C6    119.000 2.0
+bond_angle N3   C2   N1    129.000 2.0
+bond_angle C4   N3   C2    110.000 2.0
+bond_angle C5   C4   N3    128.000 2.0
+bond_angle N9   C4   N3    126.000 2.0
+!flexible sugar-phosphate
+torsion_flexible C5*  O5*  P    O3*-  -68.000 20. alpha
+torsion_flexible C4*  C5*  O5*  P     178.000 20. beta
+torsion_flexible C3*  C4*  C5*  O5*    54.000 20. gamma
+torsion_flexible O3*  C3*  C4*  C5*    82.000 20. delta
+torsion_flexible P+   O3*  C3*  C4*  -153.000 20. epsilon
+torsion_flexible O5*+ P+   O3*  C3*   -71.000 20. zeta
+!sugar-phosphate branches
+torsion_fixed    O3*-  P    O5*  O1P   120.000 2.0 branch P
+torsion_fixed    O3*-  P    O5*  O2P  -120.000 2.0 branch P
+torsion_fixed    C5*   C4*  C3*  O4*  -120.000 2.0 branch C4*
+torsion_fixed    O4*   C1*  N9   C2*   120.000 2.0 branch C1*
+torsion_fixed    C4*   C3*  O3*  C2*   120.000 2.0 branch C3*
+torsion_fixed    C3*   C2*  C1*  O2*  -120.000 2.0 branch C2*
+!base torsions, including glycosylic
+torsion_flexible C4    N9   C1*  O4*  -158.000 20.  chi
+torsion_fixed    C1*   N9   C4   C8    180.000 2.0 branch N9
+torsion_fixed    N7    C8   N9   C4      0.000 2.0
+torsion_fixed    C5    N7   C8   N9      0.000 2.0
+torsion_fixed    N7    C5   C6   C4    180.000 2.0 branch C5
+torsion_fixed    C6    C5   N7   C8    180.000 2.0
+torsion_fixed    C5    C6   N1   N6    180.000 2.0 branch C6
+torsion_fixed    N1    C6   C5   N7    180.000 2.0
+torsion_fixed    C2    N1   C6   C5      0.000 2.0
+torsion_fixed    N3    C2   N1   C6      0.000 2.0
+torsion_fixed    C4    N3   C2   N1      0.000 2.0
+torsion_fixed    N3    C4   N9   C5    180.000 2.0 branch C4
+torsion_fixed    N9    C4   N3   C2    180.000 2.0
+! sugar pucker, fixed. note Delta is flagged as flexible
+torsion_fixed    C1*   C2*  C3*  C4*    37.    2.0 nu2
+torsion_fixed    C2*   C3*  C4*  O4*   -36.    2.0 nu3
+torsion_fixed    C3*   C4*  O4*  C1*    26.    2.0 nu4
+-------------------------------------------------------
+residue G
+centre P
+side-chain N1 C2 N2 N3 C4 C5 C6 O6 N7 C8 N9
+main-chain P O1P O2P O5* C5* C4* C3* O3* C1* O2* 
+alpha   O3*- P    O5*  C5*
+beta    P    O5*  C5*  C4*
+gamma   O5*  C5*  C4*  C3*
+delta   C5*  C4*  C3*  O3*
+epsilon C4*  C3*  O3*  P+
+zeta    C3*  O3*  P+   O5*+
+chi     O4*  C1*  N9   C4
+nu0     C4*  O4*  C1*  C2*
+nu1     O4*  C1*  C2*  C3*
+nu2     C1*  C2*  C3*  C4*
+nu3     C2*  C3*  C4*  O4*
+nu4     C3*  C4*  O4*  C1*
+rotamer 1 chi -152.
+rotamer 2 chi 28.
+torsion CHI  O4* C1* N9 C8 C8 C4 C5 N7 N3 C2 N1 C6 O6 N2
+torsion GAMMA*  O4* C4* C5* O5* O5* P O1P O2P
+torsion BETA C4* C5* O5* P P O1P O2P
+torsion ALPHA* C5* O5* P O1P O1P O2P
+torsion CHI* C8 N9 C1* O4* O4* C4* C3* O3* C2* O2* C5* O5* \
+             P O1P O2P
+torsion GAMMA O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N9 C8 \
+              C4 C5 N7 N3 C2 N1 C6 O6 N2
+! sugar-phosphate bonds
+bond_distance P    O3*-    1.590 0.02
+bond_distance O1P  P       1.480 0.02
+bond_distance O2P  P       1.480 0.02
+bond_distance O5*  P       1.600 0.02
+bond_distance C5*  O5*     1.440 0.02
+bond_distance C4*  C5*     1.510 0.02
+bond_distance O4*  C4*     1.450 0.02
+bond_distance C1*  O4*     1.410 0.02
+bond_distance C2*  C1*     1.530 0.02
+bond_distance C3*  C4*     1.520 0.02
+bond_distance C2*  C3*     1.530 0.02
+bond_distance O2*  C2*     1.420 0.02
+bond_distance O3*  C3*     1.420 0.02
+! base bonds
+bond_distance N9   C1*     1.480 0.02
+bond_distance C4   N9      1.380 0.02
+bond_distance C8   N9      1.380 0.02
+bond_distance N7   C8      1.310 0.02
+bond_distance C5   N7      1.390 0.02
+bond_distance C4   C5      1.370 0.02
+bond_distance C6   C5      1.420 0.02
+bond_distance O6   C6      1.230 0.02
+bond_distance N1   C6      1.400 0.02
+bond_distance C2   N1      1.390 0.02
+bond_distance N2   C2      1.330 0.02
+bond_distance N3   C2      1.320 0.02
+bond_distance C4   N3      1.360 0.02
+bond_distance C5   C4      1.370 0.02
+bond_distance N9   C4      1.380 0.02
+!sugar-phosphatre angles
+bond_angle P    O3*- C3*-  119.000 2.0
+bond_angle O1P  P    O3*-  110.000 2.0
+bond_angle O2P  P    O3*-  110.000 2.0
+bond_angle O1P  P    O5*   110.000 2.0
+bond_angle O2P  P    O5*   110.000 2.0
+bond_angle O1P  P    O2P   110.000 2.0
+bond_angle O5*  P    O3*-  102.000 2.0
+bond_angle C5*  O5*  P     118.000 2.0
+bond_angle C4*  C5*  O5*   110.000 2.0
+bond_angle O4*  C4*  C5*   110.000 2.0
+bond_angle C1*  O4*  C4*   110.000 2.0
+bond_angle C2*  C1*  O4*   107.000 2.0
+bond_angle C3*  C4*  C5*   116.000 2.0
+bond_angle C2*  C3*  C4*   102.000 2.0
+bond_angle O2*  C2*  C3*   114.000 2.0
+bond_angle C1*  C2*  C3*   101.000 2.0
+bond_angle O3*  C3*  C4*   112.000 2.0
+bond_angle C2*  C3*  O3*   114.000 2.0
+! base angles
+bond_angle N9   C1*  O4*   108.000 2.0
+bond_angle C4   N9   C1*   126.000 2.0
+bond_angle C8   N9   C1*   129.000 2.0
+bond_angle N7   C8   N9    114.000 2.0
+bond_angle C5   N7   C8    104.000 2.0
+bond_angle C4   C5   N7    111.000 2.0
+bond_angle C6   C5   N7    130.000 2.0
+bond_angle O6   C6   C5    129.000 2.0
+bond_angle N1   C6   C5    111.000 2.0
+bond_angle C2   N1   C6    125.000 2.0
+bond_angle N2   C2   N1    115.000 2.0
+bond_angle N3   C2   N1    124.000 2.0
+bond_angle C4   N3   C2    112.000 2.0
+bond_angle C5   C4   N3    129.000 2.0
+bond_angle N9   C4   N3    125.000 2.0
+!flexible sugar-phosphate
+torsion_flexible C5*  O5*  P    O3*-  -68.000 20. alpha
+torsion_flexible C4*  C5*  O5*  P     178.000 20. beta
+torsion_flexible C3*  C4*  C5*  O5*    54.000 20. gamma
+torsion_flexible O3*  C3*  C4*  C5*    82.000 20. delta
+torsion_flexible P+   O3*  C3*  C4*  -153.000 20. epsilon
+torsion_flexible O5*+ P+   O3*  C3*   -71.000 20. zeta
+!sugar-phosphate branches
+torsion_fixed    O3*-  P    O5*  O1P   120.000 2.0 branch P
+torsion_fixed    O3*-  P    O5*  O2P  -120.000 2.0 branch P
+torsion_fixed    C5*   C4*  C3*  O4*  -120.000 2.0 branch C4*
+torsion_fixed    O4*   C1*  N9   C2*   120.000 2.0 branch C1*
+torsion_fixed    C4*   C3*  O3*  C2*   120.000 2.0 branch C3*
+torsion_fixed    C3*   C2*  C1*  O2*  -120.000 2.0 branch C2*
+!base torsions, including glycosylic
+torsion_flexible C4    N9   C1*  O4*  -158.000 20.  chi
+torsion_fixed    C1*   N9   C4   C8    180.000 2.0 branch N9
+torsion_fixed    N7    C8   N9   C4      0.000 2.0
+torsion_fixed    C5    N7   C8   N9      0.000 2.0
+torsion_fixed    N7    C5   C6   C4    180.000 2.0 branch C5
+torsion_fixed    C6    C5   N7   C8    180.000 2.0
+torsion_fixed    C5    C6   N1   O6    180.000 2.0 branch C6
+torsion_fixed    N1    C6   C5   N7    180.000 2.0
+torsion_fixed    C2    N1   C6   C5      0.000 2.0
+torsion_fixed    N3    C2   N1   C6      0.000 2.0
+torsion_fixed    C4    N3   C2   N1      0.000 2.0
+torsion_fixed    N3    C2   N1   N2    180.    2.0 branch C2
+torsion_fixed    N3    C4   N9   C5    180.000 2.0 branch C4
+torsion_fixed    N9    C4   N3   C2    180.000 2.0
+! sugar pucker, fixed. note Delta is flagged as flexible
+torsion_fixed    C1*   C2*  C3*  C4*    37.    2.0 nu2
+torsion_fixed    C2*   C3*  C4*  O4*   -36.    2.0 nu3
+torsion_fixed    C3*   C4*  O4*  C1*    26.    2.0 nu4
+------------------------------------------------------------
+residue C
+centre P
+side-chain N1 C2 O2 N3 C4 N4 C5 C6 
+main-chain P O1P O2P O5* C5* C4* C3* O3* C1* O2* 
+alpha   O3*- P    O5*  C5*
+beta    P    O5*  C5*  C4*
+gamma   O5*  C5*  C4*  C3*
+delta   C5*  C4*  C3*  O3*
+epsilon C4*  C3*  O3*  P+
+zeta    C3*  O3*  P+   O5*+
+chi     O4*  C1*  N1   C2
+nu0     C4*  O4*  C1*  C2*
+nu1     O4*  C1*  C2*  C3*
+nu2     C1*  C2*  C3*  C4*
+nu3     C2*  C3*  C4*  O4*
+nu4     C3*  C4*  O4*  C1*
+rotamer 1 chi -152.
+rotamer 2 chi 28.
+torsion CHI     O4* C1* N1 C6 C5 C4 N4 N3 C2 O2 C6
+torsion GAMMA*  O4* C4* C5* O5* O5* P O1P O2P
+torsion BETA    C4* C5* O5* P P O1P O2P
+torsion ALPHA*  C5* O5* P O1P O1P O2P
+torsion CHI*    C6 N1 C1* O4* O4* C4* C3* O3* C2* O2* C5* O5* \
+                P O1P O2P
+torsion GAMMA   O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N1 C6 \
+                C5 C4 N4 N3 C2 O2
+! sugar-phosphate bonds
+bond_distance P    O3*-    1.590 0.02
+bond_distance O1P  P       1.480 0.02
+bond_distance O2P  P       1.480 0.02
+bond_distance O5*  P       1.600 0.02
+bond_distance C5*  O5*     1.440 0.02
+bond_distance C4*  C5*     1.510 0.02
+bond_distance O4*  C4*     1.450 0.02
+bond_distance C1*  O4*     1.410 0.02
+bond_distance C2*  C1*     1.530 0.02
+bond_distance C3*  C4*     1.520 0.02
+bond_distance C2*  C3*     1.530 0.02
+bond_distance O2*  C2*     1.420 0.02
+bond_distance O3*  C3*     1.420 0.02
+! base bonds
+bond_distance N1   C1*     1.470 0.02
+bond_distance C2   N1      1.340 0.02
+bond_distance C6   N1      1.360 0.02
+bond_distance C5   C6      1.340 0.02
+bond_distance C4   C5      1.430 0.02
+bond_distance N4   C4      1.340 0.02
+bond_distance N3   C4      1.330 0.02
+bond_distance C2   N3      1.360 0.02
+bond_distance O2   C2      1.240 0.02
+bond_distance N1   C2      1.340 0.02
+!sugar-phosphate angles
+bond_angle P    O3*- C3*-  119.000 2.0
+bond_angle O1P  P    O3*-  110.000 2.0
+bond_angle O2P  P    O3*-  110.000 2.0
+bond_angle O1P  P    O5*   110.000 2.0
+bond_angle O2P  P    O5*   110.000 2.0
+bond_angle O1P  P    O2P   110.000 2.0
+bond_angle O5*  P    O3*-  102.000 2.0
+bond_angle C5*  O5*  P     118.000 2.0
+bond_angle C4*  C5*  O5*   110.000 2.0
+bond_angle O4*  C4*  C5*   110.000 2.0
+bond_angle C1*  O4*  C4*   110.000 2.0
+bond_angle C2*  C1*  O4*   107.000 2.0
+bond_angle C3*  C4*  C5*   116.000 2.0
+bond_angle C2*  C3*  C4*   102.000 2.0
+bond_angle O2*  C2*  C3*   114.000 2.0
+bond_angle C1*  C2*  C3*   101.000 2.0
+bond_angle O3*  C3*  C4*   112.000 2.0
+bond_angle C2*  C3*  O3*   114.000 2.0
+! base angles
+bond_angle N1   C1*  O4*   108.000 2.0
+bond_angle C2   N1   C1*   118.000 2.0
+bond_angle C6   N1   C1*   121.000 2.0
+bond_angle C5   C6   N1    121.000 2.0
+bond_angle C4   C5   C6    117.000 2.0
+bond_angle N4   C4   C5    122.000 2.0
+bond_angle N3   C4   C5    122.000 2.0
+bond_angle C2   N3   C4    120.000 2.0
+bond_angle O2   C2   N3    122.000 2.0
+bond_angle N1   C2   N3    119.000 2.0
+!flexible sugar-phosphate
+torsion_flexible C5*  O5*  P    O3*-  -68.000 20. alpha
+torsion_flexible C4*  C5*  O5*  P     178.000 20. beta
+torsion_flexible C3*  C4*  C5*  O5*    54.000 20. gamma
+torsion_flexible O3*  C3*  C4*  C5*    82.000 20. delta
+torsion_flexible P+   O3*  C3*  C4*  -153.000 20. epsilon
+torsion_flexible O5*+ P+   O3*  C3*   -71.000 20. zeta
+!sugar-phosphate branches
+torsion_fixed    O3*-  P    O5*  O1P   120.000 2.0 branch P
+torsion_fixed    O3*-  P    O5*  O2P  -120.000 2.0 branch P
+torsion_fixed    C5*   C4*  C3*  O4*  -120.000 2.0 branch C4*
+torsion_fixed    O4*   C1*  N1   C2*   120.000 2.0 branch C1*
+torsion_fixed    C4*   C3*  O3*  C2*   120.000 2.0 branch C3*
+torsion_fixed    C3*   C2*  C1*  O2*  -120.000 2.0 branch C2*
+!base torsions, including glycosylic
+torsion_flexible C2    N1   C1*  O4*  -158.000 20.  chi
+torsion_fixed    C1*   N1   C2   C6    180.000 2.0 branch N1
+torsion_fixed    C5    C6   N1   C2      0.000 2.0
+torsion_fixed    C4    C5   C6   N1      0.000 2.0
+torsion_fixed    C5    C4   N3   N4    180.000 2.0 branch C4
+torsion_fixed    N3    C4   C5   C6      0.000 2.0
+torsion_fixed    C2    N3   C4   C5      0.000 2.0
+torsion_fixed    N3    C2   N1   O2    180.000 2.0 branch C2
+torsion_fixed    N1    C2   N3   C4      0.000 2.0
+! sugar pucker, fixed. note Delta is flagged as flexible
+torsion_fixed    C1*   C2*  C3*  C4*    37.    2.0 nu2
+torsion_fixed    C2*   C3*  C4*  O4*   -36.    2.0 nu3
+torsion_fixed    C3*   C4*  O4*  C1*    26.    2.0 nu4
+--------------------------------------------------------------
+residue U
+centre P
+side-chain N1 C2 O2 N3 C4 O4 C5 C6 
+main-chain P O1P O2P O5* C5* C4* C3* O3* C1* O2* 
+alpha   O3*- P    O5*  C5*
+beta    P    O5*  C5*  C4*
+gamma   O5*  C5*  C4*  C3*
+delta   C5*  C4*  C3*  O3*
+epsilon C4*  C3*  O3*  P+
+zeta    C3*  O3*  P+   O5*+
+chi     O4*  C1*  N1   C2
+nu0     C4*  O4*  C1*  C2*
+nu1     O4*  C1*  C2*  C3*
+nu2     C1*  C2*  C3*  C4*
+nu3     C2*  C3*  C4*  O4*
+nu4     C3*  C4*  O4*  C1*
+rotamer 1 chi -152.
+rotamer 2 chi 28.
+torsion CHI     O4* C1* N1 C6 C5 C4 O4 N3 C2 O2 C6
+torsion GAMMA*  O4* C4* C5* O5* O5* P O1P O2P
+torsion BETA    C4* C5* O5* P P O1P O2P
+torsion ALPHA*  C5* O5* P O1P O1P O2P
+torsion CHI*    C6 N1 C1* O4* O4* C4* C3* O3* C2* O2* C5* O5* \
+                P O1P O2P
+torsion GAMMA   O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N1 C6 \
+                C5 C4 O4 N3 C2 O2
+! sugar-phosphate bonds
+bond_distance P    O3*-    1.590 0.02
+bond_distance O1P  P       1.480 0.02
+bond_distance O2P  P       1.480 0.02
+bond_distance O5*  P       1.600 0.02
+bond_distance C5*  O5*     1.440 0.02
+bond_distance C4*  C5*     1.510 0.02
+bond_distance O4*  C4*     1.450 0.02
+bond_distance C1*  O4*     1.410 0.02
+bond_distance C2*  C1*     1.530 0.02
+bond_distance C3*  C4*     1.520 0.02
+bond_distance C2*  C3*     1.530 0.02
+bond_distance O2*  C2*     1.420 0.02
+bond_distance O3*  C3*     1.420 0.02
+! base bonds
+bond_distance N1   C1*     1.470 0.02
+bond_distance C2   N1      1.380 0.02
+bond_distance C6   N1      1.380 0.02
+bond_distance C5   C6      1.340 0.02
+bond_distance C4   C5      1.440 0.02
+bond_distance O4   C4      1.230 0.02
+bond_distance N3   C4      1.380 0.02
+bond_distance C2   N3      1.370 0.02
+bond_distance O2   C2      1.220 0.02
+bond_distance N1   C2      1.380 0.02
+!sugar-phosphate angles
+bond_angle P    O3*- C3*-  119.000 2.0
+bond_angle O1P  P    O3*-  110.000 2.0
+bond_angle O2P  P    O3*-  110.000 2.0
+bond_angle O1P  P    O5*   110.000 2.0
+bond_angle O2P  P    O5*   110.000 2.0
+bond_angle O1P  P    O2P   110.000 2.0
+bond_angle O5*  P    O3*-  102.000 2.0
+bond_angle C5*  O5*  P     118.000 2.0
+bond_angle C4*  C5*  O5*   110.000 2.0
+bond_angle O4*  C4*  C5*   110.000 2.0
+bond_angle C1*  O4*  C4*   110.000 2.0
+bond_angle C2*  C1*  O4*   107.000 2.0
+bond_angle C3*  C4*  C5*   116.000 2.0
+bond_angle C2*  C3*  C4*   102.000 2.0
+bond_angle O2*  C2*  C3*   114.000 2.0
+bond_angle C1*  C2*  C3*   101.000 2.0
+bond_angle O3*  C3*  C4*   112.000 2.0
+bond_angle C2*  C3*  O3*   114.000 2.0
+! base angles
+bond_angle N1   C1*  O4*   108.000 2.0
+bond_angle C2   N1   C1*   117.000 2.0
+bond_angle C6   N1   C1*   121.000 2.0
+bond_angle C5   C6   N1    123.000 2.0
+bond_angle C4   C5   C6    119.000 2.0
+bond_angle O4   C4   C5    125.000 2.0
+bond_angle N3   C4   C5    115.000 2.0
+bond_angle C2   N3   C4    127.000 2.0
+bond_angle O2   C2   N3    122.000 2.0
+bond_angle N1   C2   N3    115.000 2.0
+!flexible sugar-phosphate
+torsion_flexible C5*  O5*  P    O3*-  -68.000 20. alpha
+torsion_flexible C4*  C5*  O5*  P     178.000 20. beta
+torsion_flexible C3*  C4*  C5*  O5*    54.000 20. gamma
+torsion_flexible O3*  C3*  C4*  C5*    82.000 20. delta
+torsion_flexible P+   O3*  C3*  C4*  -153.000 20. epsilon
+torsion_flexible O5*+ P+   O3*  C3*   -71.000 20. zeta
+!sugar-phosphate branches
+torsion_fixed    O3*-  P    O5*  O1P   120.000 2.0 branch P
+torsion_fixed    O3*-  P    O5*  O2P  -120.000 2.0 branch P
+torsion_fixed    C5*   C4*  C3*  O4*  -120.000 2.0 branch C4*
+torsion_fixed    O4*   C1*  N1   C2*   120.000 2.0 branch C1*
+torsion_fixed    C4*   C3*  O3*  C2*   120.000 2.0 branch C3*
+torsion_fixed    C3*   C2*  C1*  O2*  -120.000 2.0 branch C2*
+!base torsions, including glycosylic
+torsion_flexible C2    N1   C1*  O4*  -158.000 20.  chi
+torsion_fixed    C1*   N1   C2   C6    180.000 2.0 branch N1
+torsion_fixed    C5    C6   N1   C2      0.000 2.0
+torsion_fixed    C4    C5   C6   N1      0.000 2.0
+torsion_fixed    C5    C4   N3   O4    180.000 2.0 branch C4
+torsion_fixed    N3    C4   C5   C6      0.000 2.0
+torsion_fixed    C2    N3   C4   C5      0.000 2.0
+torsion_fixed    N3    C2   N1   O2    180.000 2.0 branch C2
+torsion_fixed    N1    C2   N3   C4      0.000 2.0
+! sugar pucker, fixed. note Delta is flagged as flexible
+torsion_fixed    C1*   C2*  C3*  C4*    37.    2.0 nu2
+torsion_fixed    C2*   C3*  C4*  O4*   -36.    2.0 nu3
+torsion_fixed    C3*   C4*  O4*  C1*    26.    2.0 nu4
+---------------------------------------------------------------------------
+! these are from Phil Evan's Nucleic Acid torsion dictionary, but '->*
+RESIDUE T
+TORSION ALPH  O3*- P O5* C5* C5* C4* O4* C1* C2* C3* O3* N1 C2 N3 \
+              C4 C5 C6 O2 O4 C5A
+TORSION BETA  P O5* C5* C4* C4* O4* C1* C2* C3* O3* N1 C2 N3 \
+              C4 C5 C6 O2 O4 C5A
+TORSION GAMM  O5* C5* C4* C3* O4* C1* C2* C3* O3* N1 C2 N3 \
+              C4 C5 C6 O2 O4 C5A
+TORSION DELT  C5* C4* C3* O3* O4* C1* C2* O3* N1 C2 N3 \
+              C4 C5 C6 O2 O4 C5A
+TORSION EPSI  C4* C3* O3* P+
+TORSION ZETA  C3* O3* P+ O5*+
+TORSION CHI   O4* C1* N1 C2 N1 C2 N3 \
+              C4 C5 C6 O2 O4 C5A
+RESIDUE ADE
+TORSION ALP  O4* C1* N9 C8 C8 C4 C5 N7 N3 C2 N1 C6 N6
+TORSION BET  C8 N9 C1* O4* O4* C4* C3* O3* C2* O2* C5* O5* P \
+             O1P O2P
+TORSION GAM  O4* C4* C5* O5* O5* P O1P O2P
+TORSION DEL  C4* C5* O5* P P O1P O2P
+TORSION EPS  C5* O5* P O1P O1P O2P
+TORSION KAP  O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N9 C8 \
+             C4 C5 N7 N3 C2 N1 C6 N6
+RESIDUE GUA
+TORSION ALP  O4* C1* N9 C8 C8 C4 C5 N7 N3 C2 N1 C6 O6 N2
+TORSION BET  C8 N9 C1* O4* O4* C4* C3* O3* C2* O2* C5* O5* P \
+             O1P O2P
+TORSION GAM  O4* C4* C5* O5* O5* P O1P O2P
+TORSION DEL  C4* C5* O5* P P O1P O2P
+TORSION EPS  C5* O5* P O1P O1P O2P
+TORSION KAP  O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N9 C8 \
+             C4 C5 N7 N3 C2 N1 C6 O6 N2
+RESIDUE CYT
+TORSION ALP  C2* C1* N1 C6 C5 C4 N4 N3 C2 O2 C6
+TORSION BET  C6 N1 C1* O4* O4* C2* O2* C3* O3* C4* C5* O5* \
+             P O1P O2P
+TORSION GAM  O4* C4* C5* O5* O5* P O1P O2P
+TORSION DEL  C4* C5* O5* P P O1P O2P
+TORSION EPS  C5* O5* P O1P O1P O2P
+TORSION KAP  O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N1 C6 \
+             C5 C4 N4 N3 C2 O2
+RESIDUE URA
+TORSION ALP  C2* C1* N1 C6 C5 C4 O4 N3 C2 O2 C6
+TORSION BET  C6 N1 C1* O4* O4* C2* O2* C3* O3* C4* C5* O5* \
+             P O1P O2P
+TORSION GAM  O4* C4* C5* O5* O5* P O1P O2P
+TORSION DEL  C4* C5* O5* P P O1P O2P
+TORSION EPS  C5* O5* P O1P O1P O2P
+TORSION KAP  O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* N1 C6 \
+             C5 C4 O4 N3 C2 O2
+RESIDUE THY
+TORSION ALP  C2* C1* N1 C2 N3 C4 C5 C6 O2 O4 C5A
+TORSION BET  C6 N1 C1* O4* O4* C2* O2* C3* O3* C4* C5* O5* \
+             P O1P O2P
+TORSION GAM  O4* C4* C5* O5* O5* P O1P O2P
+TORSION DEL  C4* C5* O5* P P O1P O2P
+TORSION EPS  C5* O5* P O1P O1P O2P
+TORSION KAP  O5* C5* C4* C3* C3* O3* C2* O2* C1* O4* \
+             N1 C2 N3 C4 C5 C6 O2 O4 C5A
+RESIDUE ATP
+TORSION CHI  O4* C1* N9 C4  N1 C2 N3 C4 C5 C6 N6 N7 C8
+TORSION GAMMA C3* C4* C5* O5* O5* P1 O11 O12 O6 P2 O21 O22 O7 P3 \
+              O31 O32 O8
+TORSION BETA   C4* C5* O5* P1 P1 O11 O12 O6 P2 O21 O22 O7 P3 O31 O32 O8
+TORSION ALPHA  C5* O5* P1 O6 O11 O12 O6 P2 O21 O22 O7 P3 O31 O32 O8
+TORSION TAU1   O5* P1  O6 P2  P2 O21 O22 O7 P3 O31 O32 O8
+TORSION TAU2   P1  O6  P2 O7 O21 O22 O7 P3 O31 O32 O8
+TORSION TAU3   O6  P2  O7 P3 P3 O31 O32 O8
+TORSION TAU4   P2  O7  P3 O8 O31 O32 O8
+RESIDUE ADP
+TORSION CHI    O4* C1* N9 C4  N1 C2 N3 C4 C5 C6 N6 N7 C8
+TORSION GAMMA  C3* C4* C5* O5* O5* P1 O11 O12 O6 P2 O21 O22 O7
+TORSION BETA   C4* C5* O5* P1 P1 O11 O12 O6 P2 O21 O22 O7
+TORSION ALPHA  C5* O5* P1 O6 O11 O12 O6 P2 O21 O22 O7
+TORSION TAU1   O5* P1  O6 P2  P2 O21 O22 O7
+TORSION TAU2   P1  O6  P2 O7 O21 O22 O7
+RESIDUE COA
+TORSION CHI    O4* C1* N9 C4  N1 C2 N3 C4 C5 C6 N6 N7 C8
+TORSION PHI*   C2* C3* O3* P3    P3 O31 O32 O33
+TORSION OMEGA* C3* O3* P3  O31   O31 O32 O33
+TORSION PSI    C3* C4* C5* O5* \
+               O5* P1 O11 O12 O6 P2 O21 O22 O7 CPB  CPA CP8 CP9 CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION PHI    C4* C5* O5* P1 \
+               P1 O11 O12 O6 P2 O21 O22 O7 CPB  CPA CP8 CP9 CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION OMEGA  C5* O5* P1 O6 \
+               O6  O11 O12 O6 P2 O21 O22 O7 CPB  CPA CP8 CP9 CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU1   O5* P1 O6 P2 \
+               P2  O21 O22 O7 CPB  CPA CP8 CP9 CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU2   P1 O6 P2 O7 \
+               O7 CPB  CPA CP8 CP9 CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU3   O6 P2 O7 CPB \
+               CPB CPA CP8 CP9 CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU4   P2 O7 CPB CPA \
+               CPA CP8 CP9 CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU5   O7 CPB CPA CP7 \
+               CP7 OP3 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU6   CPB CPA CP7 CP6 \
+               CP6 OP2 NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU7   CPA CP7 CP6 NP2 \
+               NP2 CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU8   CP7 CP6 NP2 CP5 \
+               CP5 CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU9   CP6 NP2 CP5 CP4    CP4 CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU10  NP2 CP5 CP4 CP3    CP3 OP1 NP1 CP2 CP1 S
+TORSION TAU11  CP5 CP4 CP3 NP1    NP1 CP2 CP1 S
+TORSION TAU12  CP4 CP3 NP1 CP2    CP2 CP1 S
+TORSION TAU13  CP3 NP1 CP2 CP1    CP1 S
+TORSION TAU14  NP1 CP2 CP1 S       S
+RESIDUE B12
+TORSION TAU31  C6  C7  C37 C38    C38 O39 N40
+TORSION TAU32  C7  C37 C38 O39    O39 N40
+TORSION TAU41  C7  C8  C41 C42    C42 C43 O44 N45
+TORSION TAU42  C8  C41 C42 C43    C43 O44 N45
+TORSION TAU43  C41 C42 C43 O44    O44 N45
+TORSION TAU51  C12 C13 C48 C49    C49 C50 O51 N52
+TORSION TAU52  C13 C48 C49 C50    C50 O51 N52
+TORSION TAU53  C48 C49 C50 O51    O51 N52
+TORSION TAU61  C17 C18 C60 C61    C61 O63 N62
+TORSION TAU62  C18 C60 C61 O63    O63 N62
+RESIDUE MCD
+TORSION TAU1  CP4 NP1 CP2 CP1  CP1 CPS CS1 OS1 CS2 CS3 CS4 OS4 OS5
+TORSION TAU2  NP1 CP2 CP1 CPS  CPS CS1 OS1 CS2 CS3 CS4 OS4 OS5
+TORSION TAU3  CP2 CP1 CPS CS1  CS1 OS1 CS2 CS3 CS4 OS4 OS5
+TORSION TAU4  CP1 CPS CS1 CS2  OS1 CS2 CS3 CS4 OS4 OS5
+TORSION TAU5  CPS CS1 CS2 CS4  CS3 CS4 OS4 OS5
+TORSION TAU6  CS1 CS2 CS4 OS4  OS4 OS5
+RESIDUE ADD
+TORSION CHI   C4 N9 C1* C2*  C2* O2* C3* O3* C4* O4* C5*
+TORSION CHIB  C2* C1* N9 C8  C8 C4 C5 N7 N3 C2 N1 C6 N6
+RESIDUE GOL
+TORSION TAU1  C3  C2  C1  O1   O1
+TORSION TAU2  C1  C2  C3  O3   O3
+! End of Phil's torsion angles
+!read ok
+

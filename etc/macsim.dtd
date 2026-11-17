@@ -1,0 +1,160 @@
+<!--  This is the Document Type Definition (DTD) for Macsim.            -->
+<!--  A DTD for describing Multiple Alignments of Complete Sequences    -->
+<!--    and Information Mining                                          -->
+
+<!--  This DTD was created by Julie Thompson (julie@igbmc.u-strasbg.fr) -->
+<!--  Institut de Genetique et de Biologie Moleculaire et Cellulaire,   -->
+<!--  Strasbourg, France.                                               -->
+<!--  Email the above address for corrections and suggestions.          -->
+<!--  This DTD's DISTRIBUTION and USE is UNLIMITED under the condition  -->
+<!--  that its entire content remains intact.                           -->
+
+<!--  THIS DTD AND DOCUMENTATION IS PROVIDED 'AS IS,' AND COPYRIGHT     -->
+<!--  HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED,-->
+<!--  INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY OR    -->
+<!--  FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE DTD     -->
+<!--  OR DOCUMENTATION WILL NOT INFRINGE ANY THIRD PARTY PATENTS,       -->
+<!--  COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.                           -->
+
+<!--  COPYRIGHT HOLDERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,    -->
+<!--  SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF ANY USE OF THE    -->
+<!--  DTD OR DOCUMENTATION.                                             -->
+
+<!--  The name and trademarks of the copyright holder may NOT be used in-->
+<!--  advertising or publicity pertaining to the DTD without            -->
+<!--  specific, written prior permission. Title to copyright in this    -->
+<!--  DTD and any associated documentation will at all times remain     -->
+<!--  with copyright holders.                                           -->
+
+<!--  Version 2.1 : 2007/08/27                                          -->
+<!--  update based on new Macsim version by dkieffer                    -->
+<!--  update 11/03/2009 luc moulinier add two new seq-info tags : molecularweight et isoelectricpoint                         -->
+<!--  update 19/12/2013 luc moulinier add colsco-group and surface-group -->
+<!--  update 19/10/2026 luc moulinier add seq-info tag grouplabel : label of the group (only if edited) -->
+
+<!ELEMENT macsim (alignment)>
+<!ELEMENT alignment (aln-name,
+                     aln-score?,
+		     aln-note?,
+		     (sequence | freetext | consensus | column-score | surface-accessibility)+)>
+<!ELEMENT aln-name  (#PCDATA)>
+<!ELEMENT aln-score (#PCDATA)>
+<!ELEMENT aln-note  (#PCDATA)>
+
+<!-- owner signification : 0 for all, 1-n for group, seq-name for sequence -->
+<!ELEMENT freetext  (freetext-name,
+                     freetext-owner,
+                     freetext-type,
+                     freetext-data)>
+<!ELEMENT consensus (cons-name,
+                     cons-owner,
+                     cons-type,
+                     cons-data)>
+<!ELEMENT column-score (colsco-name,
+                        colsco-owner,
+                        colsco-type,
+                        colsco-group,
+                        colsco-data)>
+<!ELEMENT surface-accessibility (surfacc-name,
+                        surfacc-owner,
+                        surfacc-type,
+                        surfacc-group,
+                        surfacc-data)>
+<!ELEMENT freetext-name  (#PCDATA)>
+<!ELEMENT freetext-owner (#PCDATA)>
+<!ELEMENT freetext-type  (#PCDATA)>
+<!ELEMENT freetext-data  (#PCDATA)>
+
+<!ELEMENT cons-name  (#PCDATA)>
+<!ELEMENT cons-owner (#PCDATA)>
+<!ELEMENT cons-type  (#PCDATA)>
+<!ELEMENT cons-data  (#PCDATA)>
+
+<!ELEMENT colsco-name  (#PCDATA)>
+<!ELEMENT colsco-owner (#PCDATA)>
+<!ELEMENT colsco-type  (#PCDATA)>
+<!ELEMENT colsco-group (#PCDATA)>
+<!ELEMENT colsco-data  (#PCDATA)>
+
+<!ELEMENT surfacc-name  (#PCDATA)>
+<!ELEMENT surfacc-owner (#PCDATA)>
+<!ELEMENT surfacc-type  (#PCDATA)>
+<!ELEMENT surfacc-group (#PCDATA)>
+<!ELEMENT surfacc-data  (#PCDATA)>
+
+<!-- A sequence must minimally have a name with a type attribute and some sequence data, the info is optional -->
+<!ELEMENT sequence (seq-name,
+                    seq-info?,
+		    seq-data)>
+         <!ATTLIST sequence seq-type (Protein | DNA | PDB) #REQUIRED>
+<!ELEMENT seq-name (#PCDATA)>
+<!ELEMENT seq-data (#PCDATA)>
+
+<!-- The info section can contain any of the following, in any order -->
+<!ELEMENT seq-info (accession | nid | definition | organism | taxid | lifedomain | lineage | ec | hydrophobicity | fragment | keywordlist | complex | pub | ftable | residue-contact-list | goxreflist | length | weight | group | grouplabel | score | sense | status | molecularweight | isoelectricpoint )+>
+<!ELEMENT accession      (#PCDATA)>
+<!ELEMENT nid            (#PCDATA)>
+<!ELEMENT definition     (#PCDATA)>
+<!ELEMENT organism       (#PCDATA)>
+<!ELEMENT taxid          (#PCDATA)>
+<!ELEMENT lifedomain     (#PCDATA)>
+<!ELEMENT lineage     (taxon+)>
+    <!ELEMENT taxon     (#PCDATA)>
+<!ELEMENT ec             (#PCDATA)>
+<!ELEMENT hydrophobicity (#PCDATA)>
+<!ELEMENT fragment       EMPTY>
+         <!ATTLIST fragment status (Yes | No) "No">
+<!ELEMENT keywordlist    (keyword+)>
+<!ELEMENT keyword        (#PCDATA)>
+<!ELEMENT complex        (#PCDATA)>
+<!ELEMENT pub            (pubxref | authors | journal | other | title)*>
+<!ELEMENT authors        (#PCDATA)>
+<!ELEMENT journal        (#PCDATA)>
+<!ELEMENT other          (#PCDATA)>
+<!ELEMENT pubxref        (#PCDATA)>
+<!ELEMENT title          (#PCDATA)>
+<!ELEMENT ftable         (fitem+)>
+         <!ELEMENT fitem (ftype,
+                          fstart,
+                          fstop,
+		          fcolor,
+                          fscore?,
+		          fnote?)>
+                   <!ATTLIST fitem status (Confirmed | Predicted) "Confirmed">
+<!ELEMENT ftype  (#PCDATA)>
+<!ELEMENT fstart (#PCDATA)>
+<!ELEMENT fstop  (#PCDATA)>
+<!ELEMENT fcolor (#PCDATA)>
+<!ELEMENT fscore (#PCDATA)>
+<!ELEMENT fnote  (#PCDATA)>
+
+<!ELEMENT residue-contact-list (contact-residue1,residue-contact+)>
+	<!ELEMENT contact-residue1 (#PCDATA)>
+        <!ELEMENT residue-contact (contact-residue2,
+                                    contact-distance?,
+		                    contact-note?)>
+	        <!ELEMENT contact-residue2 (#PCDATA)>
+		<!ELEMENT contact-distance (#PCDATA)>
+		<!ELEMENT contact-note     (#PCDATA)>
+
+<!ELEMENT goxreflist (goxref+)>
+        <!ELEMENT goxref     (goid,
+                              goclass?,
+                              godesc?,
+                              goevidence?)>
+	       <!ELEMENT goid       (#PCDATA)>
+	       <!ELEMENT goclass    (#PCDATA)>
+               <!ELEMENT godesc     (#PCDATA)>
+	       <!ELEMENT goevidence (#PCDATA)>
+	       <!ELEMENT length     (#PCDATA)>
+	       <!ELEMENT weight     (#PCDATA)>
+	       <!ELEMENT group      (#PCDATA)>
+	       <!ELEMENT grouplabel (#PCDATA)>
+	       <!ELEMENT score      (#PCDATA)>
+	       <!ELEMENT sense      (#PCDATA)>
+	       <!ELEMENT status     (#PCDATA)>
+	       <!ELEMENT molecularweight  (#PCDATA)>
+	       <!ELEMENT isoelectricpoint (#PCDATA)>
+
+
+

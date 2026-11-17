@@ -1,0 +1,19 @@
+can't read "w": no such variable
+can't read "w": no such variable
+    while executing
+"wm title $w [$::BrowserToplevel.notebook get_title $new]"
+    (procedure "gui_switch" line 38)
+    invoked from within
+"gui_switch .tcpbrowser.notebook.tab_1"
+    ("eval" body line 1)
+    invoked from within
+"eval [linsert $options(-switchcmd) end [$self current]]"
+    (procedure "::hv3::tabset::Snit_methodSwitchcmd" line 8)
+    invoked from within
+"::hv3::tabset::Snit_methodSwitchcmd ::hv3::tabset ::hv3::tabset::Snit_inst1 .tcpbrowser.notebook .tcpbrowser.notebook"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 $command $args"
+    invoked from within
+".tcpbrowser.notebook Switchcmd"
+    (command bound to event)

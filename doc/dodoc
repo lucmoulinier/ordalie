@@ -1,0 +1,10 @@
+#!/bin/tcsh
+
+cp ~/Biblio/*.bib .
+
+rm -f *.aux *.pdf *.dvi *.bbl *.blg *.log
+
+latexmk -f -pdf ordalie_documentation.tex
+
+exit 0
+

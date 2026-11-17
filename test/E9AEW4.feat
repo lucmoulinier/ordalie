@@ -1,0 +1,6 @@
+# kinetoplastids specific insertion of ThrRSs
+
+FEATURE kinetoSpe PROPAGATE group
+
+E9AEW4_A;local;495;545;violet;0.0;
+E9AEW4_A;local;592;653;violet;0.0;

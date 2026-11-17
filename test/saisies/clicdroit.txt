@@ -1,0 +1,14 @@
+# Bindings du bouton droit (Button-3, <3>, B3-Motion, Control-3...) des sources src/ordali_*.tcl, et les tests
+# qui les déclenchent par de vrais événements et vérifient leur effet. Lu par test/saisies/catalogue_test.tcl :
+# un binding du bouton droit dont la procédure n'est pas ici, ou dont un test n'existe pas, fait échouer le
+# contrôle. Format : fichier:procédure | tests (chemins relatifs à test/), ou « - raison » si le binding ne
+# peut pas être atteint.
+ordali_affiche.tcl:BindingsOrdali | saisies/clicdroit_alignement_test.tcl
+ordali_mode.tcl:AfficheBoutonsFeateditor | saisies/clicdroit_alignement_test.tcl
+ordali_features.tcl:RetourEditFeatures | saisies/clicdroit_alignement_test.tcl
+ordali_tree.tcl:AfficheUnArbre | saisies/clicdroit_arbre_test.tcl
+ordali_viandox.tcl:AfficheFenetreOpengl | saisies/clicdroit_3d_test.tcl
+ordali_viandox.tcl:CanvasDeChaine | saisies/clicdroit_3d_test.tcl
+ordali_superposition.tcl:FinSuper | - la procédure sort à sa première ligne (return) : le binding n'est jamais posé
+ordali_tree.tcl:tbc | - procédure de mise au point, appelée nulle part
+ordali_vrp.tcl:BindingsVrp | - Ordali_Vrp n'est appelé par aucun menu ni aucune procédure

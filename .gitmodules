@@ -1,0 +1,18 @@
+[submodule "packages/biotext"]
+	path = packages/biotext
+	url = https://github.com/lucmoulinier/biotext.git
+[submodule "packages/tclordalie"]
+	path = packages/tclordalie
+	url = https://github.com/lucmoulinier/tclordalie.git
+[submodule "packages/tclcluspack"]
+	path = packages/tclcluspack
+	url = https://github.com/lucmoulinier/tclcluspack.git
+[submodule "packages/tclfastme"]
+	path = packages/tclfastme
+	url = https://github.com/lucmoulinier/tclfastme.git
+[submodule "packages/tclsurface"]
+	path = packages/tclsurface
+	url = https://github.com/lucmoulinier/tclsurface.git
+[submodule "packages/LRIPhoto"]
+	path = packages/LRIPhoto
+	url = https://github.com/lucmoulinier/LRIPhoto.git
