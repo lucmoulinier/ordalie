@@ -860,7 +860,14 @@ proc AfficheBoutonsFeatures {} {
     grid columnconfig $wb all -weight 1 -minsize 0
     update
 
-    lassign [grid bbox $wb] t a x y 
+    # 'update' runs the pending events : a click on Editor (or on
+    # another mode) while the snapshot loads has already left this
+    # mode and destroyed the buttons
+    if {! [winfo exists $wb]} {
+	return
+    }
+
+    lassign [grid bbox $wb] t a x y
     lassign [grid size $wb] c r 
     if {$c == 1} {set c 2}
     set wdt [winfo width $FrmBtnFea]

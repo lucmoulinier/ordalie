@@ -8276,88 +8276,103 @@ proc MiseAJourMac {{args ""}} {
     if {$iMac == 1} {
 	FaireLire "Please do not forget this is the reference alignment. As such, you would not be able to modify it !"
     }
-    set NoFeat 0
-    if {! $Toggle(Feature)} {
-	set Toggle(Feature) 1
-	ToggleFeature
-	set NoFeat 1
-    }
-    
-    if {[catch {CreeVue} Msg]} {
-	set Info $::errorInfo
-	if {$AncIx eq $iMac || $AncIx eq ""} {
-	    # nothing to go back to
-	    return -code error -errorinfo $Info $Msg
+
+    # the 'Please wait' window grabs the clicks while the instance
+    # loads : a click on a mode (Editor ...) taken by an 'update'
+    # of the loading code broke the display. It is always closed
+    # (finally), and the error message comes after it.
+    set Erreur ""
+    FaireAttendre "Please wait ...\nLoading instance \"$Mac\" ..."
+    try {
+	set NoFeat 0
+	if {! $Toggle(Feature)} {
+	    set Toggle(Feature) 1
+	    ToggleFeature
+	    set NoFeat 1
 	}
-	# an error in CreeVue left the display half updated
-	# (sequences of one instance, features of another) :
-	# the previous instance is displayed again
-	puts "\nMiseAJourMac : instance \"$Mac\" not loaded\n$Info"
-	LesDefauts NmMacCourant $AncNm
-	LesDefauts IxMacCourant $AncIx
-	CreeVue
-	FaireLire "Error !\nInstance \"$Mac\" could not be loaded :\n$Msg\n\nBack to instance \"$AncNm\"."
+    
+	if {[catch {CreeVue} Msg]} {
+	    set Info $::errorInfo
+	    if {$AncIx eq $iMac || $AncIx eq ""} {
+		# nothing to go back to
+		return -code error -errorinfo $Info $Msg
+	    }
+	    # an error in CreeVue left the display half updated
+	    # (sequences of one instance, features of another) :
+	    # the previous instance is displayed again
+	    puts "\nMiseAJourMac : instance \"$Mac\" not loaded\n$Info"
+	    LesDefauts NmMacCourant $AncNm
+	    LesDefauts IxMacCourant $AncIx
+	    CreeVue
+	    set Erreur "Error !\nInstance \"$Mac\" could not be loaded :\n$Msg\n\nBack to instance \"$AncNm\"."
+	}
+    
+	# the selected names are row numbers of the previous instance,
+	# and the selected columns (Identity, Tree, Superposition tools)
+	# columns of its alignment
+	ClearSelectionNoms
+	ClearSelectionSequences
+	set ::ZonePCI {}
+	set ::ZoneTree {}
+	set ::ZoneSuperposition {}
+
+	set LongueurTotale [LongueurMac]
+	#InfosDesPDB
+    
+	set LTPCI [CalculeLesPCIDuMac]
+	if {$Defauts(FirstPass)} {
+	    LogSeqInfoGlobales
+	    LogLesCompositions
+	    LogPCI all
+
+	    LesDefauts FirstPass 0
+	}
+    
+	AuLog @begin blob
+	AuLog @title Alignment : [MacCourant name]
+	AuLog @end
+	LogInfosClusters
+	LogPCI
+    
+	ChangeNomsAff
+	AdjustNamesWidgetWidth
+	AfficheNomsEtSeqs
+	OrdaliDefaultMapping
+	OrdaliDefaultTags
+	LesDefauts AffSS 0
+	ToggleSecStr
+	RepeintNomsEtSeqs
+
+	InitWRegle
+	AfficheRegle
+
+	update idletasks
+
+	set bt $WOrdali(BoutZones)
+	if {[EtatBouton $bt]} {
+	    AfficheZonesClustering
+	}
+
+	ChangeMode
+
+	if {$NoFeat} {
+	    set Toggle(Feature) 0
+	    ToggleFeature
+	}
+
+	# combobox shows the current snapshot
+	MetAJourWMacs
+
+	# annotations of the new snapshot
+	RafraichitAnnotations
+    } finally {
+	FaireLaSuite
     }
-    
-    # the selected names are row numbers of the previous instance,
-    # and the selected columns (Identity, Tree, Superposition tools)
-    # columns of its alignment
-    ClearSelectionNoms
-    ClearSelectionSequences
-    set ::ZonePCI {}
-    set ::ZoneTree {}
-    set ::ZoneSuperposition {}
 
-    set LongueurTotale [LongueurMac]
-    #InfosDesPDB
-    
-    set LTPCI [CalculeLesPCIDuMac]
-    if {$Defauts(FirstPass)} {
-	LogSeqInfoGlobales
-	LogLesCompositions
-	LogPCI all
-
-	LesDefauts FirstPass 0
-    }
-    
-    AuLog @begin blob
-    AuLog @title Alignment : [MacCourant name]
-    AuLog @end
-    LogInfosClusters
-    LogPCI
-    
-    ChangeNomsAff
-    AdjustNamesWidgetWidth
-    AfficheNomsEtSeqs
-    OrdaliDefaultMapping
-    OrdaliDefaultTags
-    LesDefauts AffSS 0
-    ToggleSecStr
-    RepeintNomsEtSeqs
-
-    InitWRegle
-    AfficheRegle
-
-    update idletasks
-
-    set bt $WOrdali(BoutZones)
-    if {[EtatBouton $bt]} {
-	AfficheZonesClustering
+    if {$Erreur ne ""} {
+	FaireLire $Erreur
     }
 
-    ChangeMode
-
-    if {$NoFeat} {
-	set Toggle(Feature) 0
-	ToggleFeature
-    }
-
-    # combobox shows the current snapshot
-    MetAJourWMacs
-
-    # annotations of the new snapshot
-    RafraichitAnnotations
-    
     return
 }
 
