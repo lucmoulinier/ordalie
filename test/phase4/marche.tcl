@@ -29,9 +29,10 @@ proc Tire {} {
     set i1 [expr {[Q MacCourant] == 1}]
     set L {}
     # poids : une action apparaît plusieurs fois
-    # instance modifiée : Ordalie demande Overwrite / Create a new one / Cancel. « Create a new one » ouvre
-    # la fenêtre du titre, que le banc ne remplit pas : Overwrite, ou Cancel sur l'instance d'origine (M1)
-    set rep [expr {$i1 ? 2 : 0}]
+    # instance modifiée : Ordalie demande Overwrite / Create a new one / Leave without saving / Cancel.
+    # « Create a new one » ouvre la fenêtre du titre, que le banc ne remplit pas : Overwrite, ou Cancel
+    # sur l'instance d'origine (M1)
+    set rep [expr {$i1 ? 3 : 0}]
     foreach m $macs {if {$m ne $cour} {lappend L [list "instance $m" "probe::answer tk_dialog $rep; MiseAJourMac x [list $m]"]}}
     set seqs [LignesSeqs]
     for {set k 0} {$k < 3} {incr k} {

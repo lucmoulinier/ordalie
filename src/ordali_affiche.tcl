@@ -8245,18 +8245,25 @@ proc MiseAJourMac {{args ""}} {
     }
 
     if {[VueEditee]} {
-	set chx [tk_dialog .chx "Warning" "Warning !\nThis alignment has not been saved !" "" 0 "Overwrite it" "Create a new one" "Cancel"]
-	if {$chx == 2 || $chx < 0} {
+	set chx [tk_dialog .chx "Warning" "Warning !\nThis alignment has not been saved !" "" 0 "Overwrite it" "Create a new one" "Leave without saving" "Cancel"]
+	if {$chx == 3 || $chx < 0} {
 	    # Cancel : stay on the current snapshot
 	    MetAJourWMacs
 	    return
 	}
-	SauveLeMac $chx
-	if {[VueEditee]} {
-	    # not saved (reference alignment, no title ...) :
-	    # stay on the current snapshot, changes are kept
-	    MetAJourWMacs
-	    return
+	if {$chx == 2} {
+	    # Leave without saving : the changes are dropped. They
+	    # are only in memory until SauveLeMac, so the instance
+	    # keeps what was saved in the db (as the Reset button)
+	    VueEditee 0
+	} else {
+	    SauveLeMac $chx
+	    if {[VueEditee]} {
+		# not saved (reference alignment, no title ...) :
+		# stay on the current snapshot, changes are kept
+		MetAJourWMacs
+		return
+	    }
 	}
     }
 
