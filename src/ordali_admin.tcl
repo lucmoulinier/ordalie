@@ -92,10 +92,14 @@ proc BuildDistrib {{plat ""}} {
     # 3 -- doc --
     cd doc
     set srcDoc [file join .. .. Ressources doc ordalie_documentation]
+    set odoc [file tail $srcDoc]
     if {[file type $srcDoc] eq "link"} {
 	set srcDoc [file join [file dirname $srcDoc] [file readlink $srcDoc]]
     }
-    file copy -force {*}[glob $srcDoc/*] .
+    if {! [file exists $odoc]} {
+	file mkdir $odoc
+    }
+    file copy -force {*}[glob $srcDoc/*] [file join . $odoc]
     cd ..
 
     # 4 -- bin
