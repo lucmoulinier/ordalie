@@ -20,9 +20,9 @@ function tableToCSV( id, fileName ) {
 	// Stores each csv row data
 	var csvrow = [];
 	for (let j = 0; j < cols.length; j++) {
-	    // Get the text data of each cell
+	    // Get the text (not the HTML) of each cell
 	    // of a row and push it to csvrow
-	    csvrow.push(cols[j].innerHTML);
+	    csvrow.push(csvField(cols[j].textContent.trim()));
 	}
 	// Combine each column value with comma
 	csv_data.push(csvrow.join(","));
@@ -31,6 +31,15 @@ function tableToCSV( id, fileName ) {
     csv_data = csv_data.join('\n');
     // Call this function to download csv file
     downloadCSVFile(csv_data, fileName);
+}
+
+// Quote a field (RFC 4180) when it contains a comma, a double quote
+// or a line break; double quotes inside are doubled.
+function csvField(text) {
+    if (/[",\r\n]/.test(text)) {
+	return '"' + text.replace(/"/g, '""') + '"';
+    }
+    return text;
 }
 
 function downloadCSVFile(csv_data, fileName) {

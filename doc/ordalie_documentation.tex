@@ -298,7 +298,7 @@ The scheme of the database can be found in Appendix \ref{chap-schemedb}.
 The interface is organized vertically into several functional areas (see fig. \ref{mainwindow}).
 
 \begin{figure}[htbp]
-\includegraphics[width=\textwidth, keepaspectratio=true]{ordalie_mainwindow.png}
+\includegraphics[width=\textwidth, keepaspectratio=true]{ordalie_mainwindow.jpeg}
 \caption{Ordalie main window}
 \label{mainwindow}
 \end{figure}
@@ -1329,6 +1329,8 @@ Most of Ordalie's operations and computations are recorded in a log. Selecting t
 
 \subsubsection{Save Log File}
 Exports the entire Ordalie log to a file. A sub-menu allows the user to choose between HTML and Text formats. The output file name is derived from the root name of the original alignment file, appended with the corresponding extension (\texttt{.txt} or \texttt{.html}).
+
+In the HTML log (saved, or displayed with \textit{View Log}, then \textit{in browser}), each table is followed by a \textbf{Download CSV} button that saves this table as a CSV file, named after the table title. The script doing it is embedded in the HTML file, so the file can be moved or sent on its own. As for any web download, the browser chooses where the file is written: by default in the user's \textit{Downloads} folder (on macOS, Safari uses the location set in the \textit{Safari} menu, \textit{Settings}, \textit{General} tab, \textit{File download location}; some browsers ask for a location instead). Fields containing commas, double quotes or line breaks are quoted.
 
 \subsubsection{Toggle Full Screen}
 Toggles the main window between its current size and full-screen mode. This action can also be triggered by pressing \texttt{<Ctrl> + <F1>}.

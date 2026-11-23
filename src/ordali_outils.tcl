@@ -5191,9 +5191,9 @@ proc PutYearOnOrdaliImage {} {
     LoadTkAndPackages
     package require Img
     
-    set fimg [file join $OrdEtcDir OrdaliNuageNumero.gif]
+    set fimg [file join $OrdEtcDir OrdaliNuageNumero.png]
     set ph [image create photo]
-    $ph read $fimg -format gif
+    $ph read $fimg -format png
 
     set Ld [$ph data]
     set hgt [llength $Ld]

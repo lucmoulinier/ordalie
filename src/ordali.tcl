@@ -39,8 +39,6 @@ if {! $InStarPack} {
     if {[string range $OrdaliDir end-2 end] eq "bin"} {
 	set OrdaliDir [file normalize [file join $OrdaliDir ..]]
     }
-    puts "info script [info script]"
-    puts "OrdaliDir $OrdaliDir"
 }
 
 package require platform

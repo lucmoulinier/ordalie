@@ -367,16 +367,15 @@ proc TOCEnHTML {} {
 
 
 proc JSDeOrdali {} {
-    global JSDeordali OrdEtcDir
+    global OrdEtcDir
 
-    set Ll [LesLignesDuFichier [file join $OrdEtcDir htmltable2csv.js]]
-    set JSDeOrdali "<script type='text/javascript'>"
-    lappend JSDeOrdali {*}$Ll
+    # Le script est mis dans la page : le HTML sauve n'a pas de
+    # htmltable2csv.js a cote de lui, et doit marcher seul.
+    set JSDeOrdali [list "<script type='text/javascript'>"]
+    lappend JSDeOrdali [ContenuDuFichier [file join $OrdEtcDir htmltable2csv.js]]
     lappend JSDeOrdali "</script>"
 
-    set JSDeOrdali "<script type='text/javascript' src='htmltable2csv.js'></script>"
-    return $JSDeOrdali
-    #return [join $JSDeOrdali \n]
+    return [join $JSDeOrdali \n]
 }
 
 

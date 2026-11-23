@@ -31,6 +31,12 @@ proc CreateInstaller {} {
 
 
 proc BuildDistrib {{plat ""}} {
+    # Available platforms are:
+    # - linux-x86_64
+    # - win32-x86_64
+    # macosx-armaqua : Aqua based tcl/tk and packages. Compilations done on the mac
+    # -macosx-arm : X11 based tcl/tk and packages
+
     # Define platform
     if {$plat eq ""} {
 	package require platform
@@ -63,7 +69,7 @@ proc BuildDistrib {{plat ""}} {
     # 1 --- lib : copying libraries
     # in dir moumou/pkgconf/<platform> there are all 
     # binary libraries. Some are compiled, other are 
-    # taken as is on the internet (tcl3d)
+    # taken as is on the internet (Img, tcl3d)
     puts ""
     puts "copying libraries ..."
     puts "[pwd]"
@@ -85,7 +91,11 @@ proc BuildDistrib {{plat ""}} {
     
     # 3 -- doc --
     cd doc
-    file copy -force {*}[glob [file join .. .. Ressources doc *]] .
+    set srcDoc [file join .. .. Ressources doc ordalie_documentation]
+    if {[file type $srcDoc] eq "link"} {
+	set srcDoc [file join [file dirname $srcDoc] [file readlink $srcDoc]]
+    }
+    file copy -force {*}[glob $srcDoc/*] .
     cd ..
 
     # 4 -- bin

@@ -536,7 +536,7 @@ proc LanceDoc {{meth "internet"}} {
     if {$meth eq "internet"} {
 	package require browser_info
 
-	OpenInBrowser "http://www.lbgi.fr/~moumou/Ordalie/doc/ordalie_documentation/index.html"
+	OpenInBrowser "http://bigest-icube.fr/ordalie/doc/ordalie_documentation/index.html"
     } else {
 	if {[info procs sourcefile] eq ""} {
 	    source [file join $::OrdLibDir hv hv3_main.tcl]
