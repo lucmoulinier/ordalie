@@ -6,35 +6,48 @@
 
 
 # ------------------------------------------------------------
+# CommandeOuvreURL
+#
+# Command of the system that opens an URL (or a file) with the
+# default browser, {} if there is none
+# ------------------------------------------------------------
+proc CommandeOuvreURL {} {
+    global tcl_platform
+
+    switch -- $tcl_platform(platform) {
+        windows {
+            # "start" is an internal command of cmd.exe
+            return [auto_execok start]
+        }
+        unix {
+            if {$tcl_platform(os) eq "Darwin"} {
+                if {[auto_execok open] ne ""} {
+                    return [list open]
+                }
+                return {}
+            }
+            # freedesktop (every desktop), GNOME/GLib, Debian/Ubuntu
+            # alternatives
+            foreach cmd {xdg-open {gio open} sensible-browser x-www-browser} {
+                if {[auto_execok [lindex $cmd 0]] ne ""} {
+                    return $cmd
+                }
+            }
+            return {}
+        }
+    }
+
+    return {}
+}
+
+
+# ------------------------------------------------------------
 # browser_exists
 #
 # Check if the system is able to open URLs
 # ------------------------------------------------------------
 proc browser_exists {} {
-    global tcl_platform
-
-    package require platform
-
-    switch -- $tcl_platform(platform) {
-        windows {
-            # "start" est interne à cmd.exe
-            return 1
-        }
-        unix {
-            if {$tcl_platform(os) eq "Darwin"} {
-                return [expr {
-			      [auto_execok open] ne ""
-                }]
-            } else {
-                return [expr {
-                    [auto_execok xdg-open] ne ""
-                }]
-            }
-        }
-        default {
-            return 0
-        }
-    }
+    return [expr {[CommandeOuvreURL] ne {}}]
 }
 
 # ------------------------------------------------------------
@@ -45,42 +58,39 @@ proc browser_exists {} {
 proc open_browser {url} {
     global tcl_platform
 
-    switch -- $tcl_platform(platform) {
-        windows {
-            # start est une commande interne cmd.exe
-            exec {*}[auto_execok start] "" $url &
-        }
-        unix {
-            if {$tcl_platform(os) eq "Darwin"} {
-                exec open $url &
-            } else {
-                exec xdg-open $url &
-            }
-        }
-        default {
-            error "Unsupported platform"
-        }
+    set cmd [CommandeOuvreURL]
+    if {$cmd eq {}} {
+        error "No command to open an URL on this system"
     }
+    if {$tcl_platform(platform) eq "windows"} {
+        # cmd.exe would cut the command at a '&' ; "" : title of
+        # the window, otherwise a quoted url would be taken as title
+        set url [string map {& ^&} $url]
+        exec {*}$cmd "" $url &
+    } else {
+        exec {*}$cmd $url &
+    }
+
+    return
 }
 
-# ============================================================
-# DEMO
-# ============================================================
+# ------------------------------------------------------------
+# OpenInBrowser
+#
+# Opens an URL or a file : with the command of the system, or
+# else with a browser found by the browser_info package.
+# 1 if launched
+# ------------------------------------------------------------
 proc OpenInBrowser {UrlOrFile} {
-    if {[browser_exists]} {
-	puts "Browser system detected"
-	
-	open_browser $UrlOrFile
-	return 1
-    } else {
-	package require browser_info
+    if {[browser_exists] && ! [catch {open_browser $UrlOrFile}]} {
+        return 1
+    }
+    if {[catch {package require browser_info} Msg]} {
+        FaireLire "Cannot open a web browser :\n$Msg"
+        return 0
+    }
 
-	# Test for file
-	set file $UrlOrFile
-	OpenFileInBrowser $file
-
-	return 0
-    }    
+    return [OpenFileInBrowser $UrlOrFile]
 }
 
 

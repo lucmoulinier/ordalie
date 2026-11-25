@@ -534,8 +534,6 @@ proc LanceDoc {{meth "internet"}} {
     #    - local    : launch Tcl/Tk hv3 browser
 
     if {$meth eq "internet"} {
-	package require browser_info
-
 	OpenInBrowser "http://bigest-icube.fr/ordalie/doc/ordalie_documentation/index.html"
     } else {
 	if {[info procs sourcefile] eq ""} {

@@ -1082,7 +1082,6 @@ proc LogInBrowser {} {
 	set filout "Output.$what"
     }
 
-    package require browser_info
     set file "file://[file join [pwd] $filout]"
     #puts "open $file"
     OpenInBrowser $file

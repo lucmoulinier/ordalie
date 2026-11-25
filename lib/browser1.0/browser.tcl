@@ -1,298 +1,64 @@
 # Taken from wiki.tcl.tk and updated
-# Changes:
-#   - Added Microsoft Edge support (Chromium-based, Windows/Mac/Linux)
-#   - Fixed missing closing brace in default_windows_location_of_browser method
-#   - Fixed mismatched braces causing "unbalanced brace" errors
-#   - Fixed logic bug in default_program_files_on_windows (inverted condition)
-#   - Fixed unclosed env variable reference: $::env(PROGRAMFILES(X86)) missing closing }
-#   - Fixed dict get usage: should be array access, not dict
-#   - Fixed string comparison: use eq instead of == for strings
-#   - Fixed namespace closing brace alignment
+#
+# Finds an installed web browser (Firefox, Chrome/Chromium, Edge, Opera,
+# Brave, Safari on macOS) and opens a file or an URL with it. Ordalie uses
+# it only as a last resort, when the system handler (start, open, xdg-open,
+# gio, sensible-browser) is not available (OpenInBrowser, ordali_web.tcl).
+#
+# Changes (2026-11-25) :
+#   - Windows : the localized "Program Files" tables are removed (since Vista
+#     the real folder is "Program Files" in every language) ; the folders
+#     are taken from ProgramFiles, ProgramFiles(x86), ProgramW6432 and
+#     LOCALAPPDATA (per-user installs of Chrome, Opera).
+#   - Internet Explorer removed (retired, absent from Windows 11).
+#   - Linux : several names per browser (chromium, google-chrome-stable,
+#     firefox-esr, microsoft-edge-stable ...), Brave added ; the version is
+#     asked to the binary found.
+#   - macOS : /Applications then ~/Applications ; Firefox binary "firefox"
+#     (firefox-bin for old versions) ; opened with "open -a".
+#   - OpenFileInBrowser : runs the path found (Windows was given the short
+#     name of the browser, e.g. "edge", which is not a command).
+# Older changes : Edge support, unbalanced braces, string comparisons.
 
 package provide browser_info 1.0
 
 namespace eval ::browser_info {
 
-    array set WINDOWS_LOCALE {
-        0436 af_ZA
-        041c sq_AL
-        0484 gsw_FR
-        045e am_ET
-        0401 ar_SA
-        0801 ar_IQ
-        0c01 ar_EG
-        1001 ar_LY
-        1401 ar_DZ
-        1801 ar_MA
-        1c01 ar_TN
-        2001 ar_OM
-        2401 ar_YE
-        2801 ar_SY
-        2c01 ar_JO
-        3001 ar_LB
-        3401 ar_KW
-        3801 ar_AE
-        3c01 ar_BH
-        4001 ar_QA
-        042b hy_AM
-        044d as_IN
-        042c az_AZ
-        082c az_AZ
-        046d ba_RU
-        042d eu_ES
-        0423 be_BY
-        0445 bn_IN
-        201a bs_BA
-        141a bs_BA
-        047e br_FR
-        0402 bg_BG
-        0403 ca_ES
-        0004 zh_CHS
-        0404 zh_TW
-        0804 zh_CN
-        0c04 zh_HK
-        1004 zh_SG
-        1404 zh_MO
-        7c04 zh_CHT
-        0483 co_FR
-        041a hr_HR
-        101a hr_BA
-        0405 cs_CZ
-        0406 da_DK
-        048c gbz_AF
-        0465 div_MV
-        0413 nl_NL
-        0813 nl_BE
-        0409 en_US
-        0809 en_GB
-        0c09 en_AU
-        1009 en_CA
-        1409 en_NZ
-        1809 en_IE
-        1c09 en_ZA
-        2009 en_JA
-        2409 en_CB
-        2809 en_BZ
-        2c09 en_TT
-        3009 en_ZW
-        3409 en_PH
-        4009 en_IN
-        4409 en_MY
-        4809 en_IN
-        0425 et_EE
-        0438 fo_FO
-        0464 fil_PH
-        040b fi_FI
-        040c fr_FR
-        080c fr_BE
-        0c0c fr_CA
-        100c fr_CH
-        140c fr_LU
-        180c fr_MC
-        0462 fy_NL
-        0456 gl_ES
-        0437 ka_GE
-        0407 de_DE
-        0807 de_CH
-        0c07 de_AT
-        1007 de_LU
-        1407 de_LI
-        0408 el_GR
-        046f kl_GL
-        0447 gu_IN
-        0468 ha_NG
-        040d he_IL
-        0439 hi_IN
-        040e hu_HU
-        040f is_IS
-        0421 id_ID
-        045d iu_CA
-        085d iu_CA
-        083c ga_IE
-        0410 it_IT
-        0810 it_CH
-        0411 ja_JP
-        044b kn_IN
-        043f kk_KZ
-        0453 kh_KH
-        0486 qut_GT
-        0487 rw_RW
-        0457 kok_IN
-        0412 ko_KR
-        0440 ky_KG
-        0454 lo_LA
-        0426 lv_LV
-        0427 lt_LT
-        082e dsb_DE
-        046e lb_LU
-        042f mk_MK
-        043e ms_MY
-        083e ms_BN
-        044c ml_IN
-        043a mt_MT
-        0481 mi_NZ
-        047a arn_CL
-        044e mr_IN
-        047c moh_CA
-        0450 mn_MN
-        0850 mn_CN
-        0461 ne_NP
-        0414 nb_NO
-        0814 nn_NO
-        0482 oc_FR
-        0448 or_IN
-        0463 ps_AF
-        0429 fa_IR
-        0415 pl_PL
-        0416 pt_BR
-        0816 pt_PT
-        0446 pa_IN
-        046b quz_BO
-        086b quz_EC
-        0c6b quz_PE
-        0418 ro_RO
-        0417 rm_CH
-        0419 ru_RU
-        243b smn_FI
-        103b smj_NO
-        143b smj_SE
-        043b se_NO
-        083b se_SE
-        0c3b se_FI
-        203b sms_FI
-        183b sma_NO
-        1c3b sma_SE
-        044f sa_IN
-        0c1a sr_SP
-        1c1a sr_BA
-        081a sr_SP
-        181a sr_BA
-        045b si_LK
-        046c ns_ZA
-        0432 tn_ZA
-        041b sk_SK
-        0424 sl_SI
-        040a es_ES
-        080a es_MX
-        0c0a es_ES
-        100a es_GT
-        140a es_CR
-        180a es_PA
-        1c0a es_DO
-        200a es_VE
-        240a es_CO
-        280a es_PE
-        2c0a es_AR
-        300a es_EC
-        340a es_CL
-        380a es_UR
-        3c0a es_PY
-        400a es_BO
-        440a es_SV
-        480a es_HN
-        4c0a es_NI
-        500a es_PR
-        540a es_US
-        0441 sw_KE
-        041d sv_SE
-        081d sv_FI
-        045a syr_SY
-        0428 tg_TJ
-        085f tmz_DZ
-        0449 ta_IN
-        0444 tt_RU
-        044a te_IN
-        041e th_TH
-        0851 bo_BT
-        0451 bo_CN
-        041f tr_TR
-        0442 tk_TM
-        0480 ug_CN
-        0422 uk_UA
-        042e wen_DE
-        0420 ur_PK
-        0820 ur_IN
-        0443 uz_UZ
-        0843 uz_UZ
-        042a vi_VN
-        0452 cy_GB
-        0488 wo_SN
-        0434 xh_ZA
-        0485 sah_RU
-        0478 ii_CN
-        046a yo_NG
-        0435 zu_ZA
+    # macOS : application bundle and binaries inside Contents/MacOS
+    variable APP_ON_MAC
+    array set APP_ON_MAC {
+        firefox {Firefox.app {firefox firefox-bin}}
+        chrome  {{Google Chrome.app} {{Google Chrome}}}
+        safari  {Safari.app {Safari}}
+        opera   {Opera.app {Opera}}
+        edge    {{Microsoft Edge.app} {{Microsoft Edge}}}
+        brave   {{Brave Browser.app} {{Brave Browser}}}
     }
 
-    variable LANGUAGE_NAME
-    array set LANGUAGE_NAME {
-        en English
-        es Spanish
-        de German
-        fr French
-        it Italian
-        pt Portuguese
-        sv Swedish
-        da Danish
-        nb Norwegian
-        nn Norwegian
-        ro Romanian
+    # Windows : sub-directories (of Program Files or LOCALAPPDATA) and binary,
+    # with '/' (file join accepts it on Windows too)
+    variable BINARY_ON_WINDOWS
+    array set BINARY_ON_WINDOWS {
+        firefox {{Mozilla Firefox} firefox.exe}
+        chrome  {Google/Chrome/Application chrome.exe}
+        opera   {Opera opera.exe Programs/Opera launcher.exe}
+        edge    {Microsoft/Edge/Application msedge.exe}
+        brave   {BraveSoftware/Brave-Browser/Application brave.exe}
     }
 
-    array set PROGRAM_FILES {
-        English   {{C:\Program Files} {C:\Program Files (x86)}}
-        German    {{C:\Programme} {C:\Programme (x86)}}
-        Spanish   {{C:\Archivos de programa} {C:\Archivos de programa (x86)}}
-        French    {{C:\Programmes} {C:\Programmes (x86)}}
-        Italian   {{C:\Programmi} {C:\Programmi (x86)}}
-        Portuguese {{C:\Arquivos de Programas} {C:\Arquivos de Programas (x86)}}
-        Swedish   {{C:\Program} {C:\Program (x86)}}
-        Danish    {{C:\Programmer} {C:\Programmer (x86)}}
-        Norwegian {{C:\Programfiler} {C:\Programfiler (x86)}}
-        Romanian  {{C:\Fisiere Program} {C:\Fisiere Program (x86)}}
+    # Linux and other unix : names of the binary, in order
+    variable BINARY_ON_LINUX
+    array set BINARY_ON_LINUX {
+        firefox {firefox firefox-esr}
+        chrome  {google-chrome google-chrome-stable chromium chromium-browser}
+        opera   {opera}
+        edge    {microsoft-edge microsoft-edge-stable}
+        brave   {brave-browser brave}
     }
 
-    variable DEFAULT_BROWSER_PATH_ON_MAC
-    array set DEFAULT_BROWSER_PATH_ON_MAC {
-        firefox {/Applications/Firefox.app/Contents/MacOS/firefox-bin}
-        chrome  {/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}
-        safari  {/Applications/Safari.app/Contents/MacOS/Safari}
-        opera   {/Applications/Opera.app/Contents/MacOS/Opera}
-        edge    {/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge}
-    }
-
-    variable BINARY_DIRECTORY_ON_WINDOWS
-    array set BINARY_DIRECTORY_ON_WINDOWS {
-        ie      {Internet Explorer}
-        firefox {Mozilla Firefox}
-        chrome  {Google\Chrome\Application}
-        opera   {Opera}
-        edge    {Microsoft\Edge\Application}
-    }
-
-    variable BINARY_NAME
-    array set BINARY_NAME {
-        windows {
-            ie      iexplore.exe
-            firefox firefox.exe
-            chrome  chrome.exe
-            opera   opera.exe
-            edge    msedge.exe
-        }
-        linux {
-            firefox firefox
-            chrome  google-chrome
-            opera   opera
-            edge    microsoft-edge
-        }
-    }
-
+    # Windows registry : list of triples {key pattern_of_last_subkey value}
     variable BROWSER_PATH_IN_WINDOWS_REGISTRY
-    # Format per browser: list of triples {subpath_of_keys pattern_of_last_key key_value}
     array set BROWSER_PATH_IN_WINDOWS_REGISTRY {
-        ie {
-            {HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\IEXPLORE.EXE} {} {}
-        }
         firefox {
             {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe} {} {}
             {HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe} {} {}
@@ -302,27 +68,29 @@ namespace eval ::browser_info {
             {HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe} {} {}
         }
         opera {
-            {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\Opera.exe} {} {}
-            {HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Opera.exe} {} {}
+            {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\opera.exe} {} {}
+            {HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\opera.exe} {} {}
         }
         edge {
             {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe} {} {}
             {HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe} {} {}
         }
+        brave {
+            {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\brave.exe} {} {}
+            {HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\brave.exe} {} {}
+        }
     }
 
     variable BROWSER_VERSION_IN_WINDOWS_REGISTRY
     array set BROWSER_VERSION_IN_WINDOWS_REGISTRY {
-        ie {
-            {HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer} {} svcVersion
-            {HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer} {} Version
-        }
         opera {
+            {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall} {[Oo]pera *} DisplayVersion
             {HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall} {[Oo]pera *} DisplayVersion
             {HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall} {[Oo]pera *} DisplayVersion
         }
         chrome {
             {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\Google Chrome} {} DisplayVersion
+            {HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Google Chrome} {} DisplayVersion
             {HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Google Chrome} {} DisplayVersion
         }
         firefox {
@@ -335,22 +103,18 @@ namespace eval ::browser_info {
             {HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge} {} DisplayVersion
             {HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge} {} DisplayVersion
         }
+        brave {
+            {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\BraveSoftware Brave-Browser} {} DisplayVersion
+            {HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\BraveSoftware Brave-Browser} {} DisplayVersion
+        }
     }
 
-    variable COMMAND_TO_GET_BROWSER_VERSION
-    array set COMMAND_TO_GET_BROWSER_VERSION {
-        firefox {firefox --version}
-        chrome  {google-chrome --version}
-        opera   {opera -version}
-        edge    {microsoft-edge --version}
-    }
-
-    namespace export firefox ie chrome opera edge
+    namespace export firefox chrome opera edge brave
 
     # -------------------------------------------------------------------------
 
     oo::class create browser_info {
-        variable browser_name WINDOWS_LOCALE LANGUAGE_NAME PROGRAM_FILES COMMAND_TO_GET_BROWSER_VERSION DEFAULT_BROWSER_PATH_ON_MAC BROWSER_PATH_IN_WINDOWS_REGISTRY BROWSER_VERSION_IN_WINDOWS_REGISTRY BINARY_NAME BINARY_DIRECTORY_ON_WINDOWS
+        variable browser_name APP_ON_MAC BINARY_ON_WINDOWS BINARY_ON_LINUX BROWSER_PATH_IN_WINDOWS_REGISTRY BROWSER_VERSION_IN_WINDOWS_REGISTRY
 
         constructor {browserName} {
             set browser_name $browserName
@@ -361,156 +125,137 @@ namespace eval ::browser_info {
             }
         }
 
-        method default_program_files_on_windows {} {
-            set locale_code [my get_windows_locale_ID]
-            # BUG FIX: original had inverted condition (eq vs ne)
-            if {$locale_code ne ""} {
-                set language_code [lindex [split $locale_code "_"] 0]
-            } else {
-                set language_code "en"
+        method name {} {
+            return $browser_name
+        }
+
+        method windows_folders {} {
+            # folders where browsers are installed : Program Files (64
+            # and 32 bits), and LOCALAPPDATA for per-user installs.
+            # The keys contain parentheses : given as strings
+            set Ld {}
+            foreach k [list ProgramFiles "ProgramFiles(x86)" ProgramW6432 LOCALAPPDATA] {
+                foreach n [array names ::env] {
+                    if {[string equal -nocase $n $k] && $::env($n) ne "" && $::env($n) ni $Ld} {
+                        lappend Ld $::env($n)
+                    }
+                }
             }
-            if {[info exists LANGUAGE_NAME($language_code)]} {
-                set language $LANGUAGE_NAME($language_code)
-            } else {
-                set language "English"
+            if {$Ld eq {}} {
+                set Ld [list {C:\Program Files} {C:\Program Files (x86)}]
             }
-            return $PROGRAM_FILES($language)
+            return $Ld
         }
 
         method default_windows_location_of_browser {} {
-            set directory_of_program_files [list]
-            set default_program_files [my default_program_files_on_windows]
-
-            if {[info exists ::env(PROGRAMFILES)]} {
-                lappend directory_of_program_files $::env(PROGRAMFILES)
-            } else {
-                lappend directory_of_program_files [lindex $default_program_files 0]
+            if {! [info exists BINARY_ON_WINDOWS($browser_name)]} {
+                return {}
             }
-
-            # Nested parentheses in PROGRAMFILES(X86) confuse Tcl's brace-counter
-            # inside a class body. Use a string variable for the key instead.
-            set pf86key "PROGRAMFILES(X86)"
-            if {[info exists ::env($pf86key)]} {
-                lappend directory_of_program_files $::env($pf86key)
-            } else {
-                lappend directory_of_program_files [lindex $default_program_files 1]
-            }
-
-            # BUG FIX: BINARY_NAME is an array, not a dict; use array access
-            set binary_filename $BINARY_NAME(windows)
-            set binary_filename [dict get $binary_filename $browser_name]
-            set browser_subpath [file join $BINARY_DIRECTORY_ON_WINDOWS($browser_name) $binary_filename]
-
-            foreach directory $directory_of_program_files {
-                set binary_path [file join $directory $browser_subpath]
-                if {[file isfile $binary_path] && [file executable $binary_path]} {
-                    return $binary_path
-                }
-            }
-            return {}
-        }
-
-        method get_windows_locale_ID {} {
-            package require registry
-            set locale_subkey [string tolower \
-                [registry get {HKEY_LOCAL_MACHINE\system\controlset001\control\nls\language} Installlanguage]]
-            if {[info exists WINDOWS_LOCALE($locale_subkey)]} {
-                return $WINDOWS_LOCALE($locale_subkey)
-            } else {
-                return ""
-            }
-        }
-
-        method which {executable} {
-            foreach path [split $::env(PATH) $::tcl_platform(pathSeparator)] {
-                set exe [file join $path $executable]
-                if {[file isfile $exe] && [file executable $exe]} {
-                    return $exe
+            foreach directory [my windows_folders] {
+                foreach {subdir binary} $BINARY_ON_WINDOWS($browser_name) {
+                    set binary_path [file join $directory $subdir $binary]
+                    if {[file isfile $binary_path]} {
+                        return [file nativename $binary_path]
+                    }
                 }
             }
             return {}
         }
 
         method first_value_found_in_windows_registry {data_of_paths} {
-            package require registry
+            if {[catch {package require registry}]} {
+                return ""
+            }
             set value_found ""
             foreach {subpath_of_keys pattern_of_last_key key_value} $data_of_paths {
                 if {$pattern_of_last_key ne ""} {
-                    set list_of_subkeys [registry keys $subpath_of_keys $pattern_of_last_key]
-                    if {[llength $list_of_subkeys] != 0} {
-                        set key_name "$subpath_of_keys\\[lindex $list_of_subkeys 0]"
-                    } else {
+                    if {[catch {registry keys $subpath_of_keys $pattern_of_last_key} list_of_subkeys] || [llength $list_of_subkeys] == 0} {
                         continue
                     }
+                    set key_name "$subpath_of_keys\\[lindex $list_of_subkeys 0]"
                 } else {
                     set key_name $subpath_of_keys
                 }
-                try {
-                    set value_found [registry get $key_name $key_value]
-                    break
-                } on error {} {
-                    # key not present, try next
+                if {! [catch {registry get $key_name $key_value} value_found] && $value_found ne ""} {
+                    return $value_found
                 }
+                set value_found ""
             }
             return $value_found
         }
 
-        method browser_path_in_windows_registry {} {
-            return [my first_value_found_in_windows_registry \
-                $BROWSER_PATH_IN_WINDOWS_REGISTRY($browser_name)]
-        }
-
-        method browser_version_in_windows_registry {} {
-            return [my get_version_from_text \
-                [my first_value_found_in_windows_registry \
-                    $BROWSER_VERSION_IN_WINDOWS_REGISTRY($browser_name)]]
+        method mac_application {} {
+            # path of the application bundle, or ""
+            if {! [info exists APP_ON_MAC($browser_name)]} {
+                return {}
+            }
+            set app [lindex $APP_ON_MAC($browser_name) 0]
+            set Ld [list /Applications]
+            if {[info exists ::env(HOME)]} {
+                lappend Ld [file join $::env(HOME) Applications]
+            }
+            foreach d $Ld {
+                if {[file isdirectory [file join $d $app]]} {
+                    return [file join $d $app]
+                }
+            }
+            return {}
         }
 
         method get_path {} {
-            # Returns the path to the browser binary.
+            # path of the browser binary, "" if not found
             set path_to_browser {}
-            # BUG FIX: use eq for string comparison, not ==
-            if {$::tcl_platform(os) in {MacOS Darwin}} {
-                if {[info exists DEFAULT_BROWSER_PATH_ON_MAC($browser_name)]} {
-                    set path_to_browser $DEFAULT_BROWSER_PATH_ON_MAC($browser_name)
+            if {$::tcl_platform(os) eq "Darwin"} {
+                set app [my mac_application]
+                if {$app ne ""} {
+                    foreach bin [lindex $APP_ON_MAC($browser_name) 1] {
+                        set p [file join $app Contents MacOS $bin]
+                        if {[file isfile $p]} {
+                            return $p
+                        }
+                    }
                 }
             } elseif {$::tcl_platform(platform) eq "windows"} {
-                set path_to_browser [string trim [my browser_path_in_windows_registry] "\""]
+                if {[info exists BROWSER_PATH_IN_WINDOWS_REGISTRY($browser_name)]} {
+                    set path_to_browser [string trim [my first_value_found_in_windows_registry $BROWSER_PATH_IN_WINDOWS_REGISTRY($browser_name)] "\""]
+                }
+                if {$path_to_browser ne "" && ! [file isfile $path_to_browser]} {
+                    set path_to_browser {}
+                }
                 if {$path_to_browser eq ""} {
                     set path_to_browser [my default_windows_location_of_browser]
                 }
-            } else {
-                set linux_names $BINARY_NAME(linux)
-                if {[dict exists $linux_names $browser_name]} {
-                    set path_to_browser [my which [dict get $linux_names $browser_name]]
+            } elseif {[info exists BINARY_ON_LINUX($browser_name)]} {
+                foreach bin $BINARY_ON_LINUX($browser_name) {
+                    set exe [lindex [auto_execok $bin] 0]
+                    if {$exe ne ""} {
+                        return $exe
+                    }
                 }
             }
             return $path_to_browser
         }
 
         method get_version {} {
-            # Returns the version of the browser.
-            set browser_version {}
-            if {$::tcl_platform(os) in {MacOS Darwin}} {
-                # On macOS, try running the binary with --version
-                set bin [my get_path]
-                if {$bin ne ""} {
-                    catch {exec $bin --version} output
-                    foreach line [split $output "\n"] {
-                        if {[set browser_version [my get_version_from_text $line]] ne ""} break
-                    }
+            # version of the browser, "" if unknown
+            if {$::tcl_platform(platform) eq "windows"} {
+                if {! [info exists BROWSER_VERSION_IN_WINDOWS_REGISTRY($browser_name)]} {
+                    return ""
                 }
-            } elseif {$::tcl_platform(platform) eq "windows"} {
-                return [my browser_version_in_windows_registry]
-            } else {
-                if {[info exists COMMAND_TO_GET_BROWSER_VERSION($browser_name)]} {
-                    catch "exec $COMMAND_TO_GET_BROWSER_VERSION($browser_name)" output
-                    foreach line [split $output "\n"] {
-                        if {[set browser_version [my get_version_from_text $line]] ne ""} break
-                    }
+                return [my get_version_from_text [my first_value_found_in_windows_registry $BROWSER_VERSION_IN_WINDOWS_REGISTRY($browser_name)]]
+            }
+            set bin [my get_path]
+            if {$bin eq ""} {
+                return ""
+            }
+            # some browsers write the version on stderr
+            catch {exec $bin --version 2>@1} output
+            foreach line [split $output "\n"] {
+                if {[set v [my get_version_from_text $line]] ne ""} {
+                    return $v
                 }
             }
-            return $browser_version
+            return ""
         }
 
         method get_version_from_text {text} {
@@ -519,72 +264,45 @@ namespace eval ::browser_info {
             }
             return ""
         }
-    }
 
-    # -------------------------------------------------------------------------
-    # Concrete browser classes
-    # -------------------------------------------------------------------------
-
-    oo::class create Firefox {
-        superclass browser_info
-        constructor {} { next firefox }
-    }
-
-    oo::class create IE {
-        superclass browser_info
-        constructor {} { next ie }
-    }
-
-    oo::class create Chrome {
-        superclass browser_info
-        constructor {} { next chrome }
-    }
-
-    oo::class create Opera {
-        superclass browser_info
-        constructor {} { next opera }
-    }
-
-    oo::class create Safari {
-        superclass browser_info
-        constructor {} { next safari }
-    }
-
-    # NEW: Microsoft Edge (Chromium-based)
-    oo::class create Edge {
-        superclass browser_info
-        constructor {} { next edge }
+        method open {url} {
+            # opens url (or file) with this browser, 1 if launched
+            set path [my get_path]
+            if {$path eq ""} {
+                return 0
+            }
+            if {$::tcl_platform(os) eq "Darwin"} {
+                # a binary run directly starts a second instance
+                exec open -a [my mac_application] $url &
+            } else {
+                exec $path $url &
+            }
+            return 1
+        }
     }
 
     # -------------------------------------------------------------------------
     # Singleton instances
     # -------------------------------------------------------------------------
 
-    Firefox create firefox
-    IE      create ie
-    Chrome  create chrome
-    Opera   create opera
-    Edge    create edge
-
-    if {$::tcl_platform(os) eq "Darwin"} {
-        Safari create safari
+    foreach b {firefox chrome opera edge brave} {
+        browser_info create $b $b
     }
+    if {$::tcl_platform(os) eq "Darwin"} {
+        browser_info create safari safari
+    }
+    unset b
 
     # -------------------------------------------------------------------------
 
     proc ::browser_info::getbrowserinfo {} {
-        #
-        # Get available browser name and path.
-        # Returns a list {browser_name path}, or empty string if none found.
-        # Edge is listed before IE on Windows since IE is deprecated.
-        #
+        # first browser found : {browser_name path}, or {}
         if {$::tcl_platform(platform) eq "windows"} {
-            set browser_list {edge firefox chrome opera ie}
+            set browser_list {edge firefox chrome brave opera}
+        } elseif {$::tcl_platform(os) eq "Darwin"} {
+            set browser_list {safari firefox chrome edge brave opera}
         } else {
-            set browser_list {firefox chrome opera edge}
-            if {$::tcl_platform(os) eq "Darwin"} {
-                set browser_list [linsert $browser_list 0 safari]
-            }
+            set browser_list {firefox chrome edge brave opera}
         }
 
         foreach browser $browser_list {
@@ -601,33 +319,16 @@ namespace eval ::browser_info {
 # -------------------------------------------------------------------------
 
 proc OpenFileInBrowser {html_file} {
+    # opens html_file (or an URL) with the first browser found ; 1 if done
     if {[llength [set browser_info [::browser_info::getbrowserinfo]]] == 0} {
-	FaireLire "Cannot detect any web browser in this system!"
+        FaireLire "Cannot detect any web browser in this system!"
+        return 0
+    }
+    set browser [lindex $browser_info 0]
+    if {[catch {::browser_info::$browser open $html_file} ok]} {
+        FaireLire "Could not launch $browser :\n$ok"
         return 0
     }
 
-    set browser      [lindex $browser_info 0]
-    set browser_path [lindex $browser_info 1]
-
-    switch -- $::tcl_platform(platform) {
-        "windows" {
-            # Use 'start' so Windows picks the right handler
-            set command [list {*}[auto_execok start] {}]
-            exec {*}$command $browser $html_file &
-        }
-        "unix" {
-            exec $browser_path $html_file &
-        }
-        default {
-            tk_messageBox \
-                -title "Operating system not supported" \
-                -icon info \
-                -type ok \
-                -message "Your OS is not supported. Please edit the code."
-	    return 0
-        }
-    }
-    return 1
+    return $ok
 }
-
-# OpenInBrowser http://www.example.com/index.html
