@@ -596,6 +596,7 @@ proc CreeOrdalieStarpack {{plat ""}} {
 	set plat [::platform::generic]
 	cd [file join $::OrdaliDir Build $plat]
     }
+
     # output runtime tclkit :
     # may be different for CROSS - BUILDING
     set platout $plat

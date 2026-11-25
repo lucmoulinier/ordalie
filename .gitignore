@@ -12,6 +12,10 @@
 !/test/
 !/packages/
 !/Build/
+# article : seulement la figure de la philosophie d'Ordalie
+!/article/
+/article/*
+!/article/philosophie_Ordalie_Article.png
 
 # sauvegardes et fichiers d'éditeur, partout
 *~
