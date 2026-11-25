@@ -1,6 +1,6 @@
 # Alignment > Annotate instance : vrais événements souris sur l'alignement (event generate, aux coordonnées
 # des cases) : zone tirée sur deux séquences, fenêtre (couleur, texte avec ' { }), OK ; Maj+clic : édition ;
-# Ctrl+clic : suppression ; Return (enregistre) ou Cancel ; table annotation de l'instance ; sauvegarde ORD,
+# Ctrl+clic : suppression ; Return (valide en mémoire, VueEditee) puis Overwrite, ou Cancel ; table annotation de l'instance ; sauvegarde ORD,
 # réouverture ; annotations d'une autre instance non mélangées.
 # Usage : tclsh8.6 test/saisies/annotation_test.tcl [numéro d'instance]
 set N [expr {$argc ? [lindex $argv 0] : 7}]
@@ -57,7 +57,11 @@ if {[catch {
     Remplit "à supprimer" green
     Clic $y1 62 4
     V "Ctrl+clic : supprimée" {[lsearch -index 1 [Q {set ::Anno(Lanno)}] "à supprimer"] < 0}
-    F "Return (enregistre)" {QuitAnnotation ok} 60000
+    F "Return (valide en mémoire)" {QuitAnnotation ok} 60000
+    V "Return : base inchangée" {[Base] eq $B0}
+    V "Return : instance à enregistrer" {[Q VueEditee]}
+    V "Return : annotation dans AnnoMac" {[lsearch -index 1 [Q {set ::AnnoMac}] "texte modifié"] >= 0}
+    F "Overwrite" {ActionInstance overwrite} 60000
     set B1 [Base]
     V "base : une annotation de plus" {[llength $B1] == [llength $B0] + 3} "[expr {[llength $B1]/3}] (avant [expr {[llength $B0]/3}])"
     lassign [lrange $B1 end-2 end] t c z

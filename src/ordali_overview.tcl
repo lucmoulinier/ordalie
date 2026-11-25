@@ -404,8 +404,15 @@ proc DessineAnnotationsSurOverview {Id} {
     # same scale as the region (InitCentreOverview)
     set sx [expr {1.0*[$wc cget -width] /$Ovw(O$Id,Width)}]
     set sy [expr {1.0*[$wc cget -height]/$Ovw(O$Id,Height)}]
+    # current instance : its annotations in memory (AnnoMac, maybe not
+    # saved yet). Other instances : as saved in the db
     set pkmac $Ovw(O$Id,Mac)
-    $db eval {select pk_annotation, annotation, color, zone from annotation where pk_snap = $pkmac order by pk_annotation} {
+    if {$pkmac == [MacCourant] && [info exists ::AnnoMac]} {
+	set Lanno [concat {*}$::AnnoMac]
+    } else {
+	set Lanno [$db eval {select pk_annotation, annotation, color, zone from annotation where pk_snap = $pkmac order by pk_annotation}]
+    }
+    foreach {pk_annotation annotation color zone} $Lanno {
 	set tag "AnnoOvw_$pk_annotation"
 	foreach e $zone {
 	    if {[regexp {^[0-9]+\.[0-9]+$} [lindex $zone 0]]} {

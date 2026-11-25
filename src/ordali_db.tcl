@@ -596,13 +596,12 @@ proc CreeVue {} {
 	}
     }
 
-    # Alignment Annotations : read from the db, for the current
-    # snapshot, by ManageAnnotation (ordali_annotation.tcl)
-    if {[QuelMode] eq "annotation"} {
-	LoadSnapAnnotations
-    } else {
-	unset -nocomplain Anno
-    }
+    # Alignment Annotations of the snapshot : in memory (AnnoMac),
+    # written in the db with the snapshot (ordali_annotation.tcl).
+    # The instance is changed only in the ordali/feature modes :
+    # no working state of the annotation mode.
+    ChargeAnnotationsDuMac
+    unset -nocomplain Anno
 
     # Conservation
     # Pas calcule si precompute = 0
@@ -853,6 +852,58 @@ proc FichierModifie {{mod ""}} {
 }
 
 
+proc ModeInterditInstance {action} {
+    # the instances (snapshots) are changed, overwritten, created or
+    # deleted only in the "ordali" and "feature" modes : the work of
+    # the other modes is validated (or dropped) when they are left.
+    # 1 (and a message) if the current mode forbids it.
+    if {[QuelMode] in {"ordali" "feature"}} {
+	return 0
+    }
+    FaireLire "Please leave the current mode before $action."
+
+    return 1
+}
+
+
+proc ActionInstance {quoi} {
+    # list and buttons of the instance bar
+    switch -- $quoi {
+	"choose" {
+	    if {[ModeInterditInstance "changing instance"]} {
+		# the list shows the current instance again
+		MetAJourWMacs
+		return
+	    }
+	    MiseAJourMac
+	}
+	"reset" {
+	    if {[ModeInterditInstance "resetting the instance"]} {
+		return
+	    }
+	    MiseAJourMac reset
+	}
+	"overwrite" {
+	    if {[ModeInterditInstance "overwriting the instance"]} {
+		return
+	    }
+	    SauveLeMac 0
+	}
+	"new" {
+	    if {[ModeInterditInstance "creating a new instance"]} {
+		return
+	    }
+	    SauveLeMac 1
+	}
+	"delete" {
+	    DetruitInstance
+	}
+    }
+
+    return
+}
+
+
 proc DescriptionDuMac {{mac ""}} {
     if {$mac eq ""} {set mac [MacCourant]}
     return [$::db onecolumn {select description from snapshot where pk_snap=$mac}]
@@ -1016,8 +1067,7 @@ proc DetruitInstance {} {
 	FaireLire "Beware !\nYou can not delete the 'Original alignment'.\nThis alignment constitutes the reference alignment."
 	return
     }
-    if {[QuelMode] ni {"ordali" "feature"}} {
-	FaireLire "Please leave the current tool (Return)\nbefore deleting an instance."
+    if {[ModeInterditInstance "deleting an instance"]} {
 	return
     }
 
@@ -1298,23 +1348,13 @@ proc EnregistreLeMac {{titre ""} {desc ""}} {
 	    set cmeth [lindex [ClusteringDuMac method] 0]
 	}
 
-	# annotations of the current snapshot : copied in the new
-	# snapshot, with their pk when the current one is overwritten.
-	# In annotation mode, the displayed (pending) ones : they go
-	# in the new snapshot only, the current one is unchanged.
-	set InAnno [expr {[QuelMode] eq "annotation"}]
-	if {$InAnno} {
-	    set Lanno {}
-	    foreach ann $::Anno(Lanno) {
-		lassign $ann pka txt col zon status
-		if {$status != -1} {
-		    lappend Lanno $pka $txt $col [ZoneAnnotationVersNoms $zon]
-		}
-	    }
-	} else {
-	    set pkold [MacCourant]
-	    set Lanno [$db eval {select pk_annotation, annotation, color, zone from annotation where pk_snap=$pkold order by pk_annotation}]
+	# annotations of the current snapshot, in memory (AnnoMac) :
+	# written in the saved snapshot, with their pk when the
+	# current one is overwritten
+	if {! [info exists ::AnnoMac]} {
+	    ChargeAnnotationsDuMac
 	}
+	set Lanno [concat {*}$::AnnoMac]
 
 	# Detruit mac a remplacer si besoin est.
 	# Overwrite : le snapshot garde son pk_snap (et donc sa
@@ -1395,12 +1435,8 @@ proc EnregistreLeMac {{titre ""} {desc ""}} {
 	    }
 	    $db eval {insert into annotation values (nullif($pka,''),$pk_snap,$txt,$col,$zone)}
 	}
-	if {$InAnno} {
-	    # pk may have changed : redraw
-	    LoadSnapAnnotations
-	    EffaceAnnotations
-	    ShowAnnotation
-	}
+	# pk may have changed (new snapshot) : AnnoMac read again
+	ChargeAnnotationsDuMac
 
 	# Remplit colscore
 	set Ls [array names ScoreMeth "Cons-*,Edit"]

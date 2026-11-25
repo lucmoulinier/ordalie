@@ -348,8 +348,9 @@ Located above the alignment, this bar allows you to:
   \item View the zones that lead to the current clustering (\textit{View Zone}).
   \item Reload the current instance, discarding unsaved changes (\textit{Reset}).
   \item Save changes to the current instance (\textit{Overwrite}) or create a new one (\textit{New Instance}). A title and a description are asked for a new instance.
-  \item Delete the current instance (\textit{Delete}), after confirmation. Everything that depends on it is deleted too: its data in the database (sequences order, features, clustering, conservation scores, annotations), and the trees and overviews computed on it. The previous instance of the list is then displayed. The instances are not renumbered: deleting M3 of M1 to M4 leaves M1, M2 and M4, and the next new instance is M5. The original alignment (M1) can not be deleted, and an instance can only be deleted from the main view (leave the tools with \textit{Return} first).
+  \item Delete the current instance (\textit{Delete}), after confirmation. Everything that depends on it is deleted too: its data in the database (sequences order, features, clustering, conservation scores, annotations), and the trees and overviews computed on it. The previous instance of the list is then displayed. The instances are not renumbered: deleting M3 of M1 to M4 leaves M1, M2 and M4, and the next new instance is M5. The original alignment (M1) can not be deleted.
 \end{itemize}
+Switching, resetting, overwriting, creating or deleting an instance is only possible in the main view ('Normal' mode): leave the current mode first (with its \textit{Return}, \textit{Dismiss} or \textit{Cancel} button, depending on the mode). What a mode keeps when it is left becomes a change of the instance, saved with \textit{Overwrite} or \textit{New Instance}, or when switching instance or saving the file.
 
 \subsubsection{The Instance Frame}
 \label{instance-frame}
@@ -1144,7 +1145,7 @@ A memo tag is defined by three main characteristics: its position and size, its 
 
 \subsubsection{Control Panel}
 The Control Panel is designed for straightforward management of visibility and tool states. From left to right, it includes:
-The \textbf{Show annotations colored in} combobox (\textit{None}, \textit{All}, or one of the colours in use) filters the display, while \textbf{Show All} and \textbf{Hide All} show or hide all the annotations. \textbf{Return} saves the changes (new, edited and deleted annotations) in the instance and leaves the tool; \textbf{Dismiss} leaves the tool and forgets the changes made since it was started.
+The \textbf{Show annotations colored in} combobox (\textit{None}, \textit{All}, or one of the colours in use) filters the display, while \textbf{Show All} and \textbf{Hide All} show or hide all the annotations. \textbf{Return} keeps the changes (new, edited and deleted annotations) as changes of the instance and leaves the tool: use \textit{Overwrite} or \textit{New Instance} to save them (they are also saved when switching instance, if you choose so, or when saving the file); \textbf{Dismiss} leaves the tool and forgets the changes made since it was started.
 
 \subsubsection{Keyboard Bindings}
 Annotation creation and editing are primarily mouse-driven. The interaction logic is summarized in Table \ref{table-keysanno}.

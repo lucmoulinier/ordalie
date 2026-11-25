@@ -8370,8 +8370,10 @@ proc MiseAJourMac {{args ""}} {
 	# combobox shows the current snapshot
 	MetAJourWMacs
 
-	# annotations of the new snapshot
+	# annotations of the new snapshot, and on its overviews (after
+	# Reset or "Leave without saving", the unsaved ones are gone)
 	RafraichitAnnotations
+	RafraichitAnnotationsOverviews
     } finally {
 	FaireLaSuite
     }
@@ -8673,7 +8675,7 @@ proc AfficheBarreMac {} {
 	-state readonly \
 	-width 40 \
 	-textvariable ::MacChoisi
-    bind $WOrdali(combomac) <<ComboboxSelected>> [list MiseAJourMac]
+    bind $WOrdali(combomac) <<ComboboxSelected>> [list ActionInstance choose]
     set WOrdali(BoutInfos) $wv.fcx.binf
     button $wv.fcx.binf \
 	-text "Info" \
@@ -8699,19 +8701,19 @@ proc AfficheBarreMac {} {
     button $wv.fbt.bres \
 	-text "Reset" \
 	-bg cyan \
-	-command [list MiseAJourMac reset]
+	-command [list ActionInstance reset]
     button $wv.fbt.bsav \
 	-text "Overwrite" \
 	-bg green1 \
-	-command [list SauveLeMac 0]
+	-command [list ActionInstance overwrite]
     button $wv.fbt.bkip \
 	-text "New Instance" \
 	-bg green1 \
-	-command [list SauveLeMac 1]
+	-command [list ActionInstance new]
     button $wv.fbt.bdel \
 	-text "Delete" \
 	-bg red \
-	-command [list DetruitInstance]
+	-command [list ActionInstance delete]
     
     grid $wv.fbt.bann -row 0 -column 0 -sticky w -padx {10 1}
     grid $wv.fbt.bzon -row 0 -column 1 -sticky w -padx 1

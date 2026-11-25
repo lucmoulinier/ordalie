@@ -10,7 +10,17 @@
 #              biotext tags). In the db, the zone is stored as a
 #              list of {sequence-name x1 x2} : it does not depend
 #              on the order of the sequences in the snapshot.
-#   - status : -1 deleted, 0 as in the db, 1 edited, 2 new
+#   - status : -1 deleted, 0 as in AnnoMac, 1 edited, 2 new
+#
+# AnnoMac : annotations of the current snapshot, in memory, as
+#   {pk text color zone} with the zone as in the db. Like the
+#   features (TabSF), they are read from the db by CreeVue
+#   (ChargeAnnotationsDuMac), changed by the annotation mode
+#   (Return : ManageAnnotation save, VueEditee 1) and written in
+#   the db only with the snapshot (EnregistreLeMac : Overwrite,
+#   New Instance, change of instance, file save). Reset or "Leave
+#   without saving" read the db again : the changes are dropped.
+#   Anno is only the working state of the annotation mode.
 # Each annotation is displayed with the tag Anno_<pk>.
 # AnnoTxt(<pk>) : text of the displayed annotations (balloon).
 #
@@ -66,58 +76,74 @@ proc ZoneAnnotationVersLignes {zdb} {
 }
 
 
-proc ManageAnnotation {what {pkann ""} {txt ""} {col ""} {zon ""}} {
-    # Annotations of the CURRENT snapshot in the db
-    global Anno db
+proc ChargeAnnotationsDuMac {} {
+    # annotations of the current snapshot : db -> AnnoMac
+    global AnnoMac db
 
     set pkmac [MacCourant index]
+    set AnnoMac {}
+    $db eval {select pk_annotation, annotation, color, zone from annotation where pk_snap = $pkmac order by pk_annotation} {
+	lappend AnnoMac [list $pk_annotation $annotation $color $zone]
+    }
+
+    return
+}
+
+
+proc ManageAnnotation {what {pkann ""} {txt ""} {col ""} {zon ""}} {
+    # Annotations of the CURRENT snapshot (AnnoMac, in memory)
+    global Anno AnnoMac
+
+    if {! [info exists AnnoMac]} {
+	set AnnoMac {}
+    }
     set ret {}
     switch $what {
 	"getall" {
 	    set Anno(Lanno) {}
-	    $db eval {select pk_annotation, annotation, color, zone from annotation where pk_snap = $pkmac order by pk_annotation} {
-		lappend Anno(Lanno) [list $pk_annotation $annotation $color [ZoneAnnotationVersLignes $zone] 0]
+	    foreach ann $AnnoMac {
+		lassign $ann pk txt col zone
+		lappend Anno(Lanno) [list $pk $txt $col [ZoneAnnotationVersLignes $zone] 0]
 	    }
 	}
 	"get" {
-	    set ret [$db eval {select pk_annotation, annotation, color, zone from annotation where pk_annotation = $pkann}]
-	    lappend ret 0
+	    set i [lsearch -exact -index 0 $AnnoMac $pkann]
+	    if {$i != -1} {
+		set ret [lindex $AnnoMac $i]
+		lappend ret 0
+	    }
 	}
 	"record" {
-	    # new annotation, written in the db by 'save'
+	    # new annotation, put in AnnoMac by 'save'
 	    lappend Anno(Lanno) [list $Anno(iAnno) $txt $col $zon 2]
 	    set ret $Anno(iAnno)
 	    incr Anno(iAnno)
 	}
 	"save" {
+	    # changes of the annotation mode -> AnnoMac. The db is
+	    # written with the snapshot (EnregistreLeMac)
 	    if {! [info exists Anno(Lanno)]} {
 		return
 	    }
 	    set Lnew {}
-	    $db transaction {
+	    set Lmac {}
+	    set Change 0
 	    foreach ann $Anno(Lanno) {
 		lassign $ann pk txt col zon status
-		set zdb [ZoneAnnotationVersNoms $zon]
-		switch -- $status {
-		    -1 {
-			$db eval {delete from annotation where pk_annotation = $pk}
-			continue
-		    }
-		    1 {
-			$db eval {update annotation set annotation = $txt, color = $col, zone = $zdb where pk_annotation = $pk}
-		    }
-		    2 {
-			$db eval {insert into annotation values($pk, $pkmac, $txt, $col, $zdb)}
-		    }
+		if {$status != 0} {
+		    set Change 1
 		}
+		if {$status == -1} {
+		    continue
+		}
+		lappend Lmac [list $pk $txt $col [ZoneAnnotationVersNoms $zon]]
 		lappend Lnew [list $pk $txt $col $zon 0]
 	    }
+	    set AnnoMac $Lmac
+	    if {$Change} {
+		# the snapshot has to be saved
+		VueEditee 1
 	    }
-	    # written in the database : the ORD file has to be saved
-	    if {[lsearch -all -inline -not -exact [lmap a $Anno(Lanno) {lindex $a 4}] 0] ne ""} {
-		FichierModifie 1
-	    }
-	    # saved : a second save must not insert them again
 	    set Anno(Lanno) $Lnew
 	}
     }
@@ -128,7 +154,7 @@ proc ManageAnnotation {what {pkann ""} {txt ""} {col ""} {zon ""}} {
 
 proc LoadSnapAnnotations {} {
     # annotations of the current snapshot -> Anno
-    global Anno db
+    global Anno AnnoMac db
 
     ManageAnnotation "getall"
     set Lcol {}
@@ -137,10 +163,17 @@ proc LoadSnapAnnotations {} {
     }
     set Anno(LColorsUsed) [linsert [lsort -unique $Lcol] 0 "None" "All"]
 
-    # pk of new annotations : unique in the whole table
+    # pk of new annotations : unique in the whole table, and among
+    # the annotations not written in the db yet
     set imax [$db eval {select max(pk_annotation) from annotation}]
     if {! [string is integer -strict $imax]} {
 	set imax 0
+    }
+    foreach ann $AnnoMac {
+	set pk [lindex $ann 0]
+	if {[string is integer -strict $pk] && $pk > $imax} {
+	    set imax $pk
+	}
     }
     set Anno(iAnno) [expr {$imax + 1}]
 
@@ -565,14 +598,16 @@ proc Annotations2Features {} {
     # (Macsim/XML output)
     global ListeTypesDeFeatures TabSF Anno LNOrdali LNSeqlab
 
-    set InAnno [expr {[QuelMode] eq "annotation"}]
-    if {$InAnno} {
-	ManageAnnotation "save"
-	set Lanno $Anno(Lanno)
-    } else {
-	ManageAnnotation "getall"
-	set Lanno $Anno(Lanno)
-	unset -nocomplain Anno
+    # validated annotations of the snapshot (AnnoMac) : in the
+    # annotation mode, its working state Anno is kept
+    if {[info exists Anno]} {
+	set SauveAnno [array get Anno]
+    }
+    ManageAnnotation "getall"
+    set Lanno $Anno(Lanno)
+    unset -nocomplain Anno
+    if {[info exists SauveAnno]} {
+	array set Anno $SauveAnno
     }
 
     if {[llength $Lanno] == 0} {

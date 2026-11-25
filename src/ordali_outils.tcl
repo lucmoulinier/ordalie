@@ -1123,6 +1123,8 @@ proc FermeFichier {{DoSave "nosave"}} {
 
     catch {$db close}
     set CompteurDeMac 0
+    # annotations of the closed file
+    unset -nocomplain ::AnnoMac ::Anno
     # nothing left to save
     VueEditee 0
     FichierModifie 0
