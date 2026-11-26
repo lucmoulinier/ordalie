@@ -352,10 +352,11 @@ proc UpdateFromOrdaliDB {} {
     set Lkv [$db eval {select * from ordalie}]
     set Lt [$db eval {select distinct(var) from ordalie}]
     global {*}$Lt
-    # options of the command line (-script) are not replaced by
-    # the values saved in the file
+    # options of the command line (-script) and the state of this
+    # session (batch mode of msaconvert, msacut, msainfo..., path of
+    # the file opened) are not replaced by the values saved in the file
     set Lcmd {}
-    foreach k {RunScript Script} {
+    foreach k {RunScript Script Mode Exit LogAtStartup FichierORD} {
 	if {[info exists Defauts($k)]} {
 	    lappend Lcmd $k $Defauts($k)
 	}

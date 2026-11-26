@@ -1031,8 +1031,8 @@ proc LogInfosSeqsGlobales {} {
     AuLog @begin table
     AuLog @title General Sequences information
     AuLog @begin tabular
-    AuLog @typecols T T T T T
-    AuLog @titlecols "Seq. Name" "Accession" "ID" "Organism" "Taxa ID"
+    AuLog @typecols T T T I T T
+    AuLog @titlecols "Seq. Name" "Accession" "ID" "Length" "Organism" "Taxa ID"
     foreach n $LNOrdali {
 	set n [string trim $n]
 	if {[string trim $n] eq ""} {

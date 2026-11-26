@@ -4471,61 +4471,63 @@ proc tstsurf {} {
 
 
 proc ViewPDB {args} {
-    global Defauts StrucAVoir db ListePDB pdbIdRef
-    
+    # viewpdb <PDB ID | UniProt accession (AlphaFold) | PDB or mmCIF file> ...
+    # Structures loaded as by "Add structure" (LoadNewStructure), then
+    # shown in the 3D viewer. LoadNouveauPDB, used before, failed on its
+    # first line when called with one argument.
+    global Defauts StrucAVoir db ListePDB
+
     package require http
     package require tls
     package require tcl3d
-    #LoadTclPackages
     package require sqlite3
-    #LoadTkAndPackages
     package require combobox
-    
-    set db [FabriqueDeTables [set Defauts(TablesDB1.1)] "" memory]
-    
-    set pdbIdRef 9999
+
+    if {! [info exists db] || $db eq ""} {
+	set db [FabriqueDeTables [set Defauts(TablesDB1.1)] "" memory]
+    }
+
     set StrucAVoir {}
     set ListePDB {}
-    foreach pdbid $args {
-	puts "pdbid in : $pdbid"
-	if {[file exists $pdbid]} {
-	    set Lpdb [ContenuDuFichier $pdbid]
-	    set pdbid [file rootname [file tail $pdbid]]
+    foreach arg $args {
+	if {[file exists $arg]} {
+	    set ret [LoadNewStructure $arg]
 	} else {
-	    set pdbid [DonneIdDeAccessPDB $pdbid]
-	    set Lpdb [TextePDB $pdbid ALL "" OnTheWeb]
+	    set ret [LoadNewStructure [string toupper $arg] [string toupper $arg]]
 	}
-	if {! [EstUnAccessPDB $pdbid]} {
-	    set old_pdbid $pdbid
-	    set pdbid [incr pdbIdRef -1]
+	lassign $ret what pdbid
+	if {$what ne "StrucID"} {
+	    puts "Error ! Structure >$arg< could not be loaded : $pdbid"
+	    continue
 	}
-
-	puts "pdbid new : $pdbid"
-	#rR attention on rend le pdbid
-	set pdbid [LoadNouveauPDB $pdbid]
-	if {[regexp "superseed" $pdbid]} {
-	    puts "Superseeded entry : $pdbid"
-	    regsub " superseed.+$" $pdbid "" pdbid
-	}
-	
-	update
 	foreach c [$pdbid _chains] {
-	    puts "   chain $c"
-	    lappend StrucAVoir PDB_${pdbid}_$c
-	    lappend ListePDB   PDB_${pdbid}_$c
+	    # the same structure given twice is shown once
+	    if {"PDB_${pdbid}_$c" ni $StrucAVoir} {
+		lappend StrucAVoir PDB_${pdbid}_$c
+		lappend ListePDB   PDB_${pdbid}_$c
+	    }
 	}
-	puts "$pdbid loaded"
+	puts "$arg : structure $pdbid, chains [$pdbid _chains]"
+    }
+    if {$StrucAVoir == {}} {
+	puts "\nError ! No structure to show !\n"
+	exit 1
     }
 
-    if {0} {
-	Structure create $pdbid
-	$pdbid new $Lpdb "" 0 1
-    }
-    puts ""
     InfosDesPDB
-    puts "ready to show !"
-
     AfficheDansViandox
+
+    # no alignment : the empty main window is hidden, and closing the
+    # viewer ends the program
+    if {[info exists ::pgl(wogl)]} {
+	wm withdraw .
+	set top [winfo toplevel $::pgl(wogl)]
+	bind $top <Destroy> [list apply {{w top} {
+	    if {$w eq $top} {
+		exit
+	    }
+	}} %W $top]
+    }
 
     return
 }

@@ -70,163 +70,243 @@ proc LoadUnArbre {{fichierPH ""} {InOrdali 0}} {
 }
 
 
-proc MSACut_SetFeaturesRanges {relative Ld Lf} {
-    global TabSF LNOrdali LSOrdali ListePDB
+proc MSACutZones {relative LfromX LtoX} {
+    # column zones kept by msacut : list of {first last} (0-based, sorted).
+    # LfromX/LtoX : -frompos/-topos values (start at 1, "end" for the
+    # last one), in the alignment, or in the sequence <relative> (its
+    # residues, without gaps) if relative is not "global".
+    global LNOrdali Sequences
 
-    if {$relative ne ""} {
-	# transforme coords into globals coords
-	set Ld [lmap x $Ld {DonnePosSG $relative $x}]
-	set Lf [lmap x $Lf {DonnePosSG $relative $x}]
-    }	
+    set lgt [LongueurDeLAlignement]
+    if {$LfromX == {}} {
+	return [list [list 0 [expr {$lgt-1}]]]
+    }
 
-    # Now correct features limits according to selected zones
-    foreach n $LNOrdali {
-	set Ltypes [array names TabSF "$n,*"]
-	foreach ntype $Ltypes {
-	    lassign [split $ntype ,] tmp type
-	    foreach ft $TabSF($ntype) {
-		DecortiqueUneFeature $ft dg fg fcolor fscore fnote csys
-		foreach x1 $LfromX x2 $LtoX {
-		    if {$dg > $x2 || $fg < $x1} {
-			set ok 0
-			continue
-		    }
-		    if {$fg > $x2} {
-			set ok 1
-			set fg $x2
-		    }
-		    if {$dg < $x1} {
-			set ok 1
-			set dg $x1
-		    }
-		}
-		if {$ok} {
-		    # save corrected feature
-		    lappend Tnew($n,$type) [list "fstart" $dg "fstop" $fg "fcolor" $fcolor "fscore" $fscore "fnote" $fnote "fcsys" $csys]
-		}
-	    }
+    set seq ""
+    if {$relative ne "global"} {
+	set ix [lsearch -exact $LNOrdali $relative]
+	if {$ix == -1} {
+	    set ix [lsearch -exact -nocase $LNOrdali $relative]
+	}
+	if {$ix == -1 || [string trim $relative] eq ""} {
+	    puts "\nError !\nThe sequence >$relative< given with '-relative' does not exist !\n"
+	    exit 1
+	}
+	set seq [lindex $LNOrdali $ix]
+	set max [regexp -all {[A-Za-z]} $Sequences($seq)]
+    } else {
+	set max $lgt
+    }
+
+    set Lz {}
+    foreach x1 $LfromX x2 $LtoX {
+	if {$x2 eq "end"} {
+	    set x2 $max
+	}
+	if {$x1 < 1 || $x2 > $max || $x1 > $x2} {
+	    puts "\nError !\nBad zone -frompos $x1 -topos $x2 : positions should be in \[1,$max\], start <= end !\n"
+	    exit 1
+	}
+	if {$seq ne ""} {
+	    # residue -> column (DonnePosSG : residue index from 0)
+	    lappend Lz [list [DonnePosSG $seq [expr {$x1-1}]] [DonnePosSG $seq [expr {$x2-1}]]]
+	} else {
+	    lappend Lz [list [expr {$x1-1}] [expr {$x2-1}]]
 	}
     }
-    unset -nocomplain TabSF
-    array set TabSF [array get Tnew]
+    set Lz [lsort -integer -index 0 $Lz]
+    set prev -1
+    foreach z $Lz {
+	if {[lindex $z 0] <= $prev} {
+	    puts "\nError !\nThe '-frompos'/'-topos' zones overlap !\n"
+	    exit 1
+	}
+	set prev [lindex $z 1]
+    }
 
-    return
+    return $Lz
 }
 
 
-proc MSACut {args} {
-    global LNOrdali LSOrdali Sequences  LfromX LtoX LfromY LtoY
+proc MSACutSequences {LfromY LtoY} {
+    # names of the sequences kept by msacut, in the order of the
+    # alignment. LfromY/LtoY : -fromseq/-toseq values, sequence number
+    # (from 1, without the empty lines between groups) or name.
+    global LNOrdali
 
-    lassign $args relative format outfile
-
-    # If positions are relative to a specific sequence, check it
-    if {$relative ne ""} {
-	set ix [lsearch -nocase $LNOrdali $relative]
-	if {$ix == -1} {
-	    puts "\nError !\nThe sequence specify in >-relative< does not exists !"
-	    exit
-	}
+    set Lnoms [lsearch -all -inline -not -exact $LNOrdali ""]
+    if {$LfromY == {}} {
+	return $Lnoms
     }
 
-    # set features limits according to selected zones
-    if {[TypeAli] eq "XML" && $LfromX != {}} {
-	MSACut_SetFeaturesRanges $relative $LfromX $LtoX
-    }
-
-    # translate sequences names if any into sequence position
-    foreach var {LfromY LtoY} {
-	set tmp {}
-	foreach seq [set $var] {
-	    if {! [string is entier $seq]} {
-		set ix [lsearch -nocase $LNOrdali $seq]
-		if {$ix == -1} {
-		    puts "\nError !\n Sequence >$seq< does not exist in the alignment !\n"
-		    exit
+    set nseq [llength $Lnoms]
+    set Lz {}
+    foreach y1 $LfromY y2 $LtoY {
+	set Li {}
+	foreach y [list $y1 $y2] {
+	    if {[string is entier -strict $y]} {
+		if {$y < 1 || $y > $nseq} {
+		    puts "\nError !\nSequence number $y should be in \[1,$nseq\] !\n"
+		    exit 1
 		}
-	        lappend tmp $ix
+		lappend Li [expr {$y-1}]
 	    } else {
-		lappend tmp $seq
+		set i [lsearch -exact $Lnoms $y]
+		if {$i == -1} {
+		    set i [lsearch -exact -nocase $Lnoms $y]
+		}
+		if {$i == -1} {
+		    puts "\nError !\nSequence >$y< does not exist in the alignment !\n"
+		    exit 1
+		}
+		lappend Li $i
 	    }
 	}
-	set tmp [lsort -integer $tmp]
-	set $var $tmp
-    }
-    set Llimits {}
-    foreach y1 $LfromY y2 $LtoY {
-	lappend Llimits $y1 $y2
-    }
-    set Ltmp2 [lsort -integer $Llimits]
-    if {$Ltmp2 != $Llimits} {
-	puts "\nError !\nMismatch in selected sequences ('-fromseq' and 'toseq' keys) !\n"
-	exit
+	lassign $Li i1 i2
+	if {$i1 > $i2} {
+	    puts "\nError !\n-fromseq $y1 comes after -toseq $y2 in the alignment !\n"
+	    exit 1
+	}
+	lappend Lz [list $i1 $i2]
     }
 
-    # Create new sequences lists according to LfromY and LtoY boundaries
-    if {$Llimits != {}} {
-	set LNnew {} ; set LSnew {}
-	foreach {y1 y2} $Llimits {
-	    lappend LNnew {*}[lrange $LNOrdali $y1 $y2]
-	    lappend LSnew {*}[lrange $LSOrdali $y1 $y2]
+    set Lkeep {}
+    foreach z $Lz {
+	lassign $z i1 i2
+	for {set i $i1} {$i <= $i2} {incr i} {
+	    lappend Lkeep $i
 	}
-	set LNOrdali $LNnew
-	set LSOrdali $LSnew
     }
-    
-    # check position values
-    # Put values in [0,lgt-1] range
-    set Ltmp {}
-    set Lx2new {} ; set Lx1new {}
+    set Lkeep [lsort -integer -unique $Lkeep]
+
+    return [lmap i $Lkeep {lindex $Lnoms $i}]
+}
+
+
+proc MSACut {relative format outfile} {
+    # msacut : keeps the column zones and the sequences given on the
+    # command line (MSACutOptions), then saves the alignment.
+    # The features (columns, from 0, in TabSF) and the column scores are
+    # moved to the new columns ; those of the removed sequences and
+    # columns are dropped.
+    global LNOrdali LSOrdali Sequences LongueurTotale TabSF TColScore
+    global LfromX LtoX LfromY LtoY
+
     set lgt [LongueurDeLAlignement]
-    foreach x1 $LfromX x2 $LtoX {
-	if {$x2 eq "end"} {
-	    set x2 $lgt
+    set Lz [MSACutZones $relative $LfromX $LtoX]
+    set Lkeep [MSACutSequences $LfromY $LtoY]
+
+    # column offset of each zone in the new alignment
+    set Lzo {}
+    set off 0
+    foreach z $Lz {
+	lassign $z z1 z2
+	lappend Lzo [list $z1 $z2 $off]
+	incr off [expr {$z2-$z1+1}]
+    }
+    set newlgt $off
+
+    # sequences
+    set LNnew {}
+    set LSnew {}
+    foreach n $LNOrdali {
+	if {$n eq "" || $n ni $Lkeep} {
+	    # removed sequence ; the empty lines between groups are
+	    # kept only if all sequences are
+	    if {$n eq "" && $LfromY == {}} {
+		lappend LNnew ""
+		lappend LSnew ""
+	    }
+	    if {$n ne ""} {
+		unset -nocomplain Sequences($n)
+	    }
+	    continue
 	}
-	#puts "x1 $x1 x2 $x2 "
-	lappend Lx1new [expr {$x1 - 1}]
-	lappend Lx2new [expr {$x2 - 1}]
-	lappend Ltmp $x1 $x2
-    }
-    set LfromX $Lx1new
-    set LtoX $Lx2new
-    set Ltmp2 [lsort -integer $Ltmp]
-    if {$Ltmp2 != $Ltmp} {
-	puts "\nError !\nMismatch in '-frompos' and '-topos' values !\n"
-	exit
-    }
-    
-    # (fromX toX pairs define residue zones to be kept.
-    set Lsnew {}
-    foreach n $LNOrdali s $LSOrdali {
-	set snew ""
-	if {[string trim $n] ne ""} {
-	foreach x1 $LfromX x2 $LtoX {
-	    append snew [string range $s $x1 $x2]
+	set s ""
+	foreach z $Lz {
+	    append s [string range $Sequences($n) {*}$z]
 	}
-	    set Sequences($n) $snew
+	set Sequences($n) $s
+	lappend LNnew $n
+	lappend LSnew $s
+    }
+    set LNOrdali $LNnew
+    set LSOrdali $LSnew
+    set LongueurTotale $newlgt
+    # a sequence without residues can not be read again (xml, tfa ...)
+    set Lvides {}
+    foreach n $LNnew s $LSnew {
+	if {$n ne "" && ! [regexp {[A-Za-z]} $s]} {
+	    lappend Lvides $n
 	}
-	lappend Lsnew $snew
     }
-    set LSOrdali $Lsnew
-    
-    if {$outfile eq ""} {
-	set outfile JLeSauveAs
+    if {$Lvides != {}} {
+	puts "\nWarning !\nThese sequences have no residue in the kept columns :\n[join $Lvides \n]\n"
     }
+
+    # features
+    if {[info exists TabSF]} {
+	foreach k [array names TabSF] {
+	    set n [lindex [split $k ,] 0]
+	    if {$n ni $Lkeep} {
+		unset TabSF($k)
+		continue
+	    }
+	    set Lnew {}
+	    foreach ft $TabSF($k) {
+		set d [dict get $ft fstart]
+		set f [dict get $ft fstop]
+		foreach zo $Lzo {
+		    lassign $zo z1 z2 o
+		    if {$f < $z1 || $d > $z2} {
+			continue
+		    }
+		    dict set ft fstart [expr {max($d,$z1) - $z1 + $o}]
+		    dict set ft fstop  [expr {min($f,$z2) - $z1 + $o}]
+		    lappend Lnew $ft
+		}
+	    }
+	    if {$Lnew == {}} {
+		unset TabSF($k)
+	    } else {
+		set TabSF($k) $Lnew
+	    }
+	}
+    }
+
+    # column scores : one value per column
+    if {[info exists TColScore(Names)]} {
+	foreach name $TColScore(Names) {
+	    if {! [info exists TColScore($name,Data)]} {
+		continue
+	    }
+	    set Lnew {}
+	    foreach d $TColScore($name,Data) {
+		if {[llength $d] == $lgt} {
+		    set dn {}
+		    foreach z $Lz {
+			lappend dn {*}[lrange $d {*}$z]
+		    }
+		    set d $dn
+		}
+		lappend Lnew $d
+	    }
+	    set TColScore($name,Data) $Lnew
+	}
+    }
+
     if {$format eq ""} {
 	set format [TypeAli]
+	if {$format ni {TFA MSF ALN XML}} {
+	    set format XML
+	}
+    }
+    if {$outfile eq ""} {
+	set outfile "[file rootname [file tail [set ::Defauts(Fichier[TypeAli])]]]_cut.[string tolower $format]"
     }
 
     SauveLAlignement $format $outfile
-
-    exit
-
-
-    
-    if ff{[TypeAli] eq "XML"} {
-	array set TabSF [CheckFeaturesInRange $frompos $topos]
-    }
-
-    
-    
+    puts "[llength $Lkeep] sequences, $newlgt columns written to $outfile"
 
     return
 }
@@ -243,7 +323,8 @@ proc MSAInfoHelp {} {
     puts "\t   + identitystats : report only statistics for all groups of sequences."
     puts "\t  + composition : reports the proteins composition, both for each aminoacid, and for physico-chemical groups of aminoacids."
     puts "\t  + clustering : reports information for the current sequences clustering."
-    puts "\t  + global : reports physico-chemical information for all proteins like length, isoelectiric point, molecular weight."
+    puts "\t  + global : reports physico-chemical information for all proteins like length, isoelectric point, molecular weight."
+    puts "\t  + seq : reports accession, ID, length, organism and taxonomy ID of each sequence."
     puts "\t  + all : reports all above information."
     puts "\nSeveral information types can be specified separated by comas WITHOUT WHITE SPACES."
     puts "\nNOTE: With HTML format, all tables can be exported as a CSV file.\n"
@@ -252,54 +333,58 @@ proc MSAInfoHelp {} {
 }
 
 
-proc MSACutHelp {} {
+proc MSACutHelp {{code 0}} {
     puts "\nUsage : msacut <fileIn> options ...\n"
-    puts "\t-frompos <integer> : start position of the residue zone to be included in the alignment"
-    puts "\t-topos <integer | end> : end position for the residue zone to be included in the alignment. The special word 'en' refers to the end of the alignment."
-    puts "NOTE : Several -frompos/-topos pairs can be specified. If none, the whole alignment is selected."
-    puts "\t-fromseq <integer | seqname> : position or sequence name of thefirst sequence zone to be included in the output alignment"
-    puts "\t-toseq <integer | seqname> : position or sequence name of the last sequence zone to be included in the output alignment."
-    puts "NOTE : Several -fromseq/-toseq pairs can be specified."
-    puts "\t-format <tfa|msf|xml|aln> : output format. If the -format key is not specified, the output alignment will have the same format as the input alignment."
-    puts "\t-outfile <filename> : output file name. If no -outfile is specified, the output alignment file name will have the rootname of the inputalignment suffixed by the output type format."
-    puts "\t-relative <global|seq-name> : By default the alignment position are supposed to be global alignment coordinates. If a seq-name is specified, then the positions coordinates corresponds to positions inside the seq-name sequence."
+    puts "\t-frompos <integer> : start position of a residue zone (column) to be kept in the alignment, from 1."
+    puts "\t-topos <integer | end> : end position of this zone. The special word 'end' refers to the end of the alignment (or of the -relative sequence)."
+    puts "NOTE : Several -frompos/-topos pairs can be specified, taken in the order given. If none, all the columns are kept."
+    puts "\t-fromseq <integer | seqname> : number (from 1) or name of the first sequence of a group of sequences to be kept in the output alignment"
+    puts "\t-toseq <integer | seqname> : number or name of the last sequence of this group."
+    puts "NOTE : Several -fromseq/-toseq pairs can be specified. If none, all the sequences are kept."
+    puts "\t-format <tfa|msf|xml|aln> : output format. If the -format key is not specified, the output alignment will have the same format as the input alignment (xml for an ord file)."
+    puts "\t-outfile <filename> : output file name. If no -outfile is specified, the output file name is the rootname of the input alignment followed by '_cut' and the output format (D_maj.tfa -> D_maj_cut.tfa)."
+    puts "\t-relative <global|seq-name> : By default the positions are global alignment coordinates (columns). If a seq-name is specified, then the positions are residue numbers of the seq-name sequence."
     puts ""
-    
-    exit
+
+    exit $code
 }
 
 
 proc MSAInfoOptions {Largs} {
     global AExecuter Logs2Do
 
-    if {[llength $Largs] == 0} {
+    if {[llength $Largs] == 0 || [string tolower [lindex $Largs 0]] in {help -help -h}} {
 	MSAInfoHelp
 	exit
     }
 
-    if {[string first "help" [string tolower $Largs]] > -1} {
-	MSAInfohelp
-	exit
-    }
-    
     set fileIn [lindex $Largs 0]
     if {! [file exists $fileIn]} {
 	puts "\nError !\nFile >$fileIn< does not exist !\n"
 	exit
     }
     set Largs [lrange $Largs 1 end]
+    if {[llength $Largs] % 2} {
+	puts "\nError !\nThere should be an even number of arguments after the file name !\n"
+	MSAInfoHelp
+	exit
+    }
 
+    # output formats of OutputTLog (ordali_tlog.tcl) : HTML and Text
     set format "HTML"
     set outfile ""
+    set Lval {}
     foreach {k v} $Largs {
 	switch $k {
 	    "-format" {
-		set v [string toupper $v]
-		if {$v ni {"HTML" "LATEX" "TEXT"}} {
-		    puts "\nError !\nBad output format value >$v< !\nShould be one of HTML, LATEX, TEXT.\n"
-		    exit
+		switch [string tolower $v] {
+		    "html" {set format "HTML"}
+		    "text" {set format "Text"}
+		    default {
+			puts "\nError !\nBad output format value >$v< !\nShould be html or text.\n"
+			exit
+		    }
 		}
-		set format $v
 	    }
 	    "-type" {
 		set v [string trim [string tolower $v]]
@@ -319,7 +404,6 @@ proc MSAInfoOptions {Largs} {
 	    }
 	}
     }
-    puts "outfile= $outfile"
     if {$outfile eq ""} {
 	set outfile "[file rootname [file tail $fileIn]].[string tolower $format]"
     }
@@ -415,7 +499,7 @@ proc ViewTreeOptions {Lopts} {
     global AExecuter
 
     if {$Lopts == {} || [llength $Lopts] > 1} {
-	viewTreeHelp
+	ViewTreeHelp
 	exit
     }
 
@@ -461,56 +545,45 @@ proc ViewPDBOptions {Lopts} {
 proc MSACutOptions {Lopts} {
     global AExecuter LfromX LtoX LfromY LtoY
 
-    if {$Lopts == ""} {
+    if {$Lopts == {} || [string tolower [lindex $Lopts 0]] in {help -help -h}} {
 	MSACutHelp
-
-	exit
     }
 
     set fileIn [lindex $Lopts 0]
     if {! [file exists $fileIn]} {
-	puts "\nError !\nFile >$fileIn< does not exists !\n"
-	exit
+	puts "\nError !\nFile >$fileIn< does not exist !\n"
+	exit 1
     }
     set Lopts [lrange $Lopts 1 end]
 
-    if {[llenth $Lopts] == 0} {
+    if {[llength $Lopts] == 0} {
 	puts "\nError !\nToo few arguments ! At least a couple of -frompos/-topos and/or -fromseq/-toseq should be specified !"
-	MSACutHelp
-	exit
+	MSACutHelp 1
+    }
+    # There should be an even number of arguments
+    if {[llength $Lopts] % 2} {
+	puts "\nError !\nThere should be an even number of arguments !\n"
+	MSACutHelp 1
     }
 
-    # There should be an event number of arguments
-    if {[llength $Lopts] %2} {
-	puts "\nError !\nThere should be an even number of arguments !\n"
-	MSACutHelp
-	exit
-    }
-    
-    # There should be at least a '-frompos', '-topos' and '-outfile' key
-    if {"-frompos" ni $Lopts || "-topos" ni $Lopts || "-outfile" ni $Lopts} {
-	puts "\nError !\nThere should be at least a '-frompos', '-topos' and '-outfile' key!\n"
-	exit
-    }
-    
     set outfile ""
     set format ""
     set relative "global"
     set LfromX {} ; set LtoX {}
     set LfromY {} ; set LtoY {}
     foreach {k v} $Lopts {
-	switch $k {
+	switch -- $k {
 	    "-frompos" {
-		if {! [string is entier $v]} {
+		if {! [string is entier -strict $v]} {
 		    puts "\nError !\nA '-frompos' key does not have an integer value !\n"
-		    exit
+		    exit 1
 		}
 		lappend LfromX $v
 	    }
 	    "-topos" {
-		if {$v ne "end" && ! [string is entier $v]} {
+		if {$v ne "end" && ! [string is entier -strict $v]} {
 		    puts "\nError !\nA '-topos' key does not have an integer or 'end' value !\n"
-		    exit
+		    exit 1
 		}
 		lappend LtoX $v
 	    }
@@ -522,32 +595,40 @@ proc MSACutOptions {Lopts} {
 	    }
 	    "-relative" {
 		set relative $v
-	    }				
+	    }
 	    "-format" {
 		set v [string toupper $v]
 		if {$v ni {TFA MSF ALN XML}} {
 		    puts "\nError !\nThe '-format' value is not a valid format ! should be one of TFA, MSF, ALN, XML.\n"
-		    exit
-		}	
+		    exit 1
+		}
 		set format $v
-	    }	
+	    }
+	    "-output" -
 	    "-outfile" {
 		set outfile $v
 	    }
+	    default {
+		puts "\nError !\nUnknown key >$k< !\n"
+		MSACutHelp 1
+	    }
 	}
     }
-    set LfromX [lsort -integer $LfromX]
-    set LfromY [lsort -integer $LfromY]
-    
-    LesDefauts DownloadPDB dont
-    LesDefauts Mode Batch
-    LesDefauts Exit 1
-    if {! [info exists outfile] || $outfile eq ""} {
-	set outfile JLeSauvveAs
+    if {[llength $LfromX] != [llength $LtoX] || [llength $LfromY] != [llength $LtoY]} {
+	puts "\nError !\nEach '-frompos' needs a '-topos', each '-fromseq' a '-toseq' !\n"
+	exit 1
+    }
+    if {$LfromX == {} && $LfromY == {}} {
+	puts "\nError !\nAt least a couple of -frompos/-topos and/or -fromseq/-toseq should be specified !\n"
+	MSACutHelp 1
     }
 
-    set AExecuter "MSACut [list $relative $format $outfile]"
-    
+    LesDefauts DownloadPDB dont
+    LesDefauts Mode batch
+    LesDefauts Exit 1
+
+    set AExecuter [list MSACut $relative $format $outfile]
+
     return $fileIn
 }
 
@@ -635,11 +716,32 @@ proc MSAConvertHelp {} {
 }
 
 
+# Name under which the program was launched (ordalie, msainfo, msaconvert,
+# msacut, viewtree, viewpdb ...), i.e. the name of the symbolic link.
+# From the sources, $argv0 is that link. In a starpack, $argv0 is
+# <link>/main.tcl (the startup script inside the mounted executable), so
+# the name is the directory part ; [info nameofexecutable] is the link
+# itself, not resolved.
+proc NomDuProgramme {} {
+    set prog [file tail $::argv0]
+    if {$prog eq "main.tcl"} {
+	set prog [file tail [file dirname $::argv0]]
+	if {$prog eq ""} {
+	    set prog [file tail [info nameofexecutable]]
+	}
+    }
+    # Windows : msainfo.exe -> msainfo
+    if {[string tolower [file extension $prog]] eq ".exe"} {
+	set prog [file rootname $prog]
+    }
+    return $prog
+}
+
 proc InterpreteArgv0 {{Ligne ""}} {
     regsub -all { +} [string trim $Ligne] " " Ligne
     set Largs [split $Ligne " "]
-    
-    set prog [file tail $::argv0]
+
+    set prog [NomDuProgramme]
     switch $prog {
 	"ordali.tcl" -
 	"ordali" -

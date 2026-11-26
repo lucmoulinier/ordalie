@@ -16,7 +16,7 @@ echo "Error ! tclsh was not found. Please install Tcl/Tk 8.6, then run this scri
 # in the same directory as this script. The script can be started from any
 # working directory.
 
-package require Tcl 8.5
+package require Tcl 8.5-
 package require platform
 
 # ----------------------------------------------------------------------------
@@ -311,7 +311,9 @@ if {[catch {
     exit 1
 }
 
-set Lprogs {msacuts msainfo msaconvert viewpdb viewtree}
+# the spinoff programs : links to the executable. Ordalie runs the program
+# named by the link (NomDuProgramme, src/ordali_spinoff.tcl)
+set Lprogs {msacut msainfo msaconvert viewpdb viewtree}
 
 if {! $macos} {
     # ---------------------------------------------------------------- linux box
@@ -350,6 +352,16 @@ if {! $macos} {
     }
 } else {
     # ------------------------------------------------------------ mac os computers
+    # an alias to the executable itself would always start it as
+    # 'ordalie' : the spinoffs are links in <OrdalieDir>/bin, and their
+    # aliases point to these links
+    set Lalias [list ordalie $OrdalieExe]
+    foreach prog $Lprogs {
+        set link [file join $OrdalieDir bin $prog]
+        if {[MakeLink $link $OrdalieExe]} {
+            lappend Lalias $prog $link
+        }
+    }
     lappend Lprogs ordalie
     if {$FileShellRC ne ""} {
         # read the file where the aliases will be written to
@@ -387,8 +399,8 @@ if {! $macos} {
 
         # create aliases
         set Laliases [list "# ORDALIE aliases"]
-        foreach prog $Lprogs {
-            lappend Laliases "alias $prog=[ShQuote $OrdalieExe]"
+        foreach {prog target} $Lalias {
+            lappend Laliases "alias $prog=[ShQuote $target]"
         }
 
         # write the file back, followed by the new aliases
@@ -411,8 +423,8 @@ if {! $macos} {
     } else {
         puts "\n\nORDALIE is installed, but no shell startup file could be updated."
         puts "Add these lines to the startup file of your shell (bash or zsh syntax) :\n"
-        foreach prog $Lprogs {
-            puts "alias $prog=[ShQuote $OrdalieExe]"
+        foreach {prog target} $Lalias {
+            puts "alias $prog=[ShQuote $target]"
         }
         puts ""
     }

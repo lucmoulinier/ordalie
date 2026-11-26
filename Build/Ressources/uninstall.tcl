@@ -7,7 +7,7 @@ echo "Error ! tclsh was not found. Please install Tcl/Tk 8.6, then run this scri
 #
 # This script uninstalls ORDALIE software from Unix-like machines (Linux and
 # macOS). It undoes what install.tcl did :
-#  - Linux : removes the symbolic links ordalie, msacuts, ... that point to
+#  - Linux : removes the symbolic links ordalie, msacut, ... that point to
 #            the ORDALIE executable ;
 #  - macOS : removes the ORDALIE aliases from the shell startup files ;
 #  - removes the ORDALIE installation directory.
@@ -18,7 +18,7 @@ echo "Error ! tclsh was not found. Please install Tcl/Tk 8.6, then run this scri
 # (from bash, zsh or any other shell). install.tcl copies this script into
 # the installation directory (for example ~/ordalie/uninstall.tcl).
 
-package require Tcl 8.5
+package require Tcl 8.5-
 package require platform
 
 # ----------------------------------------------------------------------------
@@ -210,7 +210,8 @@ puts "\n\n"
 puts "    ORDALIE Uninstallation :"
 puts "------------------------------\n"
 
-set Lprogs {msacuts msainfo msaconvert viewpdb viewtree ordalie}
+# msacuts : name of the msacut link made by the installers before 2026/11/26
+set Lprogs {msacut msacuts msainfo msaconvert viewpdb viewtree ordalie}
 
 # 1. this script is normally in the installation directory itself
 set OrdalieDir ""

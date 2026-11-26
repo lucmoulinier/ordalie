@@ -80,6 +80,14 @@ proc CreeLeMacsim {{out "dehors"} {LNoms ""} {LSeqs ""}} {
     if {! [info exists AlnNote] || [string first "Created by Ordali" $AlnNote] == -1} {
 	append AlnNote " Created by Ordali"
     }
+    # set when a MACSIM file or the interface is loaded, not when another
+    # format is converted in batch (msaconvert file.tfa -format xml)
+    if {! [info exists AlnScore]} {
+	set AlnScore 0.0
+    }
+    if {! [info exists AlnName]} {
+	set AlnName ""
+    }
     foreach n [list "aln-name" "aln-score" "aln-note"] k [list "$AlnName" "$AlnScore" "$AlnNote"] {
 	$aln appendFromScript {
 	    MS::$n {MS::text $k}

@@ -4191,23 +4191,17 @@ proc trari {} {
 
 
 proc PutsDuTaisToi {args} {
-    switch -regexp -- [lindex $args 0] {
-	{\-nonewline} {
-	    return
-	}
-	{file[0-9]+} -
-	{sock[0-9]+} {
-	    rename ::puts ::PutsDuTaisToi
-	    rename ::putsCmdOriginale ::puts
-	    puts {*}$args
-	    rename ::puts ::putsCmdOriginale
-	    rename ::PutsDuTaisToi ::puts
-	}
-	default {
-	    return
-	}
+    # puts while TaisToi is on : only the messages (stdout, stderr) are
+    # dropped. Writing to a channel goes on, with or without -nonewline
+    # (every "puts -nonewline $f ..." was dropped : empty ORD files)
+    set Largs $args
+    if {[lindex $Largs 0] eq "-nonewline"} {
+	set Largs [lrange $Largs 1 end]
     }
-    
+    if {[llength $Largs] == 2 && [lindex $Largs 0] ni {stdout stderr}} {
+	return [::putsCmdOriginale {*}$args]
+    }
+
     return
 }
 
