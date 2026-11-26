@@ -1442,7 +1442,7 @@ proc RunRPCA2 {Ld} {
 
 
 proc RunTclPCA {Ldata} {
-    #package require ::math::PCA
+    package require math::PCA
 
     set pca [::math::PCA::createPCA $Ldata]
     set Lval [$pca eigenvalues]

@@ -3014,7 +3014,11 @@ proc LoadNewStructure {IdOrFile {strID ""} {initFromDB 0} {storeInDB 1}} {
     }
 
     Structure create $strID
-    set cok [$strID new $IdOrFile "" $initFromDB $storeInDB]
+    # a Tcl error while building (network, local databases...) must not
+    # leave a half-built object : it would break the ORD save
+    if {[catch {$strID new $IdOrFile "" $initFromDB $storeInDB} cok]} {
+	set cok [list Error $cok]
+    }
     lassign $cok what desc
     if {$what eq "Error"} {
 	lappend Warn(BadPdb) $strID

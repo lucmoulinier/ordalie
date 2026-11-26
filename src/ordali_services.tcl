@@ -292,7 +292,7 @@ proc GetAlphafoldFromUniprot {uniprot_id {output_format "pdb"}} {
     set Text ""
     set failed [::curl::transfer -url $url -followlocation 1 -bodyvar Text]
     if {$failed} {
-        puts "Download failed: $text"
+        puts "Download failed: $url"
 	return {}
     }
 
@@ -1973,12 +1973,19 @@ proc CheckIDMappingInputParam {args} {
 
 
 proc DbIDMappingSQL {bank what} {
+    set db $bank
     switch $what {
 	"open" {
-	    set db $bank
 	    set fdb [file join [idmHome] $bank.sqlite]
 	    #Espionne $fdb
 	    sqlite3 $db $fdb -readonly 1
+	    # an old sqlite (3.25 of the starpack) fails to lock the files on
+	    # NFS ("disk I/O error"). The banks are only read : open them
+	    # without locks
+	    if {[catch {$db eval {select 1 from sqlite_master limit 1}}]} {
+		catch {$db close}
+		sqlite3 $db $fdb -readonly 1 -vfs unix-none
+	    }
 	    #$db eval "PRAGMA journal_mode = OFF"
 	    $db eval "PRAGMA synchronous = OFF"
 	}
@@ -2015,13 +2022,19 @@ proc IDMapping {args} {
     if {$OnWeb==""} {
 	set OnWeb "no"
     }
-    if {$OnWeb ne "no" || ! [file exists [IDMappingDir]]} {
+    if {[catch {file exists [IDMappingDir]} local]} {
+	set local 0
+    }
+    if {$OnWeb ne "no" || ! $local} {
 	set Retour [IDMapping_web $from $to $LId $orga]
 	return [join $Retour "\n"]
-    } else {
-	set Retour [IDMapping_sql $from $to $LId $orga]
-	return [join $Retour "\n"]
     }
+    # local banks (banbi) unreadable : UniProt web service
+    if {[catch {IDMapping_sql $from $to $LId $orga} Retour]} {
+	puts "IDMapping : local banks unreadable ($Retour), using the UniProt web service"
+	set Retour [IDMapping_web $from $to $LId $orga]
+    }
+    return [join $Retour "\n"]
 }
 
 
@@ -2169,102 +2182,200 @@ proc IDMapping_hits {ListOfIds} {
     return [join $LesHits "\n"]
 }
 
-proc IDMapping_web {from to LId {orga ""}} {
-    set LId [CheckIdsAsList $LId]
-    
-    # returns the converted list with converted IDs
-    # IDs not found are replaced by the empty string
-    #
-    # BEWARE ! IDMapping only works from or to a
-    # uniprot accession/bankid !!
-    #
-    # For the list of abbreviations of available
-    # databases, see
-    # https://www.uniprot.org/help/programmatic_access#id_mapping_examples
-    # for updated available databases
-    # Also reported below
-    #lm 08/04/2016
-    #
+proc IDMappingWebBanques {} {
+    # names of the databases of the UniProt ID mapping service
+    if {[info exists ::IDMappingWebBanques]} {
+	return $::IDMappingWebBanques
+    }
+    lassign [IDMappingWebGet "https://rest.uniprot.org/configure/idmapping/fields"] code data
+    if {$code != 200} {
+	return {}
+    }
+    set ::IDMappingWebBanques [regexp -all -inline {"name"\s*:\s*"[^"]+"} $data]
+    set ::IDMappingWebBanques [lmap n $::IDMappingWebBanques {
+	regexp {"name"\s*:\s*"([^"]+)"} $n -> n
+	set n
+    }]
+    return $::IDMappingWebBanques
+}
 
-    # uniprot ID/ACC = ACC+ID
-    # uniprot ID     = ID
-    # uniprot acc    = ACC
-    # UniRef100      = NF100
-    # UniRef90       = NF90
-    # UniRef50       = NF50
-    # pdb            = PDB_ID
-    # refseq protein = REFSEQ
-    # refseq nucleot = REFSEQ_NT_ID
-    # GI number      = GI
-    # ...
 
-    # dynamic list of dbs
-    # hard list in ordali_data
-    set Ldbs [ListOfAllIDMappingBanks]
-    lappend Ldbs "ID" "ACC"
-    
-    # check arguments
-    if {$from ni $Ldbs && $from ne "ACC+ID"} {
-	puts "Erreur ! >From< database does nor exists !"
+proc IDMappingWebNom {bank} {
+    # name, for the UniProt ID mapping service (rest.uniprot.org), of an
+    # IDMapping bank (names of banbi and of the old uploadlists service).
+    # Most differ only by case and punctuation, the others are listed here.
+    # Returns "" if the service does not know the bank.
+    set T {
+	ACC UniProtKB_AC-ID ID UniProtKB_AC-ID ACC+ID UniProtKB_AC-ID
+	REFSEQ RefSeq_Protein REFSEQ_NT RefSeq_Nucleotide REFSEQ_NT_ID RefSeq_Nucleotide
+	P_REFSEQ_AC RefSeq_Protein GI GI_number P_GI GI_number
+	EMBL EMBL-GenBank-DDBJ EMBL_ID EMBL-GenBank-DDBJ EMBL_CDS EMBL-GenBank-DDBJ_CDS
+	ENSEMBLGENOME Ensembl_Genomes ENSEMBLGENOME_PRO Ensembl_Genomes_Protein
+	ENSEMBLGENOME_TRS Ensembl_Genomes_Transcript ENSEMBL_PRO Ensembl_Protein
+	ENSEMBL_TRS Ensembl_Transcript ENSEMBL_ID Ensembl ENSEMBL_PRO_ID Ensembl_Protein
+	ENSEMBL_TRS_ID Ensembl_Transcript WORMBASE_PRO WormBase_Protein
+	WORMBASE_TRS WormBase_Transcript EUPATHDB VEuPathDB PHARMGKB ClinPGx
+	PDB_ID PDB NF100 UniRef100 NF90 UniRef90 NF50 UniRef50
+	GENEID GeneID P_ENTREZGENEID GeneID
+    }
+    set B [string toupper $bank]
+    if {[dict exists $T $B]} {
+	return [dict get $T $B]
+    }
+    set norm [regsub -all {[^A-Z0-9]} $B ""]
+    foreach n [IDMappingWebBanques] {
+	if {[regsub -all {[^A-Z0-9]} [string toupper $n] ""] eq $norm} {
+	    return $n
+	}
+    }
+    return ""
+}
 
-	return [lrepeat [llength $LId] ""]
+
+proc IDMappingWebGet {url {query ""}} {
+    # GET (or POST if query is given) : returns {http_code data}, code 0
+    # if the server could not be reached
+    package require http
+    package require tls
+    ::http::register https 443 [list ::tls::socket -autoservername 1]
+
+    set opts [list -timeout 60000]
+    if {$query ne ""} {
+	lappend opts -query $query -type "application/x-www-form-urlencoded"
+    }
+    if {[catch {::http::geturl $url {*}$opts} tok]} {
+	return [list 0 $tok]
+    }
+    if {[::http::status $tok] ne "ok"} {
+	set r [list 0 [::http::status $tok]]
+    } else {
+	set r [list [::http::ncode $tok] [::http::data $tok]]
+    }
+    ::http::cleanup $tok
+    return $r
+}
+
+
+proc IDMappingWebJob {from to Lids {taxid ""}} {
+    # one job of the UniProt ID mapping service (from, to : names of the
+    # service). Returns the lines of the result (list of fields, the
+    # header line removed), or "Error".
+    # To UniProtKB the fields are : from, accession, entry name.
+    # Otherwise : from, to.
+    set base "https://rest.uniprot.org/idmapping"
+    set q [list from $from to $to ids [join $Lids ","]]
+    if {[string is integer -strict $taxid]} {
+	lappend q taxId $taxid
+    }
+    lassign [IDMappingWebGet "$base/run" [::http::formatQuery {*}$q]] code data
+    if {$code != 200 || ! [regexp {"jobId"\s*:\s*"([^"]+)"} $data -> job]} {
+	puts "IDMapping web : job not submitted ($code) [string range $data 0 200]"
+	return "Error"
     }
 
-    if {$to ni $Ldbs} {
-	puts "Erreur !>To< database does not exists !"
-	
-	return [lrepeat [llength $LId] ""]
-    }
-    
-    package require TclCurl
-    
-    # Bunches of 200 queries
-    set url "https://www.uniprot.org/uploadlists/"
-    set Lres {}
-    set paquets 200
-    set ni [expr {int([llength $LId]/$paquets)+1}]
-    for {set i 0} {$i < $ni} {incr i} {
-	set d [expr {$i*$paquets}]
-	set f [expr {($i+1)*$paquets-1}]
-	set query [::http::formatQuery \
-		       from "$from" \
-		       to "$to" \
-		       format "tab" \
-		       query "[join [lrange $LId $d $f] ,]"
-		  ]
-	
-	set out [::curl::transfer -url $url -bodyvar rep -followlocation 1 -post 1 -postfields $query -timeout 120]
-	
-	if {[string first "From" $rep] != 0} {
-	    #puts "ERROR in IDMapping :"
-	    #puts "Url   : $url"
-	    #puts "Query : $query"
-	    #puts ""
-	    #puts "$rep"
-
+    # wait for the job : the status gives "RUNNING" or "NEW" while it
+    # runs, then a redirection (303) or the results
+    set fin [expr {[clock seconds] + 300}]
+    set attente 500
+    while {1} {
+	lassign [IDMappingWebGet "$base/status/$job"] code data
+	if {$code == 303 || ($code == 200 && ! [regexp {"jobStatus"\s*:\s*"(NEW|RUNNING)"} $data])} {
+	    break
+	}
+	if {$code != 200 || [clock seconds] > $fin} {
+	    puts "IDMapping web : job $job failed ($code) [string range $data 0 200]"
 	    return "Error"
 	}
+	after $attente
+	update idletasks
+	set attente [expr {min(2*$attente, 3000)}]
+    }
+    if {[regexp {"jobStatus"\s*:\s*"(ERROR|FAILURE)"} $data]} {
+	puts "IDMapping web : job $job failed [string range $data 0 200]"
+	return "Error"
+    }
 
-	# Treat IDMapping output.
-	# Remove the first line which is a header line
-	set Lrep [split $rep \n]
-	foreach l [lrange $Lrep 1 end] {
-	    lassign [split $l \t] in out
-	    set To($in) $out
+    if {$to eq "UniProtKB"} {
+	set url "$base/uniprotkb/results/stream/$job?format=tsv&fields=accession,id"
+    } else {
+	set url "$base/stream/$job?format=tsv"
+    }
+    lassign [IDMappingWebGet $url] code data
+    if {$code != 200} {
+	puts "IDMapping web : results of job $job not read ($code)"
+	return "Error"
+    }
+    set Lrows {}
+    foreach l [lrange [split [string trim $data] \n] 1 end] {
+	if {[string trim $l] ne ""} {
+	    lappend Lrows [split [string trimright $l \r] \t]
 	}
-	update
+    }
+    return $Lrows
+}
+
+
+proc IDMapping_web {from to LId {orga ""}} {
+    # IDMapping by the UniProt web service (rest.uniprot.org/idmapping).
+    # Same names of banks and same answer as IDMapping_sql : one element
+    # per ID of LId, in the same order, list of the IDs found (empty if
+    # none). from or to must be ACC, ID or ACC+ID (UniProt) ; between two
+    # other banks the mapping goes through the UniProt accessions.
+    set LId [CheckIdsAsList $LId]
+    set Lvide [lrepeat [llength $LId] ""]
+    if {$LId == {}} {
+	return {}
+    }
+    set Luniprot {ACC ID ACC+ID}
+
+    if {$from ni $Luniprot && $to ni $Luniprot} {
+	# bank -> UniProt accession -> bank
+	set Lacc [IDMapping_web $from ACC $LId $orga]
+	set Lpremier [lmap a $Lacc {lindex $a 0}]
+	set Lautre [IDMapping_web ACC $to [lsort -unique [lsearch -all -inline -not $Lpremier ""]] $orga]
+	foreach a [lsort -unique [lsearch -all -inline -not $Lpremier ""]] r $Lautre {
+	    set t($a) $r
+	}
+	set Lret {}
+	foreach a $Lpremier {
+	    lappend Lret [expr {[info exists t($a)] ? $t($a) : ""}]
+	}
+	return $Lret
+    }
+
+    set fw [IDMappingWebNom $from]
+    set tw [expr {$to in $Luniprot ? "UniProtKB" : [IDMappingWebNom $to]}]
+    if {$fw eq "" || $tw eq ""} {
+	puts "IDMapping web : bank $from or $to unknown to UniProt"
+	return $Lvide
+    }
+    # column of the answer : accession or entry name to UniProtKB
+    set col [expr {$to eq "ID" ? 2 : 1}]
+
+    # jobs of 10000 IDs at most (the limit of the service is 100000)
+    set paquet 10000
+    for {set d 0} {$d < [llength $LId]} {incr d $paquet} {
+	set Lrows [IDMappingWebJob $fw $tw [lrange $LId $d [expr {$d+$paquet-1}]] $orga]
+	if {$Lrows eq "Error"} {
+	    return $Lvide
+	}
+	foreach r $Lrows {
+	    set out [lindex $r $col]
+	    if {$out ne ""} {
+		lappend To([lindex $r 0]) $out
+	    }
+	}
+	update idletasks
     }
 
     set Lret {}
     foreach i $LId {
 	if {[info exists To($i)]} {
-	    set out [set To($i)]
+	    lappend Lret [lsort -unique $To($i)]
 	} else {
-	    set out ""
+	    lappend Lret ""
 	}
-	lappend Lret $out
     }
-
     return $Lret
 }
 
