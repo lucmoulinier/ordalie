@@ -326,6 +326,7 @@ proc MSAInfoHelp {} {
     puts "\t  + global : reports physico-chemical information for all proteins like length, isoelectric point, molecular weight."
     puts "\t  + seq : reports accession, ID, length, organism and taxonomy ID of each sequence."
     puts "\t  + all : reports all above information."
+    puts "\t-instance <n> : with an ORD file (compulsory), number in the list (1 : Original alignment) or label (M5 for \"M5 - ...\") of the instance to be treated. A wrong value lists the instances."
     puts "\nSeveral information types can be specified separated by comas WITHOUT WHITE SPACES."
     puts "\nNOTE: With HTML format, all tables can be exported as a CSV file.\n"
     
@@ -343,6 +344,7 @@ proc MSACutHelp {{code 0}} {
     puts "NOTE : Several -fromseq/-toseq pairs can be specified. If none, all the sequences are kept."
     puts "\t-format <tfa|msf|xml|aln> : output format. If the -format key is not specified, the output alignment will have the same format as the input alignment (xml for an ord file)."
     puts "\t-outfile <filename> : output file name. If no -outfile is specified, the output file name is the rootname of the input alignment followed by '_cut' and the output format (D_maj.tfa -> D_maj_cut.tfa)."
+    puts "\t-instance <n> : with an ORD file (compulsory), number in the list (1 : Original alignment) or label (M5 for \"M5 - ...\") of the instance to be cut. A wrong value lists the instances."
     puts "\t-relative <global|seq-name> : By default the positions are global alignment coordinates (columns). If a seq-name is specified, then the positions are residue numbers of the seq-name sequence."
     puts ""
 
@@ -701,13 +703,15 @@ proc MSAConvertOptions {Largs} {
 
 
 proc MSAConvertHelp {} {
-    puts "\nUsage :\nmsaconvert <input-file> -format <format> ?-output <output-file>? \n"
+    puts "\nUsage :\nmsaconvert <input-file> -format <format> ?-output <output-file>? ?-instance <n>?\n"
     puts "msaconvert converts a MSA specified by <input-file> into another format specified by the -format option. Available formats are :"
     puts "\t- tfa, fasta, fa : fasta format"
     puts "\t- macsim, macsims, xml : macsims format"
     puts "\t- msf : msf format"
     puts "\t- aln : Clustal format"
     puts "\t- ord : ordalie format"
+    puts ""
+    puts "With an ORD input file, the key -instance <n> is compulsory : number in the list (1 : Original alignment) or label (M5 for \"M5 - ...\") of the instance to be converted. A wrong value lists the instances. An ORD output file keeps all the instances."
     puts ""
     puts "If the key -output is not specified, the output file will have the same name as the input file with an extension corresponding to the required format."
     puts ""
@@ -737,6 +741,85 @@ proc NomDuProgramme {} {
     return $prog
 }
 
+# -instance <n> of msacut, msaconvert and msainfo : the instance of an ORD
+# file to be treated, compulsory with an ORD file (it holds several
+# alignments). <n> is the number of the instance in the list of the
+# instance bar (1 : Original alignment) or its label (M5 for "M5 - ..."). Removes the key from
+# Largs and keeps the value in ::SpinoffInstance, used by
+# SpinoffChoisitInstance once the ORD file is read.
+proc SpinoffInstance {prog Largs} {
+    set ::SpinoffInstance ""
+    set fileIn [lindex $Largs 0]
+    set Lreste [list $fileIn]
+    for {set i 1} {$i < [llength $Largs]} {incr i} {
+	if {[lindex $Largs $i] eq "-instance"} {
+	    set ::SpinoffInstance [lindex $Largs [incr i]]
+	} else {
+	    lappend Lreste [lindex $Largs $i]
+	}
+    }
+
+    set isORD [expr {[string tolower [file extension $fileIn]] eq ".ord"}]
+    if {$isORD && [string trim $::SpinoffInstance] eq ""} {
+	puts "\nError !\n$fileIn is an ORD file, which holds several instances (alignments) :\nthe key '-instance <n>' is required, <n> being the number of the instance in the list (1 : Original alignment) or its label (M5 for \"M5 - ...\").\nA wrong value lists the instances of the file.\n"
+	exit 1
+    }
+    if {! $isORD && $::SpinoffInstance ne ""} {
+	puts "\nWarning !\n'-instance' is only used with ORD files : ignored.\n"
+	set ::SpinoffInstance ""
+    }
+
+    return $Lreste
+}
+
+
+# Called by UpdateFromOrdaliDB before the instance is loaded (CreeVue) :
+# the instance given by -instance becomes the current one.
+# puts, even when msaconvert silenced the messages (TaisToi)
+proc SpinoffPuts {msg} {
+    if {[info commands ::putsCmdOriginale] ne ""} {
+	::putsCmdOriginale $msg
+    } else {
+	puts $msg
+    }
+}
+
+
+proc SpinoffChoisitInstance {} {
+    if {! [info exists ::SpinoffInstance] || $::SpinoffInstance eq ""} {
+	return
+    }
+    set v $::SpinoffInstance
+    set Lpk {}
+    set Lnm {}
+    foreach {pk nm} [$::db eval {select pk_snap, name from snapshot}] {
+	lappend Lpk $pk
+	lappend Lnm $nm
+    }
+    set i -1
+    if {[string is entier -strict $v] && $v >= 1 && $v <= [llength $Lpk]} {
+	set i [expr {$v - 1}]
+    } else {
+	# the label of the instance : first word of its name (M5 in
+	# "M5 - Kinetoplatids"). The whole name can not be given : the
+	# command line is split on spaces.
+	set i [lsearch -exact -nocase [lmap nm $Lnm {lindex [split $nm " "] 0}] $v]
+    }
+    if {$i == -1} {
+	SpinoffPuts "\nError !\nInstance >$v< does not exist in this ORD file. Its instances are :"
+	set k 0
+	foreach nm $Lnm {
+	    SpinoffPuts "   [incr k] : $nm"
+	}
+	SpinoffPuts ""
+	exit 1
+    }
+    LesDefauts IxMacCourant [lindex $Lpk $i]
+    LesDefauts NmMacCourant [lindex $Lnm $i]
+
+    return
+}
+
 proc InterpreteArgv0 {{Ligne ""}} {
     regsub -all { +} [string trim $Ligne] " " Ligne
     set Largs [split $Ligne " "]
@@ -760,6 +843,7 @@ proc InterpreteArgv0 {{Ligne ""}} {
 	}
 	"msainfo" {
 	    set ::env(ORDALIEONWEB) 1
+	    set Largs [SpinoffInstance $prog $Largs]
 	    set Ligne [MSAInfoOptions $Largs]
 
 	    #TaisToi 1
@@ -767,9 +851,11 @@ proc InterpreteArgv0 {{Ligne ""}} {
 	"msacut" {
 	    set ::env(ORDALIEONWEB) 1
 	    #TaisToi 1
+	    set Largs [SpinoffInstance $prog $Largs]
 	    set Ligne [MSACutOptions $Largs]
 	}
 	"msaconvert" {
+	    set Largs [SpinoffInstance $prog $Largs]
 	    set Ligne [MSAConvertOptions $Largs]
 	    set fileIn [lindex $Ligne 0]
 	    set ::env(ORDALIEONWEB) 1

@@ -413,6 +413,8 @@ proc UpdateFromOrdaliDB {} {
 
     }
 
+    # msacut, msaconvert, msainfo : instance given by -instance
+    SpinoffChoisitInstance
     set pkm $Defauts(IxMacCourant)
     set nom $Defauts(NmMacCourant)
     # next instance number : after the highest one (not the
