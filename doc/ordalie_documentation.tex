@@ -664,6 +664,7 @@ Clicking \textbf{``Compute''} updates the main Ordalie window with the resulting
 \end{itemize}
 
 \subsection{The Tree Tool}
+\label{chap-tree}
 \label{tool-tree}
 
 The \textbf{Tree} tool is divided into two main phases: tree construction, performed within the main Ordalie window, and tree exploration, which takes place in a dedicated visualization window.
@@ -1525,6 +1526,89 @@ Opens this manual (HTML version) in the built-in hv3 HTML viewer.
 
 \subsubsection{Online Documentation}
 Launches the Ordalie documentation in a web browser, redirecting to the official Ordalie website.
+
+
+\newpage
+\section{Spin-off programs}
+\label{chap-spinoff}
+Besides the graphical application, Ordalie provides five small programs that perform a single task from the command line: \texttt{msainfo}, \texttt{msaconvert}, \texttt{msacut}, \texttt{viewtree} and \texttt{viewpdb}. They are not separate executables: on Linux and MacOS, the installation script creates links with these names to the Ordalie executable (in the same \texttt{bin} directory as the \texttt{ordalie} link), and Ordalie runs the program whose name it was launched with. \texttt{msainfo}, \texttt{msaconvert} and \texttt{msacut} work without any window and exit when finished, so they can be used in scripts or pipelines; \texttt{viewtree} and \texttt{viewpdb} open a window.
+
+The input alignment is always the first argument. Its format is deduced from its extension (\texttt{.xml}/\texttt{.macsim}, \texttt{.tfa}/\texttt{.fasta}, \texttt{.msf}, \texttt{.aln}, \texttt{.ord}), or detected from its content. The other arguments are key/value pairs, separated by spaces, in any order.
+
+\attention{An ORD file holds several instances (alignments). With an ORD input file, \texttt{msainfo}, \texttt{msaconvert} and \texttt{msacut} require the key \texttt{-instance <n>}, \texttt{<n>} being either the number of the instance in the instance list (1 is the \textit{Original alignment}) or its label (\texttt{M5} for the instance named \texttt{M5 - Kinetoplastids}). The full name of an instance can not be given, since the command line is split on spaces. A wrong value prints the list of the instances of the file. With any other file, \texttt{-instance} is ignored.}
+
+\subsection{msainfo}
+\texttt{msainfo} computes information on an alignment and writes it as a report, in the same form as the Ordalie log window.
+
+\begin{verbatim}
+msainfo <file> -type <info-type>[,<info-type>...] ?-format html|text?
+        ?-outfile <file>? ?-instance <n>?
+\end{verbatim}
+
+\begin{description}
+\item[\texttt{-type}] (compulsory) the information to report. Several types can be given, separated by commas \textbf{without spaces} (\texttt{-type seq,identity}):
+  \begin{itemize}
+  \item \texttt{seq}: accession, ID, length, organism and taxonomy ID of each sequence;
+  \item \texttt{global}: physico-chemical properties of each protein (length, isoelectric point, molecular weight, ...);
+  \item \texttt{identity}: percent identity of all the pairs of sequences, with mean, standard deviation, minimum and maximum, for the whole alignment and, if the alignment has several groups, for each group;
+  \item \texttt{identitystats}: only the identity statistics of the alignment and of the groups;
+  \item \texttt{composition}: composition of the proteins, for each amino acid and for the physico-chemical groups of amino acids;
+  \item \texttt{clustering}: the current clustering (groups) of the sequences;
+  \item \texttt{all}: all the above.
+  \end{itemize}
+\item[\texttt{-format}] \texttt{html} (default) or \texttt{text}. In the HTML report, each table can be exported as a CSV file.
+\item[\texttt{-outfile}] the output file. By default, the rootname of the input file followed by \texttt{.html} or \texttt{.text}.
+\item[\texttt{-instance}] the instance to report on, compulsory with an ORD file.
+\end{description}
+Example: \texttt{msainfo T\_tutorial.ord -instance 2 -type seq,identitystats -format text}
+
+\subsection{msaconvert}
+\texttt{msaconvert} converts an alignment into another format.
+
+\begin{verbatim}
+msaconvert <file> -format <format> ?-output <file>? ?-instance <n>?
+\end{verbatim}
+
+\begin{description}
+\item[\texttt{-format}] (compulsory) the output format: \texttt{tfa}, \texttt{fasta} or \texttt{fa} (FASTA), \texttt{xml}, \texttt{macsim} or \texttt{macsims} (MACSIM XML), \texttt{msf}, \texttt{aln} (Clustal) or \texttt{ord} (Ordalie).
+\item[\texttt{-output}] (or \texttt{-outfile}) the output file. Its extension is replaced by the one of the output format (\texttt{.tfa}, \texttt{.xml}, \texttt{.msf}, \texttt{.aln}, \texttt{.ord}). By default, the rootname of the input file is used, in the current directory.
+\item[\texttt{-instance}] the instance to convert, compulsory with an ORD file. An ORD output file keeps all the instances of the input ORD file.
+\end{description}
+Example: \texttt{msaconvert D\_maj.tfa -format xml} writes \texttt{D\_maj.xml}.
+
+\subsection{msacut}
+\texttt{msacut} extracts a sub-alignment: some zones of columns and/or some groups of sequences. The features and the column scores of the kept positions are moved to their new columns; those of the removed sequences and columns are dropped.
+
+\begin{verbatim}
+msacut <file> ?-frompos <i> -topos <j|end>? ... ?-fromseq <s1> -toseq <s2>? ...
+       ?-relative global|<seq-name>? ?-format tfa|msf|xml|aln?
+       ?-outfile <file>? ?-instance <n>?
+\end{verbatim}
+
+At least one \texttt{-frompos}/\texttt{-topos} or \texttt{-fromseq}/\texttt{-toseq} pair must be given.
+\begin{description}
+\item[\texttt{-frompos}, \texttt{-topos}] first and last positions (from 1) of a zone of columns to keep. The word \texttt{end} stands for the last position. Several pairs can be given: the zones are sorted and must not overlap. Without any pair, all the columns are kept.
+\item[\texttt{-relative}] \texttt{global} (default): the positions are columns of the alignment. A sequence name: the positions are residue numbers of this sequence (gaps not counted), converted into the columns of these residues.
+\item[\texttt{-fromseq}, \texttt{-toseq}] first and last sequences of a group of sequences to keep, given by their number (from 1, in the order of the alignment) or by their name. Several pairs can be given; the sequences keep the order of the alignment. Without any pair, all the sequences are kept.
+\item[\texttt{-format}] the output format, \texttt{tfa}, \texttt{msf}, \texttt{xml} or \texttt{aln}. By default the format of the input file (\texttt{xml} for an ORD file).
+\item[\texttt{-outfile}] (or \texttt{-output}) the output file. By default the rootname of the input file followed by \texttt{\_cut} and the format extension (\texttt{D\_maj.tfa} gives \texttt{D\_maj\_cut.tfa}).
+\item[\texttt{-instance}] the instance to cut, compulsory with an ORD file.
+\end{description}
+A warning lists the sequences that have no residue left in the kept columns: such sequences can not be read again from most formats.
+
+Example: \texttt{msacut D\_maj.tfa -frompos 1 -topos 120 -frompos 300 -topos end -fromseq 1 -toseq 10} keeps the columns 1 to 120 and 300 to the end of the first ten sequences, in \texttt{D\_maj\_cut.tfa}.
+
+\subsection{viewtree}
+\begin{verbatim}
+viewtree <tree-file>
+\end{verbatim}
+\texttt{viewtree} displays a phylogenetic tree in the Ordalie tree window (section \ref{chap-tree}), without any alignment. The only argument is a file holding a tree in Newick format.
+
+\subsection{viewpdb}
+\begin{verbatim}
+viewpdb <structure> ?<structure> ...?
+\end{verbatim}
+\texttt{viewpdb} displays one or several structures in the Ordalie 3D viewer. Each argument is either a PDB or mmCIF file, or an identifier: a PDB ID, downloaded from the PDB, or a UniProt accession, whose AlphaFold model is downloaded. All the chains of each structure are shown. Downloading requires an internet connection.
 
 
 \newpage

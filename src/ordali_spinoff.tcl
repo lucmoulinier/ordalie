@@ -673,6 +673,12 @@ proc MSAConvertOptions {Largs} {
 
 		    exit
 		}
+		# aliases : SauveLAlignement only knows TFA, XML, MSF, ALN
+		# and ORD (fasta or macsim wrote nothing)
+		switch $v {
+		    "fasta" - "fa" {set v "tfa"}
+		    "macsim" - "macsims" {set v "xml"}
+		}
 		set format $v
 		lappend Lpar "-convert" $v
 	    }
